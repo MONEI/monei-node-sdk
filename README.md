@@ -17,7 +17,7 @@ npm i @monei-js/node-sdk --save
 yarn add @monei-js/node-sdk
 ```
 
-# Usage
+## Usage
 
 The MONEI Node.js SDK uses API key to authenticate requests. You can view and manage your API key in the [MONEI Dashboard](https://dashboard.monei.net/settings/api).
 
