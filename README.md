@@ -1,19 +1,32 @@
-# MONEI NODE SDK
+# MONEI Node.js SDK
 
-[MONEI](https://monei.net/) is a Digital Payment Gateway.
+The MONEI Node.js SDK provides convenient access to the [MONEI](https://monei.net/) API from applications written in server-side JavaScript.
 
-Accept online payments without astronomical transaction fees. Take advantage of the best payment gateway rates to help you grow your e-commerce business.
+For collecting customer and payment information in the browser, use [monei.js](https://docs.monei.net/docs/monei-js-overview)
+
+## Documentation
+
+For the full documentation check our [Documentation portal](https://docs.monei.net/)
+
 
 ## Install
 
-```
+```shell script
 npm i @monei-js/node-sdk --save
-```
-
-or
-
-```
+#or 
 yarn add @monei-js/node-sdk
 ```
 
-For the full documentation check our [Documentation portal](https://docs.monei.net/)
+# Usage
+
+The MONEI Node.js SDK uses API key to authenticate requests. You can view and manage your API key in the [MONEI Dashboard](https://dashboard.monei.net/settings/api).
+
+```js
+const {Monei} = require('@monei-js/node-sdk');
+
+const monei = new Monei('pk_test_...');
+
+monei.payments.create({orderId: '12345', amount: 110}).then((result) => {
+  console.log(result);
+});
+```

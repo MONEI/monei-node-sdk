@@ -1,4 +1,5 @@
 import axios, {AxiosResponse} from 'axios';
+import pkg from './package.json';
 import {Configuration, PaymentsApi} from './src';
 import {BASE_PATH} from './src/base';
 
@@ -41,6 +42,7 @@ const errorHandler = (error: any) => {
 };
 
 instance.interceptors.response.use(responseHandler, errorHandler);
+instance.defaults.headers.common['User-Agent'] = `monei-node-sdk@${pkg.version}`;
 
 export class Monei {
   payments: PaymentsApi;
