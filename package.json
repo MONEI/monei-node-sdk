@@ -1,0 +1,59 @@
+{
+  "name": "@monei-js/node-sdk",
+  "description": "Node.js SDK for MONEI Digital Payment Gateway",
+  "version": "1.0.0",
+  "homepage": "https://monei.net",
+  "author": "MONEI <support@monei.net> (https://monei.net)",
+  "license": "MIT",
+  "contributors": [
+    "Dmitriy Nevzorov <dmitriy.nevzorov@microapps.com>"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MONEI/monei-node-sdk"
+  },
+  "keywords": [
+    "monei",
+    "payment gateway",
+    "payment processing",
+    "credit cards",
+    "api"
+  ],
+  "source": "./monei.ts",
+  "main": "dist/monei.js",
+  "module": "dist/monei.module.js",
+  "types": "dist/monei.d.ts",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "scripts": {
+    "generate": "openapi-generator generate -i https://js.monei.net/api/v1/openapi.json -g typescript-axios --remove-operation-id-prefix -c ./config.json -o ./src",
+    "compile": "microbundle -f es,cjs --target node --strict",
+    "dev": "microbundle watch  -f es,cjs --target node --strict",
+    "build": "yarn generate && yarn compile",
+    "release": "release-it"
+  },
+  "devDependencies": {
+    "@openapitools/openapi-generator-cli": "^1.0.18-4.3.1",
+    "@types/node": "^14.11.2",
+    "microbundle": "^0.12.3",
+    "prettier": "^2.1.2",
+    "release-it": "^14.0.3"
+  },
+  "dependencies": {
+    "axios": "^0.20.0"
+  },
+  "release-it": {
+    "git": {
+      "tagName": "v${version}",
+      "commitMessage": "chore: release v${version}"
+    },
+    "github": {
+      "release": true
+    },
+    "npm": {
+      "publish": true
+    }
+  }
+}
