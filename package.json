@@ -32,7 +32,8 @@
     "compile": "microbundle -f es,cjs --target node --strict",
     "dev": "microbundle watch  -f es,cjs --target node --strict",
     "build": "yarn generate && yarn compile",
-    "release": "release-it"
+    "release": "release-it",
+    "prepare": "yarn run build"
   },
   "devDependencies": {
     "@openapitools/openapi-generator-cli": "^1.0.18-4.3.1",
