@@ -1,7 +1,8 @@
 import axios, {AxiosResponse} from 'axios';
 import pkg from './package.json';
-import {Configuration, PaymentsApi} from './src';
+import {PaymentsApi} from './src';
 import {BASE_PATH} from './src/base';
+import crypto from 'crypto';
 
 export * from './src';
 
@@ -42,12 +43,32 @@ const errorHandler = (error: any) => {
 };
 
 instance.interceptors.response.use(responseHandler, errorHandler);
-instance.defaults.headers.common['User-Agent'] = `monei-node-sdk@${pkg.version}`;
+instance.defaults.headers.common['User-Agent'] = `MONEI/Node/${pkg.version}`;
 
 export class Monei {
+  private apiKey: string;
   payments: PaymentsApi;
 
-  constructor(apiKey: Configuration['apiKey']) {
+  constructor(apiKey: string) {
+    this.apiKey = apiKey;
     this.payments = new PaymentsApi({apiKey}, BASE_PATH, instance);
+  }
+
+  verifySignature(body: string, signature: string) {
+    const parts = signature.split(',').reduce<Record<string, string>>((result, part) => {
+      const [key, value] = part.split('=');
+      result[key] = value;
+      return result;
+    }, {});
+    const hmac = crypto
+      .createHmac('SHA256', this.apiKey)
+      .update(`${parts.t}.${body}`)
+      .digest('hex');
+
+    if (hmac !== parts.v1) {
+      throw new Error('Signature verification failed.');
+    }
+
+    return JSON.parse(body);
   }
 }
