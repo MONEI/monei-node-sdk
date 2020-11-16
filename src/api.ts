@@ -211,7 +211,7 @@ export interface CreatePaymentRequest {
      */
     paymentToken?: string;
     /**
-     *  A unique identifier within your system that adds security to the payment process. You need to pass the same session ID as the one used on the frontend to initialize MONEI Component (if you needed to). This is required if a payment token (not permanent) was already generated in the frontend.
+     * A unique identifier within your system that adds security to the payment process. You need to pass the same session ID as the one used on the frontend to initialize MONEI Component (if you needed to). This is required if a payment token (not permanent) was already generated in the frontend.
      * @type {string}
      * @memberof CreatePaymentRequest
      */
@@ -230,16 +230,22 @@ export interface CreatePaymentRequest {
     paymentMethod?: PaymentPaymentMethodInput;
     /**
      * 
-     * @type {PaymentAllowedPaymentMethods}
+     * @type {PaymentPaymentMethods}
      * @memberof CreatePaymentRequest
      */
-    allowedPaymentMethods?: PaymentAllowedPaymentMethods;
+    allowedPaymentMethods?: PaymentPaymentMethods;
     /**
      * 
      * @type {PaymentTransactionType}
      * @memberof CreatePaymentRequest
      */
     transactionType?: PaymentTransactionType;
+    /**
+     * 
+     * @type {PaymentRecurring}
+     * @memberof CreatePaymentRequest
+     */
+    recurring?: PaymentRecurring;
     /**
      * An arbitrary string attached to the payment. Often useful for displaying to users.
      * @type {string}
@@ -411,11 +417,11 @@ export interface Payment {
      */
     lastRefundAmount?: number;
     /**
-     * The reason of the last refund transaction.
-     * @type {string}
+     * 
+     * @type {PaymentLastRefundReason}
      * @memberof Payment
      */
-    lastRefundReason?: string;
+    lastRefundReason?: PaymentLastRefundReason;
     /**
      * 
      * @type {PaymentCancellationReason}
@@ -428,6 +434,12 @@ export interface Payment {
      * @memberof Payment
      */
     sessionDetails?: PaymentSessionDetails;
+    /**
+     * 
+     * @type {PaymentTraceDetails}
+     * @memberof Payment
+     */
+    traceDetails?: PaymentTraceDetails;
     /**
      * 
      * @type {PaymentNextAction}
@@ -446,13 +458,6 @@ export interface Payment {
      * @memberof Payment
      */
     updatedAt?: number;
-}
-/**
- * An array of allowed payment methods (used in hosted payment page). Must be enabled payment methods. Possible values:   - `card`   - `bizum`   - `applePay`   - `googlePay`
- * @export
- * @interface PaymentAllowedPaymentMethods
- */
-export interface PaymentAllowedPaymentMethods extends Array<string> {
 }
 /**
  * Billing information associated with the payment method at the time of the transaction.
@@ -528,6 +533,17 @@ export interface PaymentCustomer {
     phone?: string;
 }
 /**
+ * The reason of the last refund transaction.
+ * @export
+ * @enum {string}
+ */
+export enum PaymentLastRefundReason {
+    Duplicated = 'duplicated',
+    Fraudulent = 'fraudulent',
+    RequestedByCustomer = 'requested_by_customer'
+}
+
+/**
  * If present, this property tells you what actions you need to take in order for your customer to fulfill a payment using the provided source.
  * @export
  * @interface PaymentNextAction
@@ -570,54 +586,105 @@ export enum PaymentNextActionTypeEnum {
  */
 export interface PaymentPaymentMethod {
     /**
-     * Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
-     * @type {string}
-     * @memberof PaymentPaymentMethod
-     */
-    country?: string;
-    /**
-     * Card brand.
-     * @type {string}
-     * @memberof PaymentPaymentMethod
-     */
-    brand?: PaymentPaymentMethodBrandEnum;
-    /**
-     * Card type `debit` or `credit`.
-     * @type {string}
-     * @memberof PaymentPaymentMethod
-     */
-    type?: PaymentPaymentMethodTypeEnum;
-    /**
-     * Wether this transaction used 3D Secure authentication.
-     * @type {boolean}
-     * @memberof PaymentPaymentMethod
-     */
-    threeDSecure?: boolean;
-    /**
-     * The phone number used to pay with `bizum`.
-     * @type {string}
-     * @memberof PaymentPaymentMethod
-     */
-    phoneNumber?: string;
-    /**
-     * The last four digits of the card.
-     * @type {string}
-     * @memberof PaymentPaymentMethod
-     */
-    last4?: string;
-    /**
      * Payment method type.
      * @type {string}
      * @memberof PaymentPaymentMethod
      */
     method?: PaymentPaymentMethodMethodEnum;
+    /**
+     * 
+     * @type {PaymentPaymentMethodCard}
+     * @memberof PaymentPaymentMethod
+     */
+    card?: PaymentPaymentMethodCard;
+    /**
+     * 
+     * @type {PaymentPaymentMethodBizum}
+     * @memberof PaymentPaymentMethod
+     */
+    bizum?: PaymentPaymentMethodBizum;
+    /**
+     * 
+     * @type {PaymentPaymentMethodPaypal}
+     * @memberof PaymentPaymentMethod
+     */
+    paypal?: PaymentPaymentMethodPaypal;
 }
 
 /**
     * @export
     * @enum {string}
     */
-export enum PaymentPaymentMethodBrandEnum {
+export enum PaymentPaymentMethodMethodEnum {
+    Card = 'card',
+    Bizum = 'bizum',
+    GooglePay = 'googlePay',
+    ApplePay = 'applePay',
+    Paypal = 'paypal'
+}
+
+/**
+ * Details about the Bizum account used as payment method at the time of the transaction.
+ * @export
+ * @interface PaymentPaymentMethodBizum
+ */
+export interface PaymentPaymentMethodBizum {
+    /**
+     * The phone number used to pay with `bizum`.
+     * @type {string}
+     * @memberof PaymentPaymentMethodBizum
+     */
+    phoneNumber?: string;
+}
+/**
+ * Details about the card used as payment method at the time of the transaction.
+ * @export
+ * @interface PaymentPaymentMethodCard
+ */
+export interface PaymentPaymentMethodCard {
+    /**
+     * Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
+     * @type {string}
+     * @memberof PaymentPaymentMethodCard
+     */
+    country?: string;
+    /**
+     * Card brand.
+     * @type {string}
+     * @memberof PaymentPaymentMethodCard
+     */
+    brand?: PaymentPaymentMethodCardBrandEnum;
+    /**
+     * Card type `debit` or `credit`.
+     * @type {string}
+     * @memberof PaymentPaymentMethodCard
+     */
+    type?: PaymentPaymentMethodCardTypeEnum;
+    /**
+     * Wether this transaction used 3D Secure authentication.
+     * @type {boolean}
+     * @memberof PaymentPaymentMethodCard
+     */
+    threeDSecure?: boolean;
+    /**
+     * The protocol version of the 3DS challenge.
+     * @type {string}
+     * @memberof PaymentPaymentMethodCard
+     */
+    threeDSecureVersion?: string;
+    /**
+     * The last four digits of the card.
+     * @type {string}
+     * @memberof PaymentPaymentMethodCard
+     */
+    last4?: string;
+}
+
+/**
+    * @export
+    * @enum {string}
+    */
+export enum PaymentPaymentMethodCardBrandEnum {
     Visa = 'visa',
     Mastercard = 'mastercard',
     Diners = 'diners',
@@ -630,19 +697,9 @@ export enum PaymentPaymentMethodBrandEnum {
     * @export
     * @enum {string}
     */
-export enum PaymentPaymentMethodTypeEnum {
+export enum PaymentPaymentMethodCardTypeEnum {
     Debit = 'debit',
     Credit = 'credit'
-}
-/**
-    * @export
-    * @enum {string}
-    */
-export enum PaymentPaymentMethodMethodEnum {
-    Card = 'card',
-    Bizum = 'bizum',
-    GooglePay = 'googlePay',
-    ApplePay = 'applePay'
 }
 
 /**
@@ -657,6 +714,45 @@ export interface PaymentPaymentMethodInput {
      * @memberof PaymentPaymentMethodInput
      */
     card?: Card;
+}
+/**
+ * Details from Paypal order used as payment method at the time of the transaction.
+ * @export
+ * @interface PaymentPaymentMethodPaypal
+ */
+export interface PaymentPaymentMethodPaypal {
+    /**
+     * The Paypal\'s order ID.
+     * @type {string}
+     * @memberof PaymentPaymentMethodPaypal
+     */
+    orderId?: string;
+}
+/**
+ * An array of allowed payment methods (used in hosted payment page). Must be enabled payment methods. Possible values:   - `card`   - `bizum`   - `applePay`   - `googlePay`   - `paypal`
+ * @export
+ * @interface PaymentPaymentMethods
+ */
+export interface PaymentPaymentMethods extends Array<string> {
+}
+/**
+ * Specific configurations for recurring payments. Will only be used when `transactionType` is `RECURRING`.
+ * @export
+ * @interface PaymentRecurring
+ */
+export interface PaymentRecurring {
+    /**
+     * Date after which no further recurring payments will be performed. Must be formatted as `YYYYMMDD`.
+     * @type {string}
+     * @memberof PaymentRecurring
+     */
+    expiry?: string;
+    /**
+     * The minimum number of **days** between the different recurring payments.
+     * @type {number}
+     * @memberof PaymentRecurring
+     */
+    frequency?: number;
 }
 /**
  * The reason for refunding the Payment.
@@ -676,7 +772,7 @@ export enum PaymentRefundReason {
  */
 export interface PaymentSessionDetails {
     /**
-     * The IP address where the payment originated.
+     * The IP address where the operation originated.
      * @type {string}
      * @memberof PaymentSessionDetails
      */
@@ -729,6 +825,18 @@ export interface PaymentSessionDetails {
      * @memberof PaymentSessionDetails
      */
     osVersion?: string;
+    /**
+     * The source component from where the operation was generated (mostly for our SDK\'s).
+     * @type {string}
+     * @memberof PaymentSessionDetails
+     */
+    source?: string;
+    /**
+     * The source component version from where the operation was generated (mostly for our SDK\'s).
+     * @type {string}
+     * @memberof PaymentSessionDetails
+     */
+    sourceVersion?: string;
     /**
      * Full user agent string of the browser session.
      * @type {string}
@@ -809,15 +917,156 @@ export enum PaymentStatus {
 }
 
 /**
- * Controls when the funds will be captured.   - `SALE` - **Default**. MONEI automatically captures funds     when the customer authorizes the payment.   - `AUTH` - Place a hold on the funds when the customer authorizes     the payment, but don’t capture the funds until later.
+ * Information related to the browsing session of the user who initiated the payment.
+ * @export
+ * @interface PaymentTraceDetails
+ */
+export interface PaymentTraceDetails {
+    /**
+     * The IP address where the operation originated.
+     * @type {string}
+     * @memberof PaymentTraceDetails
+     */
+    ip?: string;
+    /**
+     * Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2)).
+     * @type {string}
+     * @memberof PaymentTraceDetails
+     */
+    countryCode?: string;
+    /**
+     * Two-letter language code ([ISO 639-1](https://en.wikipedia.org/wiki/ISO_639-1)).
+     * @type {string}
+     * @memberof PaymentTraceDetails
+     */
+    lang?: string;
+    /**
+     * Device type, could be `desktop`, `mobile`, `smartTV`, `tablet`.
+     * @type {string}
+     * @memberof PaymentTraceDetails
+     */
+    deviceType?: string;
+    /**
+     * Information about the device used for the browser session (e.g., `iPhone`).
+     * @type {string}
+     * @memberof PaymentTraceDetails
+     */
+    deviceModel?: string;
+    /**
+     * The browser used in this browser session (e.g., `Mobile Safari`).
+     * @type {string}
+     * @memberof PaymentTraceDetails
+     */
+    browser?: string;
+    /**
+     * The version for the browser session (e.g., `13.1.1`).
+     * @type {string}
+     * @memberof PaymentTraceDetails
+     */
+    browserVersion?: string;
+    /**
+     * Operation system (e.g., `iOS`).
+     * @type {string}
+     * @memberof PaymentTraceDetails
+     */
+    os?: string;
+    /**
+     * Operation system version (e.g., `13.5.1`).
+     * @type {string}
+     * @memberof PaymentTraceDetails
+     */
+    osVersion?: string;
+    /**
+     * The source component from where the operation was generated (mostly for our SDK\'s).
+     * @type {string}
+     * @memberof PaymentTraceDetails
+     */
+    source?: string;
+    /**
+     * The source component version from where the operation was generated (mostly for our SDK\'s).
+     * @type {string}
+     * @memberof PaymentTraceDetails
+     */
+    sourceVersion?: string;
+    /**
+     * Full user agent string of the browser session.
+     * @type {string}
+     * @memberof PaymentTraceDetails
+     */
+    userAgent?: string;
+    /**
+     * The ID of the user that started the operation.
+     * @type {string}
+     * @memberof PaymentTraceDetails
+     */
+    userId?: string;
+    /**
+     * The email of the user that started the operation.
+     * @type {string}
+     * @memberof PaymentTraceDetails
+     */
+    userEmail?: string;
+}
+/**
+ * Controls when the funds will be captured.   - `SALE` - **Default**. MONEI automatically captures funds     when the customer authorizes the payment.   - `AUTH` - Place a hold on the funds when the customer authorizes     the payment, but don’t capture the funds until later.   - `RECURRING` - To specify the start of a recurring payment (or subscription).     Specific configurations can be set in the `recurring` parameter.
  * @export
  * @enum {string}
  */
 export enum PaymentTransactionType {
     SALE = 'SALE',
-    AUTH = 'AUTH'
+    AUTH = 'AUTH',
+    RECURRING = 'RECURRING'
 }
 
+/**
+ * 
+ * @export
+ * @interface RecurringPaymentRequest
+ */
+export interface RecurringPaymentRequest {
+    /**
+     * An order ID from your system. A unique identifier that can be used to reconcile the payment with your internal system.
+     * @type {string}
+     * @memberof RecurringPaymentRequest
+     */
+    orderId: string;
+    /**
+     * The amount to collected by this subsequent payment. A positive integer representing how much to charge in the smallest currency unit (e.g., 100 cents to charge 1.00 USD).
+     * @type {number}
+     * @memberof RecurringPaymentRequest
+     */
+    amount?: number;
+    /**
+     * An arbitrary string attached to the payment. Often useful for displaying to users.
+     * @type {string}
+     * @memberof RecurringPaymentRequest
+     */
+    description?: string;
+    /**
+     * 
+     * @type {PaymentCustomer}
+     * @memberof RecurringPaymentRequest
+     */
+    customer?: PaymentCustomer;
+    /**
+     * 
+     * @type {PaymentBillingDetails}
+     * @memberof RecurringPaymentRequest
+     */
+    billingDetails?: PaymentBillingDetails;
+    /**
+     * 
+     * @type {PaymentShippingDetails}
+     * @memberof RecurringPaymentRequest
+     */
+    shippingDetails?: PaymentShippingDetails;
+    /**
+     * The URL to which a payment result should be sent asynchronously.
+     * @type {string}
+     * @memberof RecurringPaymentRequest
+     */
+    callbackUrl?: string;
+}
 /**
  * 
  * @export
@@ -1083,6 +1332,55 @@ export const PaymentsApiAxiosParamCreator = function (configuration?: Configurat
             };
         },
         /**
+         * Creates a subsequent operation for a recurring payment, previously created. The specified amount will be charged to the same credit or debit card of the originally payment. <br/><br/> If amount is not specified, it will default to the same amount from the original payment.
+         * @summary Recurring Payment
+         * @param {string} id The payment ID
+         * @param {RecurringPaymentRequest} [recurringPaymentRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        recurring: async (id: string, recurringPaymentRequest?: RecurringPaymentRequest, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            if (id === null || id === undefined) {
+                throw new RequiredError('id','Required parameter id was null or undefined when calling recurring.');
+            }
+            const localVarPath = `/payments/{id}/recurring`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication APIKey required
+            if (configuration && configuration.apiKey) {
+                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
+                    ? await configuration.apiKey("Authorization")
+                    : await configuration.apiKey;
+                localVarHeaderParameter["Authorization"] = localVarApiKeyValue;
+            }
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            localVarUrlObj.query = {...localVarUrlObj.query, ...localVarQueryParameter, ...options.query};
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof recurringPaymentRequest !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(recurringPaymentRequest !== undefined ? recurringPaymentRequest : {}) : (recurringPaymentRequest || "");
+
+            return {
+                url: globalImportUrl.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * Refund a payment that has previously been created but not yet refunded. Funds will be refunded to the credit or debit card that was originally charged. <br/><br/> You can optionally refund only part of a payment. You can do so multiple times, until the entire payment has been refunded. <br/><br/> Once entirely refunded, a payment can’t be refunded again. This method will throw an error when called on an already-refunded payment, or when trying to refund more money than is left on a payment.
          * @summary Refund Payment
          * @param {string} id The payment ID
@@ -1214,6 +1512,21 @@ export const PaymentsApiFp = function(configuration?: Configuration) {
             };
         },
         /**
+         * Creates a subsequent operation for a recurring payment, previously created. The specified amount will be charged to the same credit or debit card of the originally payment. <br/><br/> If amount is not specified, it will default to the same amount from the original payment.
+         * @summary Recurring Payment
+         * @param {string} id The payment ID
+         * @param {RecurringPaymentRequest} [recurringPaymentRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async recurring(id: string, recurringPaymentRequest?: RecurringPaymentRequest, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Payment>> {
+            const localVarAxiosArgs = await PaymentsApiAxiosParamCreator(configuration).recurring(id, recurringPaymentRequest, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
          * Refund a payment that has previously been created but not yet refunded. Funds will be refunded to the credit or debit card that was originally charged. <br/><br/> You can optionally refund only part of a payment. You can do so multiple times, until the entire payment has been refunded. <br/><br/> Once entirely refunded, a payment can’t be refunded again. This method will throw an error when called on an already-refunded payment, or when trying to refund more money than is left on a payment.
          * @summary Refund Payment
          * @param {string} id The payment ID
@@ -1289,6 +1602,17 @@ export const PaymentsApiFactory = function (configuration?: Configuration, baseP
          */
         get(id: string, options?: any): AxiosPromise<Payment> {
             return PaymentsApiFp(configuration).get(id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Creates a subsequent operation for a recurring payment, previously created. The specified amount will be charged to the same credit or debit card of the originally payment. <br/><br/> If amount is not specified, it will default to the same amount from the original payment.
+         * @summary Recurring Payment
+         * @param {string} id The payment ID
+         * @param {RecurringPaymentRequest} [recurringPaymentRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        recurring(id: string, recurringPaymentRequest?: RecurringPaymentRequest, options?: any): AxiosPromise<Payment> {
+            return PaymentsApiFp(configuration).recurring(id, recurringPaymentRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * Refund a payment that has previously been created but not yet refunded. Funds will be refunded to the credit or debit card that was originally charged. <br/><br/> You can optionally refund only part of a payment. You can do so multiple times, until the entire payment has been refunded. <br/><br/> Once entirely refunded, a payment can’t be refunded again. This method will throw an error when called on an already-refunded payment, or when trying to refund more money than is left on a payment.
@@ -1372,6 +1696,19 @@ export class PaymentsApi extends BaseAPI {
      */
     public get(id: string, options?: any) {
         return PaymentsApiFp(this.configuration).get(id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Creates a subsequent operation for a recurring payment, previously created. The specified amount will be charged to the same credit or debit card of the originally payment. <br/><br/> If amount is not specified, it will default to the same amount from the original payment.
+     * @summary Recurring Payment
+     * @param {string} id The payment ID
+     * @param {RecurringPaymentRequest} [recurringPaymentRequest] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof PaymentsApi
+     */
+    public recurring(id: string, recurringPaymentRequest?: RecurringPaymentRequest, options?: any) {
+        return PaymentsApiFp(this.configuration).recurring(id, recurringPaymentRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
