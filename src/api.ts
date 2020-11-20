@@ -242,10 +242,10 @@ export interface CreatePaymentRequest {
     transactionType?: PaymentTransactionType;
     /**
      * 
-     * @type {PaymentRecurring}
+     * @type {PaymentSequence}
      * @memberof CreatePaymentRequest
      */
-    recurring?: PaymentRecurring;
+    sequence?: PaymentSequence;
     /**
      * An arbitrary string attached to the payment. Often useful for displaying to users.
      * @type {string}
@@ -736,25 +736,6 @@ export interface PaymentPaymentMethodPaypal {
 export interface PaymentPaymentMethods extends Array<string> {
 }
 /**
- * Specific configurations for recurring payments. Will only be used when `transactionType` is `RECURRING`.
- * @export
- * @interface PaymentRecurring
- */
-export interface PaymentRecurring {
-    /**
-     * Date after which no further recurring payments will be performed. Must be formatted as `YYYYMMDD`.
-     * @type {string}
-     * @memberof PaymentRecurring
-     */
-    expiry?: string;
-    /**
-     * The minimum number of **days** between the different recurring payments.
-     * @type {number}
-     * @memberof PaymentRecurring
-     */
-    frequency?: number;
-}
-/**
  * The reason for refunding the Payment.
  * @export
  * @enum {string}
@@ -765,6 +746,53 @@ export enum PaymentRefundReason {
     RequestedByCustomer = 'requested_by_customer'
 }
 
+/**
+ * This field needs to be sent in order to mark the beginning of a sequence of payments (recurring/subscriptions, installments, and so). Specific configurations can be set in the inside properties (`recurring`).
+ * @export
+ * @interface PaymentSequence
+ */
+export interface PaymentSequence {
+    /**
+     * 
+     * @type {string}
+     * @memberof PaymentSequence
+     */
+    type: PaymentSequenceTypeEnum;
+    /**
+     * 
+     * @type {PaymentSequenceRecurring}
+     * @memberof PaymentSequence
+     */
+    recurring?: PaymentSequenceRecurring;
+}
+
+/**
+    * @export
+    * @enum {string}
+    */
+export enum PaymentSequenceTypeEnum {
+    Recurring = 'recurring'
+}
+
+/**
+ * Specific configurations for recurring payments. Will only be used when `sequence`.`type` is `recurring`.
+ * @export
+ * @interface PaymentSequenceRecurring
+ */
+export interface PaymentSequenceRecurring {
+    /**
+     * Date after which no further recurring payments will be performed. Must be formatted as `YYYYMMDD`.
+     * @type {string}
+     * @memberof PaymentSequenceRecurring
+     */
+    expiry?: string;
+    /**
+     * The minimum number of **days** between the different recurring payments.
+     * @type {number}
+     * @memberof PaymentSequenceRecurring
+     */
+    frequency?: number;
+}
 /**
  * Information related to the browsing session of the user who initiated the payment.
  * @export
@@ -1008,14 +1036,13 @@ export interface PaymentTraceDetails {
     userEmail?: string;
 }
 /**
- * Controls when the funds will be captured.   - `SALE` - **Default**. MONEI automatically captures funds     when the customer authorizes the payment.   - `AUTH` - Place a hold on the funds when the customer authorizes     the payment, but don’t capture the funds until later.   - `RECURRING` - To specify the start of a recurring payment (or subscription).     Specific configurations can be set in the `recurring` parameter.
+ * Controls when the funds will be captured.   - `SALE` - **Default**. MONEI automatically captures funds     when the customer authorizes the payment.   - `AUTH` - Place a hold on the funds when the customer authorizes     the payment, but don’t capture the funds until later.
  * @export
  * @enum {string}
  */
 export enum PaymentTransactionType {
     SALE = 'SALE',
-    AUTH = 'AUTH',
-    RECURRING = 'RECURRING'
+    AUTH = 'AUTH'
 }
 
 /**
@@ -1036,6 +1063,12 @@ export interface RecurringPaymentRequest {
      * @memberof RecurringPaymentRequest
      */
     amount?: number;
+    /**
+     * Same as the `transactionType` parameter from [create payment](https://docs.monei.net/api/#operation/payments_create). If not sent, it will default in the same transaction type used in the initial payment.
+     * @type {PaymentTransactionType}
+     * @memberof RecurringPaymentRequest
+     */
+    transactionType?: PaymentTransactionType;
     /**
      * An arbitrary string attached to the payment. Often useful for displaying to users.
      * @type {string}
@@ -1334,18 +1367,18 @@ export const PaymentsApiAxiosParamCreator = function (configuration?: Configurat
         /**
          * Creates a subsequent operation for a recurring payment, previously created. The specified amount will be charged to the same credit or debit card of the originally payment. <br/><br/> If amount is not specified, it will default to the same amount from the original payment.
          * @summary Recurring Payment
-         * @param {string} id The payment ID
+         * @param {string} sequenceId The sequence ID
          * @param {RecurringPaymentRequest} [recurringPaymentRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        recurring: async (id: string, recurringPaymentRequest?: RecurringPaymentRequest, options: any = {}): Promise<RequestArgs> => {
-            // verify required parameter 'id' is not null or undefined
-            if (id === null || id === undefined) {
-                throw new RequiredError('id','Required parameter id was null or undefined when calling recurring.');
+        recurring: async (sequenceId: string, recurringPaymentRequest?: RecurringPaymentRequest, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'sequenceId' is not null or undefined
+            if (sequenceId === null || sequenceId === undefined) {
+                throw new RequiredError('sequenceId','Required parameter sequenceId was null or undefined when calling recurring.');
             }
-            const localVarPath = `/payments/{id}/recurring`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            const localVarPath = `/payments/{sequenceId}/recurring`
+                .replace(`{${"sequenceId"}}`, encodeURIComponent(String(sequenceId)));
             const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
             let baseOptions;
             if (configuration) {
@@ -1514,13 +1547,13 @@ export const PaymentsApiFp = function(configuration?: Configuration) {
         /**
          * Creates a subsequent operation for a recurring payment, previously created. The specified amount will be charged to the same credit or debit card of the originally payment. <br/><br/> If amount is not specified, it will default to the same amount from the original payment.
          * @summary Recurring Payment
-         * @param {string} id The payment ID
+         * @param {string} sequenceId The sequence ID
          * @param {RecurringPaymentRequest} [recurringPaymentRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async recurring(id: string, recurringPaymentRequest?: RecurringPaymentRequest, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Payment>> {
-            const localVarAxiosArgs = await PaymentsApiAxiosParamCreator(configuration).recurring(id, recurringPaymentRequest, options);
+        async recurring(sequenceId: string, recurringPaymentRequest?: RecurringPaymentRequest, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Payment>> {
+            const localVarAxiosArgs = await PaymentsApiAxiosParamCreator(configuration).recurring(sequenceId, recurringPaymentRequest, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -1606,13 +1639,13 @@ export const PaymentsApiFactory = function (configuration?: Configuration, baseP
         /**
          * Creates a subsequent operation for a recurring payment, previously created. The specified amount will be charged to the same credit or debit card of the originally payment. <br/><br/> If amount is not specified, it will default to the same amount from the original payment.
          * @summary Recurring Payment
-         * @param {string} id The payment ID
+         * @param {string} sequenceId The sequence ID
          * @param {RecurringPaymentRequest} [recurringPaymentRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        recurring(id: string, recurringPaymentRequest?: RecurringPaymentRequest, options?: any): AxiosPromise<Payment> {
-            return PaymentsApiFp(configuration).recurring(id, recurringPaymentRequest, options).then((request) => request(axios, basePath));
+        recurring(sequenceId: string, recurringPaymentRequest?: RecurringPaymentRequest, options?: any): AxiosPromise<Payment> {
+            return PaymentsApiFp(configuration).recurring(sequenceId, recurringPaymentRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * Refund a payment that has previously been created but not yet refunded. Funds will be refunded to the credit or debit card that was originally charged. <br/><br/> You can optionally refund only part of a payment. You can do so multiple times, until the entire payment has been refunded. <br/><br/> Once entirely refunded, a payment can’t be refunded again. This method will throw an error when called on an already-refunded payment, or when trying to refund more money than is left on a payment.
@@ -1701,14 +1734,14 @@ export class PaymentsApi extends BaseAPI {
     /**
      * Creates a subsequent operation for a recurring payment, previously created. The specified amount will be charged to the same credit or debit card of the originally payment. <br/><br/> If amount is not specified, it will default to the same amount from the original payment.
      * @summary Recurring Payment
-     * @param {string} id The payment ID
+     * @param {string} sequenceId The sequence ID
      * @param {RecurringPaymentRequest} [recurringPaymentRequest] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof PaymentsApi
      */
-    public recurring(id: string, recurringPaymentRequest?: RecurringPaymentRequest, options?: any) {
-        return PaymentsApiFp(this.configuration).recurring(id, recurringPaymentRequest, options).then((request) => request(this.axios, this.basePath));
+    public recurring(sequenceId: string, recurringPaymentRequest?: RecurringPaymentRequest, options?: any) {
+        return PaymentsApiFp(this.configuration).recurring(sequenceId, recurringPaymentRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
