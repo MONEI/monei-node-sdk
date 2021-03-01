@@ -17,7 +17,7 @@ import { Configuration } from "./configuration";
 // @ts-ignore
 import globalAxios, { AxiosPromise, AxiosInstance } from '../axios';
 
-export const BASE_PATH = "http://api.monei.net/v1".replace(/\/+$/, "");
+export const BASE_PATH = "https://api.monei.com/v1".replace(/\/+$/, "");
 
 /**
  *
