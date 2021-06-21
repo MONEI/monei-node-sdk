@@ -425,18 +425,6 @@ export interface Payment {
      */
     customer?: PaymentCustomer;
     /**
-     * A permanent token represents a payment method used in the payment. Pass `generatePaymentToken: true` when you creating a payment to generate it. You can pass it as `paymentToken` parameter to create other payments with the same payment method. This token does not expire, and should only be used server-side.
-     * @type {string}
-     * @memberof Payment
-     */
-    paymentToken?: string;
-    /**
-     * 
-     * @type {PaymentPaymentMethod}
-     * @memberof Payment
-     */
-    paymentMethod?: PaymentPaymentMethod;
-    /**
      * 
      * @type {PaymentShop}
      * @memberof Payment
@@ -490,6 +478,30 @@ export interface Payment {
      * @memberof Payment
      */
     traceDetails?: PaymentTraceDetails;
+    /**
+     * A permanent token represents a payment method used in the payment. Pass `generatePaymentToken: true` when you creating a payment to generate it. You can pass it as `paymentToken` parameter to create other payments with the same payment method. This token does not expire, and should only be used server-side.
+     * @type {string}
+     * @memberof Payment
+     */
+    paymentToken?: string;
+    /**
+     * 
+     * @type {PaymentPaymentMethod}
+     * @memberof Payment
+     */
+    paymentMethod?: PaymentPaymentMethod;
+    /**
+     * 
+     * @type {PaymentSequence}
+     * @memberof Payment
+     */
+    sequence?: PaymentSequence;
+    /**
+     * A permanent identifier that refers to the initial payment of a sequence of payments. This value needs to be sent in the path for `RECURRING` payments.
+     * @type {string}
+     * @memberof Payment
+     */
+    sequenceId?: string;
     /**
      * 
      * @type {PaymentNextAction}
@@ -724,6 +736,12 @@ export interface PaymentPaymentMethodCard {
      * @memberof PaymentPaymentMethodCard
      */
     threeDSecureVersion?: string;
+    /**
+     * Time at which the card will expire. Measured in seconds since the Unix epoch.
+     * @type {number}
+     * @memberof PaymentPaymentMethodCard
+     */
+    expiration?: number;
     /**
      * The last four digits of the card.
      * @type {string}
