@@ -1,7 +1,7 @@
 {
   "name": "@monei-js/node-sdk",
   "description": "Node.js SDK for MONEI Digital Payment Gateway",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "homepage": "https://monei.net",
   "author": "MONEI <support@monei.net> (https://monei.net)",
   "license": "MIT",
