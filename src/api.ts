@@ -297,6 +297,12 @@ export interface CreatePaymentRequest {
      */
     sequence?: PaymentSequence;
     /**
+     * A unique identifier of the Point of Sale. If specified the payment is attached to this Point of Sale. If there is a QR code attached to the same Point of Sale, this payment will be available by scanning the QR code.
+     * @type {string}
+     * @memberof CreatePaymentRequest
+     */
+    pointOfSaleId?: string;
+    /**
      * An arbitrary string attached to the payment. Often useful for displaying to users.
      * @type {string}
      * @memberof CreatePaymentRequest
@@ -502,6 +508,12 @@ export interface Payment {
      * @memberof Payment
      */
     sequenceId?: string;
+    /**
+     * A unique identifier of the Point of Sale. If specified the payment is attached to this Point of Sale. If there is a QR code attached to the same Point of Sale, this payment will be available by scanning the QR code.
+     * @type {string}
+     * @memberof Payment
+     */
+    pointOfSaleId?: string;
     /**
      * 
      * @type {PaymentNextAction}
