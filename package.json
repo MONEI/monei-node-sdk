@@ -2,11 +2,11 @@
   "name": "@monei-js/node-sdk",
   "description": "Node.js SDK for MONEI Digital Payment Gateway",
   "version": "1.0.14",
-  "homepage": "https://monei.net",
-  "author": "MONEI <support@monei.net> (https://monei.net)",
+  "homepage": "https://monei.com",
+  "author": "MONEI <support@monei.com> (https://monei.com)",
   "license": "MIT",
   "contributors": [
-    "Dmitriy Nevzorov <dmitriy.nevzorov@microapps.com>"
+    "Dmitriy Nevzorov <dn@monei.com>"
   ],
   "repository": {
     "type": "git",
