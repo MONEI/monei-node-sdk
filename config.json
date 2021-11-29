@@ -1,5 +1,4 @@
 {
   "supportsES6": true,
-  "generateAliasAsModel": true,
-  "artifactVersion": "1.0.0"
+  "generateAliasAsModel": true
 }
