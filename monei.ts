@@ -1,6 +1,6 @@
 import axios, {AxiosResponse} from 'axios';
 import pkg from './package.json';
-import {PaymentsApi} from './src';
+import {ApplePayDomainApi, PaymentsApi, SubscriptionsApi} from './src';
 import {BASE_PATH} from './src/base';
 import crypto from 'crypto';
 
@@ -48,10 +48,14 @@ instance.defaults.headers.common['User-Agent'] = `MONEI/Node/${pkg.version}`;
 export class Monei {
   private apiKey: string;
   payments: PaymentsApi;
+  subscriptions: SubscriptionsApi;
+  applePayDomain: ApplePayDomainApi;
 
   constructor(apiKey: string) {
     this.apiKey = apiKey;
     this.payments = new PaymentsApi({apiKey}, BASE_PATH, instance);
+    this.subscriptions = new SubscriptionsApi({apiKey}, BASE_PATH, instance);
+    this.applePayDomain = new ApplePayDomainApi({apiKey}, BASE_PATH, instance);
   }
 
   verifySignature(body: string, signature: string) {
