@@ -1,25 +1,71 @@
 {
-  "name": "monei-php-sdk",
-  "version": "1.0.0",
-  "description": "MONEI PHP SDK",
-  "author": "monei",
-  "scripts": {
-    "build": "openapi-generator generate -i https://js.monei.com/api/v1/openapi.json -g php --remove-operation-id-prefix -c ./config.json -o ../",
-    "build:local": "openapi-generator generate -i ./openapi.json -g php --remove-operation-id-prefix -c ./config.json -o ../",
-    "release": "release-it"
-  },
+  "name": "@monei-js/node-sdk",
+  "description": "Node.js SDK for MONEI Digital Payment Gateway",
+  "version": "1.0.16",
+  "homepage": "https://monei.com",
+  "author": "MONEI <support@monei.com> (https://monei.com)",
   "license": "MIT",
-  "peerDependencies": {
-    "axios": "^0.24.0"
+  "contributors": [
+    "Dmitriy Nevzorov <dn@monei.com>"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MONEI/monei-node-sdk"
+  },
+  "keywords": [
+    "monei",
+    "payment gateway",
+    "payment processing",
+    "credit cards",
+    "api"
+  ],
+  "source": "./monei.ts",
+  "main": "dist/monei.js",
+  "module": "dist/monei.module.js",
+  "types": "dist/monei.d.ts",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "scripts": {
+    "generate": "openapi-generator generate -i https://js.monei.com/api/v1/openapi.json -g typescript-axios --remove-operation-id-prefix -c ./config.json -o ./src",
+    "compile": "microbundle -f es,cjs --target node --strict",
+    "dev": "microbundle watch  -f es,cjs --target node --strict",
+    "build": "yarn generate && yarn replace && yarn compile",
+    "replace": "node replace.js",
+    "release": "release-it",
+    "prepare": "yarn run build",
+    "test": "jest"
   },
   "devDependencies": {
-    "@openapitools/openapi-generator-cli": "1.0.18-4.3.1",
-    "@release-it/bumper": "^2.0.0",
-    "release-it": "^14.0.3"
+    "@openapitools/openapi-generator-cli": "^1.0.18-4.3.1",
+    "@types/node": "^14.11.2",
+    "dotenv": "^8.2.0",
+    "jest": "^26.5.3",
+    "microbundle": "^0.12.3",
+    "prettier": "^2.1.2",
+    "release-it": "^14.0.3",
+    "replace-in-file": "^6.1.0",
+    "ts-jest": "^26.4.1"
+  },
+  "dependencies": {
+    "axios": "^0.21.1"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "ts",
+      "js"
+    ],
+    "transform": {
+      "\\.ts$": "ts-jest"
+    },
+    "testMatch": [
+      "**/*.test.ts"
+    ]
   },
   "release-it": {
     "git": {
-      "tagName": "${version}",
+      "tagName": "v${version}",
       "commitMessage": "chore: release v${version}"
     },
     "github": {
@@ -29,18 +75,9 @@
       "publish": true
     },
     "hooks": {
-      "after:bump": "yarn run build && git add -A"
-    },
-    "plugins": {
-      "@release-it/bumper": {
-        "out": [
-          {
-            "file": "config.json",
-            "path": "artifactVersion"
-          },
-          "../lib/MoneiClient.php"
-        ]
-      }
+      "before:init": [
+        "yarn test"
+      ]
     }
   }
 }
