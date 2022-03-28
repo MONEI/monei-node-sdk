@@ -371,6 +371,12 @@ export interface CreatePaymentRequest {
      */
     subscriptionId?: string;
     /**
+     * If set to `true`, the new payment will be automatically created when customer visits the payment link of the previously failed payment. (set this value to `true` to create \"Pay By Link\" payments).
+     * @type {boolean}
+     * @memberof CreatePaymentRequest
+     */
+    autoRecover?: boolean;
+    /**
      * An arbitrary string attached to the payment. Often useful for displaying to users. 
      * @type {string}
      * @memberof CreatePaymentRequest
