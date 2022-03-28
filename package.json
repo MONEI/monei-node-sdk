@@ -29,6 +29,7 @@
   },
   "scripts": {
     "generate": "openapi-generator generate -i https://js.monei.com/api/v1/openapi.json -g typescript-axios --remove-operation-id-prefix -c ./config.json -o ./src",
+    "generate:local": "openapi-generator generate -i ./openapi.json -g typescript-axios --remove-operation-id-prefix -c ./config.json -o ./src",
     "compile": "microbundle -f es,cjs --target node --strict",
     "dev": "microbundle watch  -f es,cjs --target node --strict",
     "build": "yarn generate && yarn replace && yarn compile",

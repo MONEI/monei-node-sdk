@@ -297,13 +297,13 @@ export interface CreatePaymentRequest {
      * @type {string}
      * @memberof CreatePaymentRequest
      */
-    callbackUrl: string;
+    callbackUrl?: string;
     /**
      * The URL the customer will be directed to after transaction completed (successful or failed - except if `failUrl` is provided). 
      * @type {string}
      * @memberof CreatePaymentRequest
      */
-    completeUrl: string;
+    completeUrl?: string;
     /**
      * The URL the customer will be directed to after transaction has failed, instead of `completeUrl` (used in hosted payment page). This allows to provide two different URLs for successful and failed payments. 
      * @type {string}
@@ -371,7 +371,7 @@ export interface CreatePaymentRequest {
      */
     subscriptionId?: string;
     /**
-     * If set to `true`, the new payment will be automatically created when customer visits the payment link of the previously failed payment. (set this value to `true` to create \"Pay By Link\" payments).
+     * If set to `true`, the new payment will be automatically created when customer visits the payment link of the previously failed payment. Is automatically set to `true` if `completeUrl` is not provided.(set this value to `true` to create \"Pay By Link\" payments).
      * @type {boolean}
      * @memberof CreatePaymentRequest
      */
@@ -1482,6 +1482,66 @@ export interface RegisterDomainRequest {
 /**
  * 
  * @export
+ * @interface SendPaymentLinkRequest
+ */
+export interface SendPaymentLinkRequest {
+    /**
+     * The customer will receive payment link on this email address.
+     * @type {string}
+     * @memberof SendPaymentLinkRequest
+     */
+    customerEmail?: string;
+    /**
+     * The language of the email.
+     * @type {string}
+     * @memberof SendPaymentLinkRequest
+     */
+    language?: SendPaymentLinkRequestLanguageEnum;
+}
+
+/**
+    * @export
+    * @enum {string}
+    */
+export enum SendPaymentLinkRequestLanguageEnum {
+    En = 'en',
+    Es = 'es',
+    Ca = 'ca'
+}
+
+/**
+ * 
+ * @export
+ * @interface SendPaymentReceiptRequest
+ */
+export interface SendPaymentReceiptRequest {
+    /**
+     * The customer will receive payment receipt on this email address.
+     * @type {string}
+     * @memberof SendPaymentReceiptRequest
+     */
+    customerEmail?: string;
+    /**
+     * The language of the email.
+     * @type {string}
+     * @memberof SendPaymentReceiptRequest
+     */
+    language?: SendPaymentReceiptRequestLanguageEnum;
+}
+
+/**
+    * @export
+    * @enum {string}
+    */
+export enum SendPaymentReceiptRequestLanguageEnum {
+    En = 'en',
+    Es = 'es',
+    Ca = 'ca'
+}
+
+/**
+ * 
+ * @export
  * @interface Subscription
  */
 export interface Subscription {
@@ -2366,6 +2426,104 @@ export const PaymentsApiAxiosParamCreator = function (configuration?: Configurat
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * Sends a payment link to the customer via email. 
+         * @summary Send Payment Link
+         * @param {string} id The payment ID
+         * @param {SendPaymentLinkRequest} [sendPaymentLinkRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        sendLink: async (id: string, sendPaymentLinkRequest?: SendPaymentLinkRequest, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            if (id === null || id === undefined) {
+                throw new RequiredError('id','Required parameter id was null or undefined when calling sendLink.');
+            }
+            const localVarPath = `/payments/{id}/link`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication APIKey required
+            if (configuration && configuration.apiKey) {
+                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
+                    ? await configuration.apiKey("Authorization")
+                    : await configuration.apiKey;
+                localVarHeaderParameter["Authorization"] = localVarApiKeyValue;
+            }
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            localVarUrlObj.query = {...localVarUrlObj.query, ...localVarQueryParameter, ...options.query};
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof sendPaymentLinkRequest !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(sendPaymentLinkRequest !== undefined ? sendPaymentLinkRequest : {}) : (sendPaymentLinkRequest || "");
+
+            return {
+                url: globalImportUrl.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * Sends a payment receipt to the customer via email. 
+         * @summary Send Payment Receipt
+         * @param {string} id The payment ID
+         * @param {SendPaymentReceiptRequest} [sendPaymentReceiptRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        sendReceipt: async (id: string, sendPaymentReceiptRequest?: SendPaymentReceiptRequest, options: any = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            if (id === null || id === undefined) {
+                throw new RequiredError('id','Required parameter id was null or undefined when calling sendReceipt.');
+            }
+            const localVarPath = `/payments/{id}/receipt`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            const localVarUrlObj = globalImportUrl.parse(localVarPath, true);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication APIKey required
+            if (configuration && configuration.apiKey) {
+                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
+                    ? await configuration.apiKey("Authorization")
+                    : await configuration.apiKey;
+                localVarHeaderParameter["Authorization"] = localVarApiKeyValue;
+            }
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            localVarUrlObj.query = {...localVarUrlObj.query, ...localVarQueryParameter, ...options.query};
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof sendPaymentReceiptRequest !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(sendPaymentReceiptRequest !== undefined ? sendPaymentReceiptRequest : {}) : (sendPaymentReceiptRequest || "");
+
+            return {
+                url: globalImportUrl.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -2478,6 +2636,36 @@ export const PaymentsApiFp = function(configuration?: Configuration) {
                 return axios.request(axiosRequestArgs);
             };
         },
+        /**
+         * Sends a payment link to the customer via email. 
+         * @summary Send Payment Link
+         * @param {string} id The payment ID
+         * @param {SendPaymentLinkRequest} [sendPaymentLinkRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async sendLink(id: string, sendPaymentLinkRequest?: SendPaymentLinkRequest, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Payment>> {
+            const localVarAxiosArgs = await PaymentsApiAxiosParamCreator(configuration).sendLink(id, sendPaymentLinkRequest, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * Sends a payment receipt to the customer via email. 
+         * @summary Send Payment Receipt
+         * @param {string} id The payment ID
+         * @param {SendPaymentReceiptRequest} [sendPaymentReceiptRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async sendReceipt(id: string, sendPaymentReceiptRequest?: SendPaymentReceiptRequest, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Payment>> {
+            const localVarAxiosArgs = await PaymentsApiAxiosParamCreator(configuration).sendReceipt(id, sendPaymentReceiptRequest, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
     }
 };
 
@@ -2561,6 +2749,28 @@ export const PaymentsApiFactory = function (configuration?: Configuration, baseP
          */
         refund(id: string, refundPaymentRequest?: RefundPaymentRequest, options?: any): AxiosPromise<Payment> {
             return PaymentsApiFp(configuration).refund(id, refundPaymentRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Sends a payment link to the customer via email. 
+         * @summary Send Payment Link
+         * @param {string} id The payment ID
+         * @param {SendPaymentLinkRequest} [sendPaymentLinkRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        sendLink(id: string, sendPaymentLinkRequest?: SendPaymentLinkRequest, options?: any): AxiosPromise<Payment> {
+            return PaymentsApiFp(configuration).sendLink(id, sendPaymentLinkRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * Sends a payment receipt to the customer via email. 
+         * @summary Send Payment Receipt
+         * @param {string} id The payment ID
+         * @param {SendPaymentReceiptRequest} [sendPaymentReceiptRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        sendReceipt(id: string, sendPaymentReceiptRequest?: SendPaymentReceiptRequest, options?: any): AxiosPromise<Payment> {
+            return PaymentsApiFp(configuration).sendReceipt(id, sendPaymentReceiptRequest, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -2659,6 +2869,32 @@ export class PaymentsApi extends BaseAPI {
      */
     public refund(id: string, refundPaymentRequest?: RefundPaymentRequest, options?: any) {
         return PaymentsApiFp(this.configuration).refund(id, refundPaymentRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Sends a payment link to the customer via email. 
+     * @summary Send Payment Link
+     * @param {string} id The payment ID
+     * @param {SendPaymentLinkRequest} [sendPaymentLinkRequest] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof PaymentsApi
+     */
+    public sendLink(id: string, sendPaymentLinkRequest?: SendPaymentLinkRequest, options?: any) {
+        return PaymentsApiFp(this.configuration).sendLink(id, sendPaymentLinkRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * Sends a payment receipt to the customer via email. 
+     * @summary Send Payment Receipt
+     * @param {string} id The payment ID
+     * @param {SendPaymentReceiptRequest} [sendPaymentReceiptRequest] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof PaymentsApi
+     */
+    public sendReceipt(id: string, sendPaymentReceiptRequest?: SendPaymentReceiptRequest, options?: any) {
+        return PaymentsApiFp(this.configuration).sendReceipt(id, sendPaymentReceiptRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
 }

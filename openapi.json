@@ -1,0 +1,2648 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "1.2.0",
+    "title": "MONEI API v1",
+    "description": "<p>The MONEI API is organized around\n<a href=\"https://en.wikipedia.org/wiki/Representational_State_Transfer\">REST</a>. Our\nAPI has predictable resource-oriented URLs, accepts JSON-encoded request\nbodies, returns JSON-encoded responses, and uses standard HTTP response\ncodes, authentication, and verbs.</p>\n<h4 id=\"base-url\">Base URL:</h4>\n<p><a href=\"https://api.monei.com/v1\">https://api.monei.com/v1</a></p>\n<h4 id=\"client-libraries\">Client libraries:</h4>\n<ul>\n<li><a href=\"https://github.com/MONEI/monei-php-sdk\">PHP SDK</a></li>\n<li><a href=\"https://github.com/MONEI/monei-python-sdk\">Python SDK</a></li>\n<li><a href=\"https://github.com/MONEI/monei-node-sdk\">Node.js SDK</a></li>\n<li><a href=\"https://postman.monei.com/\">Postman Collection</a></li>\n</ul>\n"
+  },
+  "servers": [
+    {
+      "url": "https://api.monei.com/v1",
+      "description": "MONEI API v1"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Status codes",
+      "description": "<p>Our API returns a <code>statusCode</code> attribute along with every response. Some API calls return\na successful <code>E000</code> code, along with the message <code>Transaction approved</code>.</p>\n<p>Failed transactions return a specific <code>statusCode</code>, along with it&#39;s corresponding message.</p>\n<p>Here is a list of all the possible response/error codes our API can return:</p>\n<table>\n<thead>\n<tr>\n<th>Code</th>\n<th>Message</th>\n</tr>\n</thead>\n<tbody><tr>\n<td>E000</td>\n<td>Transaction approved</td>\n</tr>\n<tr>\n<td>E101</td>\n<td>Error with payment processor configuration. Check this in your dashboard or contact MONEI for support</td>\n</tr>\n<tr>\n<td>E102</td>\n<td>Invalid or inactive MID. Please contact the acquiring entity</td>\n</tr>\n<tr>\n<td>E103</td>\n<td>Operation not allowed/configured for this merchant. Please contact the acquiring entity or MONEI for support</td>\n</tr>\n<tr>\n<td>E150</td>\n<td>Invalid or malformed request. Please check the message format</td>\n</tr>\n<tr>\n<td>E151</td>\n<td>Missing or malformed signature/auth</td>\n</tr>\n<tr>\n<td>E152</td>\n<td>Error while decrypting request</td>\n</tr>\n<tr>\n<td>E200</td>\n<td>Transaction failed during payment processing</td>\n</tr>\n<tr>\n<td>E201</td>\n<td>Transaction declined by processor</td>\n</tr>\n<tr>\n<td>E202</td>\n<td>Transaction declined by issuer</td>\n</tr>\n<tr>\n<td>E203</td>\n<td>Payment method not allowed</td>\n</tr>\n<tr>\n<td>E204</td>\n<td>Wrong or not allowed currency</td>\n</tr>\n<tr>\n<td>E205</td>\n<td>Incorrect reference / transaction does not exist</td>\n</tr>\n<tr>\n<td>E206</td>\n<td>Invalid payment token</td>\n</tr>\n<tr>\n<td>E207</td>\n<td>Transaction failed: process time exceeded</td>\n</tr>\n<tr>\n<td>E208</td>\n<td>Transaction is currently being processed</td>\n</tr>\n<tr>\n<td>E209</td>\n<td>Duplicated operation</td>\n</tr>\n<tr>\n<td>E210</td>\n<td>Wrong or not allowed payment amount</td>\n</tr>\n<tr>\n<td>E211</td>\n<td>Refund declined by processor</td>\n</tr>\n<tr>\n<td>E212</td>\n<td>Transaction has already been captured</td>\n</tr>\n<tr>\n<td>E213</td>\n<td>Transaction has already been canceled</td>\n</tr>\n<tr>\n<td>E214</td>\n<td>The amount to be captured cannot exceed the pre-authorized amount</td>\n</tr>\n<tr>\n<td>E215</td>\n<td>The transaction to be captured has not been pre-authorized yet</td>\n</tr>\n<tr>\n<td>E216</td>\n<td>The transaction to be canceled has not been pre-authorized yet</td>\n</tr>\n<tr>\n<td>E217</td>\n<td>Transaction denied by processor to avoid duplicated operations</td>\n</tr>\n<tr>\n<td>E218</td>\n<td>Error during payment request validation</td>\n</tr>\n<tr>\n<td>E219</td>\n<td>Refund declined due to exceeded amount</td>\n</tr>\n<tr>\n<td>E220</td>\n<td>Transaction has already been fully refunded</td>\n</tr>\n<tr>\n<td>E221</td>\n<td>Transaction declined due to insufficient funds</td>\n</tr>\n<tr>\n<td>E222</td>\n<td>The user has canceled the payment</td>\n</tr>\n<tr>\n<td>E300</td>\n<td>Transaction declined due to security restrictions</td>\n</tr>\n<tr>\n<td>E301</td>\n<td>3D Secure authentication failed</td>\n</tr>\n<tr>\n<td>E302</td>\n<td>Authentication process timed out. Please try again</td>\n</tr>\n<tr>\n<td>E303</td>\n<td>An error occurred during the 3D Secure process</td>\n</tr>\n<tr>\n<td>E304</td>\n<td>Invalid or malformed 3D Secure request</td>\n</tr>\n<tr>\n<td>E305</td>\n<td>Exemption not allowed</td>\n</tr>\n<tr>\n<td>E306</td>\n<td>Exemption error</td>\n</tr>\n<tr>\n<td>E307</td>\n<td>Fraud control error</td>\n</tr>\n<tr>\n<td>E308</td>\n<td>External MPI received wrong. Please check the data</td>\n</tr>\n<tr>\n<td>E309</td>\n<td>External MPI not enabled. Please contact support</td>\n</tr>\n<tr>\n<td>E500</td>\n<td>Transaction declined during card payment process</td>\n</tr>\n<tr>\n<td>E501</td>\n<td>Card rejected: invalid card number</td>\n</tr>\n<tr>\n<td>E502</td>\n<td>Card rejected: wrong expiration date</td>\n</tr>\n<tr>\n<td>E503</td>\n<td>Card rejected: wrong CVC/CVV2 number</td>\n</tr>\n<tr>\n<td>E504</td>\n<td>Card number not registered</td>\n</tr>\n<tr>\n<td>E505</td>\n<td>Card is expired</td>\n</tr>\n<tr>\n<td>E506</td>\n<td>Error during payment authorization. Please try again</td>\n</tr>\n<tr>\n<td>E507</td>\n<td>Cardholder has canceled the payment</td>\n</tr>\n<tr>\n<td>E508</td>\n<td>Transaction declined: AMEX cards not accepted by payment processor</td>\n</tr>\n<tr>\n<td>E509</td>\n<td>Card blocked temporarily or under suspicion of fraud</td>\n</tr>\n<tr>\n<td>E510</td>\n<td>Card does not allow pre-authorization operations</td>\n</tr>\n<tr>\n<td>E511</td>\n<td>CVC/CVV2 number is required</td>\n</tr>\n<tr>\n<td>E512</td>\n<td>Transaction declined: card brand not accepted by payment processor</td>\n</tr>\n<tr>\n<td>E513</td>\n<td>Transaction declined: DINERS cards not accepted by payment processor</td>\n</tr>\n<tr>\n<td>E514</td>\n<td>Transaction type not allowed for this type of card</td>\n</tr>\n<tr>\n<td>E515</td>\n<td>Transaction declined by card issuer</td>\n</tr>\n<tr>\n<td>E516</td>\n<td>Transaction declined: DISCOVER cards not accepted by payment processor</td>\n</tr>\n<tr>\n<td>E600</td>\n<td>Transaction declined during ApplePay/GooglePay payment process</td>\n</tr>\n<tr>\n<td>E601</td>\n<td>Incorrect ApplePay or GooglePay configuration</td>\n</tr>\n<tr>\n<td>E620</td>\n<td>Transaction declined during PayPal payment process</td>\n</tr>\n<tr>\n<td>E621</td>\n<td>Transaction declined during PayPal payment process: invalid currency</td>\n</tr>\n<tr>\n<td>E640</td>\n<td>Bizum transaction declined after three authentication attempts</td>\n</tr>\n<tr>\n<td>E641</td>\n<td>Bizum transaction declined due to failed authorization</td>\n</tr>\n<tr>\n<td>E642</td>\n<td>Bizum transaction declined due to insufficient funds</td>\n</tr>\n<tr>\n<td>E643</td>\n<td>Bizum transaction canceled: the user does not want to continue</td>\n</tr>\n<tr>\n<td>E644</td>\n<td>Bizum transaction rejected by destination bank</td>\n</tr>\n<tr>\n<td>E645</td>\n<td>Bizum transaction rejected by origin bank</td>\n</tr>\n<tr>\n<td>E646</td>\n<td>Bizum transaction rejected by processor</td>\n</tr>\n<tr>\n<td>E647</td>\n<td>Bizum transaction failed while connecting with processor. Please try again</td>\n</tr>\n<tr>\n<td>E680</td>\n<td>Transaction declined during ClickToPay payment process</td>\n</tr>\n<tr>\n<td>E681</td>\n<td>Incorrect ClickToPay configuration</td>\n</tr>\n<tr>\n<td>E700</td>\n<td>Transaction declined during Cofidis payment process</td>\n</tr>\n<tr>\n<td>E999</td>\n<td>Service internal error. Please contact support</td>\n</tr>\n</tbody></table>\n"
+    },
+    {
+      "name": "ApplePay Domain",
+      "description": "Verify your custom domain with Apple to use Apple Pay on your website.\n"
+    },
+    {
+      "name": "Payments",
+      "description": "To charge a credit or a debit card, you create a Payment object.\nYou can capture, cancel, refund and confirm individual payments.\nPayments are identified by a unique, random ID.\n\nWe recommend that you create exactly one Payment for each\norder or customer session in your system.\n\n## Payment object\n\n<SchemaDefinition schemaRef=\"#/components/schemas/Payment\" />\n"
+    },
+    {
+      "name": "Subscriptions",
+      "description": "<p>Use our subscriptions API to accept automatic recurring payments. You&#39;ll save time on billing and make the payment process easier for customers. Set parameters like subscription names, prices, and billing cycles, and let customers log in to their account to manage subscriptions.</p>\n<p><strong>MONEI Subscriptions are in open beta, and the API is subject to change.</strong></p>\n<h2 id=\"subscription-object\">Subscription object</h2>\n<SchemaDefinition schemaRef=\"#/components/schemas/Subscription\" />\n"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "APIKey": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization",
+        "description": "<p>The MONEI API uses API key to authenticate requests. You can view and manage your API key in\nthe <a href=\"https://dashboard.monei.com/settings/api\">MONEI Dashboard</a>.</p>\n<p>Test mode private keys have the prefix <code>pk_test_</code> and live mode private keys have the\nprefix <code>pk_live_</code>.</p>\n<p>Your API key carries many privileges, so be sure to keep them secure! Do not share your secret API\nkey in publicly accessible areas such as GitHub, client-side code, and so forth.</p>\n<p>Include your API Key as an <code>Authorization</code> header in all MONEI API requests.</p>\n<p>All API requests must be made over\n<a href=\"https://en.wikipedia.org/wiki/HTTP_Secure\">HTTPS</a>. Calls made over plain HTTP will fail. API\nrequests without authentication will also fail.</p>\n"
+      }
+    },
+    "responses": {
+      "BadRequest": {
+        "description": "The request is incorrect or could not be processed",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "Unauthorized": {
+        "description": "Unauthorized error. Please check your auth credentials",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "NotFound": {
+        "description": "The specified resource was not found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "InternalServerError": {
+        "description": "Unexpected error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "ServiceUnavailable": {
+        "description": "Unexpected error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "RegisterDomainResponse": {
+        "description": "A successful response",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": true
+                }
+              }
+            }
+          }
+        }
+      },
+      "Payment": {
+        "description": "A payment object",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Payment"
+            }
+          }
+        }
+      },
+      "Subscription": {
+        "description": "A subscription object",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Subscription"
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "required": [
+          "message"
+        ],
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "Country": {
+        "type": "string",
+        "example": "ES",
+        "description": "Two-letter country code ([ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2))."
+      },
+      "IP": {
+        "type": "string",
+        "example": "100.100.200.100",
+        "description": "The IP address where the operation originated."
+      },
+      "Lang": {
+        "type": "string",
+        "example": "es",
+        "description": "Two-letter language code ([ISO 639-1](https://en.wikipedia.org/wiki/ISO_639-1))."
+      },
+      "DeviceType": {
+        "type": "string",
+        "example": "desktop",
+        "description": "Device type, could be `desktop`, `mobile`, `smartTV`, `tablet`."
+      },
+      "DeviceModel": {
+        "type": "string",
+        "example": null,
+        "description": "Information about the device used for the browser session (e.g., `iPhone`)."
+      },
+      "Browser": {
+        "type": "string",
+        "example": "Chrome",
+        "description": "The browser used in this browser session (e.g., `Mobile Safari`)."
+      },
+      "BrowserVersion": {
+        "type": "string",
+        "example": "83.0.4103.116",
+        "description": "The version for the browser session (e.g., `13.1.1`)."
+      },
+      "Os": {
+        "type": "string",
+        "example": "Mac OS",
+        "description": "Operation system (e.g., `iOS`)."
+      },
+      "OsVersion": {
+        "type": "string",
+        "example": "10.15.4",
+        "description": "Operation system version (e.g., `13.5.1`)."
+      },
+      "Source": {
+        "type": "string",
+        "example": "MONEI/PHP",
+        "description": "The source component from where the operation was generated (mostly for our SDK's)."
+      },
+      "SourceVersion": {
+        "type": "string",
+        "example": "0.1.2",
+        "description": "The source component version from where the operation was generated (mostly for our SDK's)."
+      },
+      "UserAgent": {
+        "type": "string",
+        "example": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) ...",
+        "description": "Full user agent string of the browser session."
+      },
+      "BrowserAccept": {
+        "type": "string",
+        "example": "text/html,application/xhtml+xml,application/json",
+        "description": "Browser accept header."
+      },
+      "BrowserColorDepth": {
+        "type": "integer",
+        "format": "string",
+        "example": 24,
+        "description": "The color depth of the browser session (e.g., `24`)."
+      },
+      "BrowserScreenHeight": {
+        "type": "integer",
+        "format": "string",
+        "example": 1152,
+        "description": "The screen height of the browser session (e.g., `1152`)."
+      },
+      "BrowserScreenWidth": {
+        "type": "integer",
+        "format": "string",
+        "example": 2048,
+        "description": "The screen width of the browser session (e.g., `2048`)."
+      },
+      "BrowserTimezoneOffset": {
+        "type": "string",
+        "example": "string",
+        "description": "The timezone offset of the browser session (e.g., `-120`)."
+      },
+      "CreatedAt": {
+        "type": "integer",
+        "format": "int64",
+        "example": 1636366897,
+        "description": "Time at which the resource was created. Measured in seconds since the Unix epoch."
+      },
+      "UpdatedAt": {
+        "type": "integer",
+        "format": "int64",
+        "example": 1636366897,
+        "description": "Time at which the resource updated last time. Measured in seconds since the Unix epoch."
+      },
+      "Address": {
+        "title": "Address",
+        "type": "object",
+        "properties": {
+          "country": {
+            "$ref": "#/components/schemas/Country"
+          },
+          "city": {
+            "type": "string",
+            "example": "Málaga",
+            "description": "City, district, suburb, town, or village."
+          },
+          "line1": {
+            "type": "string",
+            "example": "Fake Street 123",
+            "description": "Address line 1 (e.g., street, PO Box, or company name)."
+          },
+          "line2": {
+            "type": "string",
+            "example": null,
+            "description": "Address line 2 (e.g., apartment, suite, unit, or building)."
+          },
+          "zip": {
+            "type": "string",
+            "example": "1234",
+            "description": "ZIP or postal code."
+          },
+          "state": {
+            "type": "string",
+            "example": "Málaga",
+            "description": "State, county, province, or region."
+          }
+        }
+      },
+      "CardholderName": {
+        "type": "string",
+        "example": "John Doe",
+        "description": "The cardholder's name, as stated in the credit card."
+      },
+      "CardholderEmail": {
+        "type": "string",
+        "example": "john.doe@monei.com",
+        "description": "The cardholder's email address."
+      },
+      "Card": {
+        "title": "Card",
+        "type": "object",
+        "properties": {
+          "number": {
+            "type": "string",
+            "description": "The card number, as a string without any separators."
+          },
+          "cvc": {
+            "type": "string",
+            "description": "Card security code."
+          },
+          "expMonth": {
+            "type": "string",
+            "description": "Two-digit number representing the card’s expiration month."
+          },
+          "expYear": {
+            "type": "string",
+            "description": "Two-digit number representing the card’s expiration year."
+          },
+          "cardholderName": {
+            "$ref": "#/components/schemas/CardholderName"
+          },
+          "cardholderEmail": {
+            "$ref": "#/components/schemas/CardholderEmail"
+          }
+        }
+      },
+      "AccountId": {
+        "type": "string",
+        "example": "aa9333ba-82de-400c-9ae7-087b9f8d2242",
+        "description": "MONEI Account identifier."
+      },
+      "Livemode": {
+        "type": "boolean",
+        "example": false,
+        "description": "Has the value `true` if the resource exists in live mode or the value `false` if the resource exists in test mode."
+      },
+      "RegisterDomainRequest": {
+        "type": "object",
+        "properties": {
+          "domainName": {
+            "$ref": "#/components/schemas/DomainName"
+          }
+        },
+        "required": [
+          "domainName"
+        ]
+      },
+      "DomainName": {
+        "type": "string",
+        "description": "The domain name to register for Apple Pay.",
+        "example": "example.com"
+      },
+      "Payment": {
+        "title": "Payment",
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/Payment-Id"
+          },
+          "amount": {
+            "$ref": "#/components/schemas/Payment-Amount"
+          },
+          "currency": {
+            "$ref": "#/components/schemas/Payment-Currency"
+          },
+          "orderId": {
+            "$ref": "#/components/schemas/Payment-OrderId"
+          },
+          "description": {
+            "$ref": "#/components/schemas/Payment-Description"
+          },
+          "accountId": {
+            "$ref": "#/components/schemas/AccountId"
+          },
+          "authorizationCode": {
+            "$ref": "#/components/schemas/Payment-AuthorizationCode"
+          },
+          "livemode": {
+            "$ref": "#/components/schemas/Livemode"
+          },
+          "status": {
+            "$ref": "#/components/schemas/Payment-Status"
+          },
+          "statusCode": {
+            "$ref": "#/components/schemas/Payment-StatusCode"
+          },
+          "statusMessage": {
+            "$ref": "#/components/schemas/Payment-StatusMessage"
+          },
+          "customer": {
+            "$ref": "#/components/schemas/Payment-Customer"
+          },
+          "shop": {
+            "$ref": "#/components/schemas/Payment-Shop"
+          },
+          "billingDetails": {
+            "$ref": "#/components/schemas/Payment-BillingDetails"
+          },
+          "shippingDetails": {
+            "$ref": "#/components/schemas/Payment-ShippingDetails"
+          },
+          "refundedAmount": {
+            "$ref": "#/components/schemas/Payment-RefundedAmount"
+          },
+          "lastRefundAmount": {
+            "$ref": "#/components/schemas/Payment-LastRefundAmount"
+          },
+          "lastRefundReason": {
+            "$ref": "#/components/schemas/Payment-LastRefundReason"
+          },
+          "cancellationReason": {
+            "$ref": "#/components/schemas/Payment-CancellationReason"
+          },
+          "sessionDetails": {
+            "$ref": "#/components/schemas/Payment-SessionDetails"
+          },
+          "traceDetails": {
+            "$ref": "#/components/schemas/Payment-TraceDetails"
+          },
+          "paymentToken": {
+            "$ref": "#/components/schemas/Payment-PaymentToken"
+          },
+          "paymentMethod": {
+            "$ref": "#/components/schemas/Payment-PaymentMethod"
+          },
+          "sequence": {
+            "$ref": "#/components/schemas/Payment-Sequence"
+          },
+          "sequenceId": {
+            "$ref": "#/components/schemas/Payment-SequenceId"
+          },
+          "pointOfSaleId": {
+            "$ref": "#/components/schemas/Payment-PointOfSaleId"
+          },
+          "nextAction": {
+            "$ref": "#/components/schemas/Payment-NextAction"
+          },
+          "createdAt": {
+            "$ref": "#/components/schemas/CreatedAt"
+          },
+          "updatedAt": {
+            "$ref": "#/components/schemas/UpdatedAt"
+          }
+        }
+      },
+      "CreatePaymentRequest": {
+        "title": "CreatePaymentRequest",
+        "type": "object",
+        "required": [
+          "amount",
+          "currency",
+          "orderId"
+        ],
+        "properties": {
+          "amount": {
+            "$ref": "#/components/schemas/Payment-Amount"
+          },
+          "currency": {
+            "$ref": "#/components/schemas/Payment-Currency"
+          },
+          "orderId": {
+            "$ref": "#/components/schemas/Payment-OrderId"
+          },
+          "callbackUrl": {
+            "$ref": "#/components/schemas/Payment-CallbackUrl"
+          },
+          "completeUrl": {
+            "$ref": "#/components/schemas/Payment-CompleteUrl"
+          },
+          "failUrl": {
+            "$ref": "#/components/schemas/Payment-FailUrl"
+          },
+          "cancelUrl": {
+            "$ref": "#/components/schemas/Payment-CancelUrl"
+          },
+          "paymentToken": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Payment-PaymentToken"
+              }
+            ],
+            "description": "A payment token generated by monei.js\n[Components](https://docs.monei.com/docs/monei-js-overview) or a paymentToken\n[saved after a previous successful payment](https://docs.monei.com/docs/save-payment-method).\nIn case of the first one, you will also need to send the `sessionId`\nused to generate the token in the first place.\n"
+          },
+          "sessionId": {
+            "$ref": "#/components/schemas/Payment-SessionId"
+          },
+          "generatePaymentToken": {
+            "$ref": "#/components/schemas/Payment-GeneratePaymentToken"
+          },
+          "paymentMethod": {
+            "$ref": "#/components/schemas/Payment-PaymentMethodInput"
+          },
+          "allowedPaymentMethods": {
+            "$ref": "#/components/schemas/Payment-PaymentMethods"
+          },
+          "transactionType": {
+            "$ref": "#/components/schemas/Payment-TransactionType"
+          },
+          "sequence": {
+            "$ref": "#/components/schemas/Payment-Sequence"
+          },
+          "pointOfSaleId": {
+            "$ref": "#/components/schemas/Payment-PointOfSaleId"
+          },
+          "subscriptionId": {
+            "$ref": "#/components/schemas/Payment-SubscriptionId"
+          },
+          "autoRecover": {
+            "$ref": "#/components/schemas/Payment-AutoRecover"
+          },
+          "description": {
+            "$ref": "#/components/schemas/Payment-Description"
+          },
+          "customer": {
+            "$ref": "#/components/schemas/Payment-Customer"
+          },
+          "billingDetails": {
+            "$ref": "#/components/schemas/Payment-BillingDetails"
+          },
+          "shippingDetails": {
+            "$ref": "#/components/schemas/Payment-ShippingDetails"
+          },
+          "sessionDetails": {
+            "$ref": "#/components/schemas/Payment-SessionDetails"
+          }
+        }
+      },
+      "ConfirmPaymentRequest": {
+        "title": "ConfirmPaymentRequest",
+        "type": "object",
+        "required": [
+          "paymentToken"
+        ],
+        "properties": {
+          "paymentToken": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Payment-PaymentToken"
+              }
+            ],
+            "description": "A payment token generated by monei.js\n[Components](https://docs.monei.com/docs/monei-js-overview) or a paymentToken\n[saved after a previous successful payment](https://docs.monei.com/docs/save-payment-method).\n"
+          },
+          "paymentMethod": {
+            "type": "object",
+            "description": "Additional information about the payment method used for this payment.",
+            "properties": {
+              "card": {
+                "type": "object",
+                "description": "Additional information about the card used for this payment.",
+                "properties": {
+                  "cardholderName": {
+                    "$ref": "#/components/schemas/CardholderName"
+                  },
+                  "cardholderEmail": {
+                    "$ref": "#/components/schemas/CardholderEmail"
+                  }
+                }
+              }
+            }
+          },
+          "generatePaymentToken": {
+            "$ref": "#/components/schemas/Payment-GeneratePaymentToken"
+          },
+          "customer": {
+            "$ref": "#/components/schemas/Payment-Customer"
+          },
+          "billingDetails": {
+            "$ref": "#/components/schemas/Payment-BillingDetails"
+          },
+          "shippingDetails": {
+            "$ref": "#/components/schemas/Payment-ShippingDetails"
+          }
+        }
+      },
+      "CapturePaymentRequest": {
+        "title": "CapturePaymentRequest",
+        "type": "object",
+        "properties": {
+          "amount": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Payment-Amount"
+              }
+            ],
+            "description": "The amount to capture, which must be less than or equal to the\noriginal amount. Any additional amount will be automatically refunded.\n"
+          }
+        }
+      },
+      "CancelPaymentRequest": {
+        "title": "CancelPaymentRequest",
+        "type": "object",
+        "properties": {
+          "cancellationReason": {
+            "$ref": "#/components/schemas/Payment-CancellationReason"
+          }
+        }
+      },
+      "RefundPaymentRequest": {
+        "title": "RefundPaymentRequest",
+        "type": "object",
+        "properties": {
+          "amount": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Payment-Amount"
+              }
+            ],
+            "description": "The amount to refund, which must be less than or\nequal to the original amount.\n"
+          },
+          "refundReason": {
+            "$ref": "#/components/schemas/Payment-RefundReason"
+          }
+        }
+      },
+      "RecurringPaymentRequest": {
+        "title": "RecurringPaymentRequest",
+        "type": "object",
+        "required": [
+          "orderId"
+        ],
+        "properties": {
+          "orderId": {
+            "$ref": "#/components/schemas/Payment-OrderId"
+          },
+          "amount": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Payment-Amount"
+              }
+            ],
+            "description": "The amount to collected by this subsequent payment. A positive integer\nrepresenting how much to charge in the smallest currency unit (e.g.,\n100 cents to charge 1.00 USD).\n"
+          },
+          "transactionType": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Payment-TransactionType"
+              }
+            ],
+            "default": "(same from initial payment)",
+            "description": "Same as the `transactionType` parameter from\n[create payment](https://docs.monei.com/api/#operation/payments_create).\nIf not sent, it will default in the same transaction type used in the initial payment.\n"
+          },
+          "description": {
+            "$ref": "#/components/schemas/Payment-Description"
+          },
+          "customer": {
+            "$ref": "#/components/schemas/Payment-Customer"
+          },
+          "billingDetails": {
+            "$ref": "#/components/schemas/Payment-BillingDetails"
+          },
+          "shippingDetails": {
+            "$ref": "#/components/schemas/Payment-ShippingDetails"
+          },
+          "callbackUrl": {
+            "$ref": "#/components/schemas/Payment-CallbackUrl"
+          }
+        }
+      },
+      "SendPaymentLinkRequest": {
+        "title": "SendPaymentLinkRequest",
+        "type": "object",
+        "properties": {
+          "customerEmail": {
+            "type": "string",
+            "example": "john.doe@example.com",
+            "description": "The customer will receive payment link on this email address."
+          },
+          "language": {
+            "type": "string",
+            "example": "en",
+            "enum": [
+              "en",
+              "es",
+              "ca"
+            ],
+            "description": "The language of the email."
+          }
+        }
+      },
+      "SendPaymentReceiptRequest": {
+        "title": "SendPaymentReceiptRequest",
+        "type": "object",
+        "properties": {
+          "customerEmail": {
+            "type": "string",
+            "example": "john.doe@example.com",
+            "description": "The customer will receive payment receipt on this email address."
+          },
+          "language": {
+            "type": "string",
+            "example": "en",
+            "enum": [
+              "en",
+              "es",
+              "ca"
+            ],
+            "description": "The language of the email."
+          }
+        }
+      },
+      "Payment-Id": {
+        "type": "string",
+        "example": "af6029f80f5fc73a8ad2753eea0b1be0",
+        "description": "Unique identifier for the payment."
+      },
+      "Payment-Amount": {
+        "type": "integer",
+        "format": "int32",
+        "example": 110,
+        "description": "Amount intended to be collected by this payment. A positive integer\nrepresenting how much to charge in the smallest currency unit (e.g.,\n100 cents to charge 1.00 USD).\n"
+      },
+      "Payment-Currency": {
+        "type": "string",
+        "example": "EUR",
+        "description": "Three-letter [ISO currency code](https://en.wikipedia.org/wiki/ISO_4217),\nin uppercase. Must be a supported currency.\n"
+      },
+      "Payment-OrderId": {
+        "type": "string",
+        "example": "14379133960355",
+        "description": "An order ID from your system. A unique identifier that can be used\nto reconcile the payment with your internal system.\n"
+      },
+      "Payment-Description": {
+        "type": "string",
+        "example": "Test Shop - #84370745531439",
+        "description": "An arbitrary string attached to the payment. Often useful for\ndisplaying to users.\n"
+      },
+      "Payment-AuthorizationCode": {
+        "type": "string",
+        "example": "475816",
+        "description": "Unique identifier provided by the bank performing transaction.\n"
+      },
+      "Payment-Status": {
+        "type": "string",
+        "example": "PENDING",
+        "enum": [
+          "SUCCEEDED",
+          "PENDING",
+          "FAILED",
+          "CANCELED",
+          "REFUNDED",
+          "PARTIALLY_REFUNDED",
+          "AUTHORIZED",
+          "EXPIRED"
+        ],
+        "description": "The status of the payment."
+      },
+      "Payment-StatusCode": {
+        "type": "string",
+        "example": null,
+        "description": "Payment status code.\n"
+      },
+      "Payment-StatusMessage": {
+        "type": "string",
+        "example": null,
+        "description": "Human readable status message, can be displayed to a user.\n"
+      },
+      "Payment-RefundedAmount": {
+        "type": "integer",
+        "format": "int32",
+        "example": null,
+        "description": "Amount in cents refunded (can be less than the amount\nattribute on the payment if a partial refund was issued).\n"
+      },
+      "Payment-LastRefundAmount": {
+        "type": "integer",
+        "format": "int32",
+        "example": null,
+        "description": "Amount in cents refunded in the last transaction."
+      },
+      "Payment-LastRefundReason": {
+        "type": "string",
+        "example": null,
+        "enum": [
+          "duplicated",
+          "fraudulent",
+          "requested_by_customer"
+        ],
+        "description": "The reason of the last refund transaction."
+      },
+      "Payment-CancellationReason": {
+        "type": "string",
+        "example": null,
+        "enum": [
+          "duplicated",
+          "fraudulent",
+          "requested_by_customer"
+        ],
+        "description": "The reason for canceling the Payment."
+      },
+      "Payment-Customer": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "john.doe@example.com",
+            "description": "The customer’s email address."
+          },
+          "name": {
+            "type": "string",
+            "example": "John Doe",
+            "description": "The customer’s full name or business name."
+          },
+          "phone": {
+            "type": "string",
+            "example": null,
+            "description": "The customer’s phone number."
+          }
+        }
+      },
+      "Payment-SessionId": {
+        "type": "string",
+        "example": "39603551437913",
+        "description": "A unique identifier within your system that adds security to the\npayment process. You need to pass the same session ID as the one\nused on the frontend to initialize MONEI Component (if you needed to).\nThis is required if a payment token (not permanent) was already\ngenerated in the frontend.\n"
+      },
+      "Payment-SequenceId": {
+        "type": "string",
+        "example": "62b23b9f3627cc38b08ff471ccd313ad",
+        "description": "A permanent identifier that refers to the initial payment of\na sequence of payments. This value needs to be sent in the path\nfor `RECURRING` payments.\n"
+      },
+      "Payment-Sequence": {
+        "type": "object",
+        "description": "This field needs to be sent in order to mark the beginning of a sequence of payments\n(recurring/subscriptions, installments, and so). Specific configurations can be set\nin the inside properties (`recurring`).\n",
+        "required": [
+          "type"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "recurring",
+            "enum": [
+              "recurring"
+            ]
+          },
+          "recurring": {
+            "$ref": "#/components/schemas/Payment-SequenceRecurring"
+          }
+        }
+      },
+      "Payment-SequenceRecurring": {
+        "type": "object",
+        "description": "Specific configurations for recurring payments.\nWill only be used when `sequence`.`type` is `recurring`.\n",
+        "properties": {
+          "expiry": {
+            "type": "string",
+            "example": "20210630",
+            "default": "*(The payment method or card expiration)*",
+            "description": "Date after which no further recurring payments will be performed.\nMust be formatted as `YYYYMMDD`.\n"
+          },
+          "frequency": {
+            "type": "integer",
+            "format": "int32",
+            "example": 30,
+            "default": 25,
+            "description": "The minimum number of **days** between the different recurring payments.\n"
+          }
+        }
+      },
+      "Payment-PaymentToken": {
+        "type": "string",
+        "example": "7cc38b08ff471ccd313ad62b23b9f362b107560b",
+        "description": "A permanent token represents a payment method used in the\npayment. Pass `generatePaymentToken: true` when you creating\na payment to generate it. You can pass it as `paymentToken`\nparameter to create other payments with the same payment\nmethod. This token does not expire, and should only be\nused server-side.\n"
+      },
+      "Payment-GeneratePaymentToken": {
+        "type": "boolean",
+        "example": false,
+        "default": false,
+        "description": "If set to true a permanent token that represents a payment\nmethod used in the payment will be generated.\n"
+      },
+      "Payment-PaymentMethod": {
+        "type": "object",
+        "description": "Details about the payment method at the time of the transaction.\n",
+        "properties": {
+          "method": {
+            "type": "string",
+            "example": "card",
+            "enum": [
+              "card",
+              "bizum",
+              "googlePay",
+              "applePay",
+              "clickToPay",
+              "paypal",
+              "cofidis"
+            ],
+            "description": "Payment method type."
+          },
+          "card": {
+            "$ref": "#/components/schemas/Payment-PaymentMethodCard"
+          },
+          "bizum": {
+            "$ref": "#/components/schemas/Payment-PaymentMethodBizum"
+          },
+          "paypal": {
+            "$ref": "#/components/schemas/Payment-PaymentMethodPaypal"
+          },
+          "cofidis": {
+            "$ref": "#/components/schemas/Payment-PaymentMethodCofidis"
+          }
+        }
+      },
+      "Payment-PaymentMethodCard": {
+        "type": "object",
+        "description": "Details about the card used as payment method at the time of the transaction.\n",
+        "properties": {
+          "country": {
+            "$ref": "#/components/schemas/Country"
+          },
+          "brand": {
+            "type": "string",
+            "example": "visa",
+            "enum": [
+              "visa",
+              "mastercard",
+              "diners",
+              "amex",
+              "jcb",
+              "unionpay",
+              "unknown"
+            ],
+            "description": "Card brand."
+          },
+          "type": {
+            "type": "string",
+            "example": "credit",
+            "enum": [
+              "debit",
+              "credit"
+            ],
+            "description": "Card type `debit` or `credit`."
+          },
+          "threeDSecure": {
+            "type": "boolean",
+            "example": false,
+            "description": "Wether this transaction used 3D Secure authentication."
+          },
+          "threeDSecureVersion": {
+            "type": "string",
+            "example": "2.1.0",
+            "description": "The protocol version of the 3DS challenge."
+          },
+          "expiration": {
+            "type": "integer",
+            "format": "int64",
+            "example": 2048544000,
+            "description": "Time at which the card will expire.\nMeasured in seconds since the Unix epoch.\n"
+          },
+          "last4": {
+            "type": "string",
+            "example": "0004",
+            "description": "The last four digits of the card."
+          }
+        }
+      },
+      "Payment-PaymentMethodBizum": {
+        "type": "object",
+        "description": "Details about the Bizum account used as payment method at the time of the transaction.\n",
+        "properties": {
+          "phoneNumber": {
+            "type": "string",
+            "example": null,
+            "description": "The phone number used to pay with `bizum`."
+          }
+        }
+      },
+      "Payment-PaymentMethodPaypal": {
+        "type": "object",
+        "description": "Details from Paypal order used as payment method at the time of the transaction.\n",
+        "properties": {
+          "orderId": {
+            "type": "string",
+            "example": null,
+            "description": "The Paypal's order ID."
+          }
+        }
+      },
+      "Payment-PaymentMethodCofidis": {
+        "type": "object",
+        "description": "Details from Cofidis order used as payment method at the time of the transaction.\n",
+        "properties": {
+          "orderId": {
+            "type": "string",
+            "example": null,
+            "description": "The Cofidis' order ID."
+          }
+        }
+      },
+      "Payment-PaymentMethodInput": {
+        "type": "object",
+        "description": "An information about a payment method used for this payment.\nWe recommend using `paymentToken` instead, as it is more secure\nway to pass sensitive payment information. Processing credit\ncard information on your server requires\n[PCI DSS compliance](https://www.investopedia.com/terms/p/pci-compliance.asp).\n",
+        "properties": {
+          "card": {
+            "$ref": "#/components/schemas/Card"
+          }
+        }
+      },
+      "Payment-PaymentMethods": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "enum": [
+          "card",
+          "bizum",
+          "applePay",
+          "googlePay",
+          "clickToPay",
+          "paypal",
+          "cofidis"
+        ],
+        "example": [
+          "card",
+          "bizum",
+          "paypal"
+        ],
+        "description": "An array of allowed payment methods (used in hosted payment\npage). Must be enabled payment methods. Possible values:\n  - `card`\n  - `bizum`\n  - `applePay`\n  - `googlePay`\n  - `clickToPay`\n  - `paypal`\n  - `cofidis`\n"
+      },
+      "Payment-TransactionType": {
+        "type": "string",
+        "example": "SALE",
+        "default": "SALE",
+        "enum": [
+          "SALE",
+          "AUTH"
+        ],
+        "description": "Controls when the funds will be captured.\n  - `SALE` - **Default**. MONEI automatically captures funds\n    when the customer authorizes the payment.\n  - `AUTH` - Place a hold on the funds when the customer authorizes\n    the payment, but don’t capture the funds until later.\n"
+      },
+      "Payment-Shop": {
+        "type": "object",
+        "description": "The information about the shop (used in\n[hosted payment page](https://docs.monei.com/docs/use-prebuilt-payment-page)).\n",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Test Shop",
+            "description": "The shop name."
+          },
+          "country": {
+            "$ref": "#/components/schemas/Country"
+          }
+        }
+      },
+      "Payment-BillingDetails": {
+        "type": "object",
+        "description": "Billing information associated with the payment method\nat the time of the transaction.\n",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "John Doe",
+            "description": "The customer’s billing full name."
+          },
+          "email": {
+            "type": "string",
+            "example": "john.doe@example.com",
+            "description": "The customer’s billing email address."
+          },
+          "phone": {
+            "type": "string",
+            "example": null,
+            "description": "The customer’s billing phone number."
+          },
+          "company": {
+            "type": "string",
+            "example": null,
+            "description": "Billing company name."
+          },
+          "address": {
+            "$ref": "#/components/schemas/Address"
+          }
+        }
+      },
+      "Payment-ShippingDetails": {
+        "type": "object",
+        "description": "Shipping information associated with the payment.",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "John Doe",
+            "description": "The shipping customer’s full name."
+          },
+          "email": {
+            "type": "string",
+            "example": "john.doe@example.com",
+            "description": "The shipping customer’s email address."
+          },
+          "phone": {
+            "type": "string",
+            "example": null,
+            "description": "The shipping customer’s phone number."
+          },
+          "company": {
+            "type": "string",
+            "example": null,
+            "description": "Name of the company where the shipment is going."
+          },
+          "address": {
+            "$ref": "#/components/schemas/Address"
+          }
+        }
+      },
+      "Payment-SessionDetails": {
+        "description": "Information related to the browsing session of the user\nwho initiated the payment.\n",
+        "properties": {
+          "ip": {
+            "$ref": "#/components/schemas/IP"
+          },
+          "countryCode": {
+            "$ref": "#/components/schemas/Country"
+          },
+          "lang": {
+            "$ref": "#/components/schemas/Lang"
+          },
+          "deviceType": {
+            "$ref": "#/components/schemas/DeviceType"
+          },
+          "deviceModel": {
+            "$ref": "#/components/schemas/DeviceModel"
+          },
+          "browser": {
+            "$ref": "#/components/schemas/Browser"
+          },
+          "browserVersion": {
+            "$ref": "#/components/schemas/BrowserVersion"
+          },
+          "os": {
+            "$ref": "#/components/schemas/Os"
+          },
+          "osVersion": {
+            "$ref": "#/components/schemas/OsVersion"
+          },
+          "source": {
+            "$ref": "#/components/schemas/Source"
+          },
+          "sourceVersion": {
+            "$ref": "#/components/schemas/SourceVersion"
+          },
+          "userAgent": {
+            "$ref": "#/components/schemas/UserAgent"
+          },
+          "browserAccept": {
+            "$ref": "#/components/schemas/BrowserAccept"
+          },
+          "browserColorDepth": {
+            "$ref": "#/components/schemas/BrowserColorDepth"
+          },
+          "browserScreenHeight": {
+            "$ref": "#/components/schemas/BrowserScreenHeight"
+          },
+          "browserScreenWidth": {
+            "$ref": "#/components/schemas/BrowserScreenWidth"
+          },
+          "browserTimezoneOffset": {
+            "$ref": "#/components/schemas/BrowserTimezoneOffset"
+          }
+        }
+      },
+      "Payment-TraceDetails": {
+        "description": "Information related to the browsing session of the user\nwho initiated the payment.\n",
+        "properties": {
+          "ip": {
+            "$ref": "#/components/schemas/IP"
+          },
+          "countryCode": {
+            "$ref": "#/components/schemas/Country"
+          },
+          "lang": {
+            "$ref": "#/components/schemas/Lang"
+          },
+          "deviceType": {
+            "$ref": "#/components/schemas/DeviceType"
+          },
+          "deviceModel": {
+            "$ref": "#/components/schemas/DeviceModel"
+          },
+          "browser": {
+            "$ref": "#/components/schemas/Browser"
+          },
+          "browserVersion": {
+            "$ref": "#/components/schemas/BrowserVersion"
+          },
+          "os": {
+            "$ref": "#/components/schemas/Os"
+          },
+          "osVersion": {
+            "$ref": "#/components/schemas/OsVersion"
+          },
+          "source": {
+            "$ref": "#/components/schemas/Source"
+          },
+          "sourceVersion": {
+            "$ref": "#/components/schemas/SourceVersion"
+          },
+          "userAgent": {
+            "$ref": "#/components/schemas/UserAgent"
+          },
+          "browserAccept": {
+            "$ref": "#/components/schemas/BrowserAccept"
+          },
+          "browserColorDepth": {
+            "$ref": "#/components/schemas/BrowserColorDepth"
+          },
+          "browserScreenHeight": {
+            "$ref": "#/components/schemas/BrowserScreenHeight"
+          },
+          "browserScreenWidth": {
+            "$ref": "#/components/schemas/BrowserScreenWidth"
+          },
+          "browserTimezoneOffset": {
+            "$ref": "#/components/schemas/BrowserTimezoneOffset"
+          },
+          "userId": {
+            "type": "string",
+            "example": null,
+            "description": "The ID of the user that started the operation."
+          },
+          "userEmail": {
+            "type": "string",
+            "example": "user@example.com",
+            "description": "The email of the user that started the operation."
+          }
+        }
+      },
+      "Payment-NextAction": {
+        "type": "object",
+        "description": "If present, this property tells you what actions you need\nto take in order for your customer to fulfill a payment\nusing the provided source.\n",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "CONFIRM",
+            "enum": [
+              "CONFIRM",
+              "CHALLENGE",
+              "FRICTIONLESS_CHALLENGE",
+              "COMPLETE"
+            ],
+            "description": "- `CONFIRM` - Your customer needs to be redirected to a\n  [hosted payment page](https://docs.monei.com/docs/use-prebuilt-payment-page)\n  or confirm payment using\n  [payment token](https://docs.monei.com/docs/accept-card-payment#3-submitting-the-payment-to-monei-client-side).\n  The **redirectUrl** will point to the hosted payment page.\n- `FRICTIONLESS_CHALLENGE` - Your customer needs to be redirected to the frictionless\n   3d secure challenge page provided by the bank. The **redirectUrl**\n   will point to the frictionless 3d secure challenge page provided by the bank.\n- `CHALLENGE` - Your customer needs to be redirected to the\n  3d secure challenge page provided by the bank. The **redirectUrl**\n  will point to the 3d secure challenge page provided by the bank.\n- `COMPLETE` - The payment is completed. The **redirectUrl** will be\n  the **completeUrl** if it was provided when the payment was created.\n"
+          },
+          "mustRedirect": {
+            "type": "boolean",
+            "example": false,
+            "description": "If `true` you have to redirect your customer to the **redirectUrl**\nto continue payment process.\n"
+          },
+          "redirectUrl": {
+            "type": "string",
+            "example": "https://secure.monei.com/payments/af6029f80f5fc73a8ad2753eea0b1be0",
+            "description": "Redirect your customer to this url to continue payment process.\n"
+          }
+        }
+      },
+      "Payment-CallbackUrl": {
+        "type": "string",
+        "example": "https://example.com/checkout/callback",
+        "description": "The URL to which a payment result should be sent asynchronously.\n"
+      },
+      "Payment-CompleteUrl": {
+        "type": "string",
+        "example": "https://example.com/checkout/complete",
+        "description": "The URL the customer will be directed to after transaction\ncompleted (successful or failed - except if `failUrl` is provided).\n"
+      },
+      "Payment-FailUrl": {
+        "type": "string",
+        "example": "https://example.com/checkout/fail",
+        "description": "The URL the customer will be directed to after transaction has failed,\ninstead of `completeUrl` (used in hosted payment page). This allows\nto provide two different URLs for successful and failed payments.\n"
+      },
+      "Payment-CancelUrl": {
+        "type": "string",
+        "example": "https://example.com/checkout/cancel",
+        "description": "The URL the customer will be directed to if they decide to cancel\npayment and return to your website (used in hosted payment page).\n"
+      },
+      "Payment-RefundReason": {
+        "type": "string",
+        "example": null,
+        "enum": [
+          "duplicated",
+          "fraudulent",
+          "requested_by_customer"
+        ],
+        "description": "The reason for refunding the Payment."
+      },
+      "Payment-PointOfSaleId": {
+        "type": "string",
+        "example": "fb269cccfa0cc021f5d0b8eb1421646c696213e1",
+        "description": "A unique identifier of the Point of Sale. If specified the payment is attached to this Point of Sale. If there is a QR code attached to the same Point of Sale, this payment will be available by scanning the QR code.\n"
+      },
+      "Payment-SubscriptionId": {
+        "type": "string",
+        "example": "575bcd84-09fc-4a6e-8c4c-f88b8eb90bfa",
+        "description": "A unique identifier of the Subscription. If specified the payment is attached to this Subscription.\n"
+      },
+      "Payment-AutoRecover": {
+        "type": "boolean",
+        "example": false,
+        "description": "If set to `true`, the new payment will be automatically created when customer visits the payment link of the previously failed payment. Is automatically set to `true` if `completeUrl` is not provided.(set this value to `true` to create \"Pay By Link\" payments)."
+      },
+      "Subscription": {
+        "title": "Subscription",
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/Subscription-Id"
+          },
+          "amount": {
+            "$ref": "#/components/schemas/Payment-Amount"
+          },
+          "currency": {
+            "$ref": "#/components/schemas/Payment-Currency"
+          },
+          "description": {
+            "$ref": "#/components/schemas/Subscription-Description"
+          },
+          "accountId": {
+            "$ref": "#/components/schemas/AccountId"
+          },
+          "livemode": {
+            "$ref": "#/components/schemas/Livemode"
+          },
+          "status": {
+            "$ref": "#/components/schemas/Subscription-Status"
+          },
+          "customer": {
+            "$ref": "#/components/schemas/Payment-Customer"
+          },
+          "billingDetails": {
+            "$ref": "#/components/schemas/Payment-BillingDetails"
+          },
+          "shippingDetails": {
+            "$ref": "#/components/schemas/Payment-ShippingDetails"
+          },
+          "interval": {
+            "$ref": "#/components/schemas/Subscription-Interval"
+          },
+          "intervalCount": {
+            "$ref": "#/components/schemas/Subscription-IntervalCount"
+          },
+          "pauseIntervalCount": {
+            "$ref": "#/components/schemas/Subscription-PauseIntervalCount"
+          },
+          "lastOrderId": {
+            "$ref": "#/components/schemas/Payment-OrderId"
+          },
+          "lastPayment": {
+            "$ref": "#/components/schemas/Subscription-LastPayment"
+          },
+          "paymentMethod": {
+            "$ref": "#/components/schemas/Subscription-PaymentMethod"
+          },
+          "currentPeriodStart": {
+            "$ref": "#/components/schemas/Subscription-CurrentPeriodStart"
+          },
+          "currentPeriodEnd": {
+            "$ref": "#/components/schemas/Subscription-CurrentPeriodEnd"
+          },
+          "trialPeriodEnd": {
+            "$ref": "#/components/schemas/Subscription-TrialPeriodEnd"
+          },
+          "nextPaymentAt": {
+            "$ref": "#/components/schemas/Subscription-NextPaymentAt"
+          },
+          "retryCount": {
+            "$ref": "#/components/schemas/Subscription-RetryCount"
+          },
+          "cancelAtPeriodEnd": {
+            "$ref": "#/components/schemas/Subscription-CancelAtPeriodEnd"
+          },
+          "pauseAtPeriodEnd": {
+            "$ref": "#/components/schemas/Subscription-PauseAtPeriodEnd"
+          },
+          "traceDetails": {
+            "$ref": "#/components/schemas/Payment-TraceDetails"
+          },
+          "sequenceId": {
+            "$ref": "#/components/schemas/Payment-SequenceId"
+          },
+          "callbackUrl": {
+            "$ref": "#/components/schemas/Subscription-CallbackUrl"
+          },
+          "paymentCallbackUrl": {
+            "$ref": "#/components/schemas/Subscription-PaymentCallbackUrl"
+          },
+          "createdAt": {
+            "$ref": "#/components/schemas/CreatedAt"
+          },
+          "updatedAt": {
+            "$ref": "#/components/schemas/UpdatedAt"
+          }
+        }
+      },
+      "CreateSubscriptionRequest": {
+        "title": "CreateSubscriptionRequest",
+        "type": "object",
+        "required": [
+          "amount",
+          "currency",
+          "callbackUrl",
+          "paymentCallbackUrl",
+          "interval",
+          "intervalCount"
+        ],
+        "properties": {
+          "amount": {
+            "$ref": "#/components/schemas/Payment-Amount"
+          },
+          "currency": {
+            "$ref": "#/components/schemas/Payment-Currency"
+          },
+          "interval": {
+            "$ref": "#/components/schemas/Subscription-Interval"
+          },
+          "intervalCount": {
+            "$ref": "#/components/schemas/Subscription-IntervalCount"
+          },
+          "description": {
+            "$ref": "#/components/schemas/Subscription-Description"
+          },
+          "customer": {
+            "$ref": "#/components/schemas/Payment-Customer"
+          },
+          "billingDetails": {
+            "$ref": "#/components/schemas/Payment-BillingDetails"
+          },
+          "shippingDetails": {
+            "$ref": "#/components/schemas/Payment-ShippingDetails"
+          },
+          "trialPeriodEnd": {
+            "$ref": "#/components/schemas/Subscription-TrialPeriodEnd"
+          },
+          "trialPeriodDays": {
+            "$ref": "#/components/schemas/Subscription-TrialPeriodDays"
+          },
+          "callbackUrl": {
+            "$ref": "#/components/schemas/Subscription-CallbackUrl"
+          },
+          "paymentCallbackUrl": {
+            "$ref": "#/components/schemas/Subscription-PaymentCallbackUrl"
+          }
+        }
+      },
+      "UpdateSubscriptionRequest": {
+        "title": "UpdateSubscriptionRequest",
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "amount": {
+            "$ref": "#/components/schemas/Payment-Amount"
+          },
+          "interval": {
+            "$ref": "#/components/schemas/Subscription-Interval"
+          },
+          "intervalCount": {
+            "$ref": "#/components/schemas/Subscription-IntervalCount"
+          },
+          "description": {
+            "$ref": "#/components/schemas/Subscription-Description"
+          },
+          "customer": {
+            "$ref": "#/components/schemas/Payment-Customer"
+          },
+          "billingDetails": {
+            "$ref": "#/components/schemas/Payment-BillingDetails"
+          },
+          "shippingDetails": {
+            "$ref": "#/components/schemas/Payment-ShippingDetails"
+          },
+          "trialPeriodEnd": {
+            "$ref": "#/components/schemas/Subscription-TrialPeriodEnd"
+          },
+          "callbackUrl": {
+            "$ref": "#/components/schemas/Subscription-CallbackUrl"
+          },
+          "paymentCallbackUrl": {
+            "$ref": "#/components/schemas/Subscription-PaymentCallbackUrl"
+          },
+          "pauseAtPeriodEnd": {
+            "$ref": "#/components/schemas/Subscription-PauseAtPeriodEnd"
+          },
+          "cancelAtPeriodEnd": {
+            "$ref": "#/components/schemas/Subscription-CancelAtPeriodEnd"
+          },
+          "pauseIntervalCount": {
+            "$ref": "#/components/schemas/Subscription-PauseIntervalCount"
+          }
+        }
+      },
+      "ActivateSubscriptionRequest": {
+        "title": "ActivateSubscriptionRequest",
+        "type": "object",
+        "properties": {
+          "paymentToken": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Payment-PaymentToken"
+              }
+            ],
+            "description": "A payment token generated by monei.js\n[Components](https://docs.monei.com/docs/monei-js-overview) or a paymentToken\n[saved after a previous successful payment](https://docs.monei.com/docs/save-payment-method).\nIn case of the first one, you will also need to send the `sessionId`\nused to generate the token in the first place.\n"
+          },
+          "sessionId": {
+            "$ref": "#/components/schemas/Payment-SessionId"
+          },
+          "addAmount": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Payment-Amount"
+              }
+            ],
+            "description": "The amount to be added to the subscription's initial payment. A positive integer\nrepresenting how much to charge in the smallest currency unit (e.g.,\n100 cents to charge 1.00 USD).\n"
+          },
+          "sequenceId": {
+            "$ref": "#/components/schemas/Payment-SequenceId"
+          },
+          "completeUrl": {
+            "$ref": "#/components/schemas/Payment-CompleteUrl"
+          },
+          "failUrl": {
+            "$ref": "#/components/schemas/Payment-FailUrl"
+          },
+          "cancelUrl": {
+            "$ref": "#/components/schemas/Payment-CancelUrl"
+          }
+        }
+      },
+      "CancelSubscriptionRequest": {
+        "title": "CancelSubscriptionRequest",
+        "type": "object",
+        "properties": {
+          "cancelAtPeriodEnd": {
+            "$ref": "#/components/schemas/Subscription-CancelAtPeriodEnd"
+          }
+        }
+      },
+      "PauseSubscriptionRequest": {
+        "title": "PauseSubscriptionRequest",
+        "type": "object",
+        "properties": {
+          "pauseAtPeriodEnd": {
+            "$ref": "#/components/schemas/Subscription-PauseAtPeriodEnd"
+          },
+          "pauseIntervalCount": {
+            "$ref": "#/components/schemas/Subscription-PauseIntervalCount"
+          }
+        }
+      },
+      "Subscription-Id": {
+        "type": "string",
+        "example": "575bcd84-09fc-4a6e-8c4c-f88b8eb90bfa",
+        "description": "Unique identifier for the subscription."
+      },
+      "Subscription-Description": {
+        "type": "string",
+        "example": "MoonMail Monthly Lite",
+        "description": "An arbitrary string attached to the subscription. Often useful for\ndisplaying to users.\n"
+      },
+      "Subscription-Status": {
+        "type": "string",
+        "example": "PENDING",
+        "enum": [
+          "PENDING",
+          "EXPIRED",
+          "TRIALING",
+          "ACTIVE",
+          "PAST_DUE",
+          "PAUSED",
+          "CANCELED"
+        ],
+        "description": "The status of the subscription."
+      },
+      "Subscription-PaymentMethod": {
+        "type": "object",
+        "description": "Details about the payment method at the time of the transaction.\n",
+        "properties": {
+          "method": {
+            "type": "string",
+            "example": "card",
+            "enum": [
+              "card"
+            ],
+            "description": "Subscription method type."
+          },
+          "card": {
+            "$ref": "#/components/schemas/Payment-PaymentMethodCard"
+          }
+        }
+      },
+      "Subscription-PaymentMethodCard": {
+        "type": "object",
+        "description": "Details about the card used as payment method at the time of the transaction.\n",
+        "properties": {
+          "country": {
+            "$ref": "#/components/schemas/Country"
+          },
+          "brand": {
+            "type": "string",
+            "example": "visa",
+            "enum": [
+              "visa",
+              "mastercard",
+              "diners",
+              "amex",
+              "jcb",
+              "unionpay",
+              "unknown"
+            ],
+            "description": "Card brand."
+          },
+          "type": {
+            "type": "string",
+            "example": "credit",
+            "enum": [
+              "debit",
+              "credit"
+            ],
+            "description": "Card type `debit` or `credit`."
+          },
+          "threeDSecure": {
+            "type": "boolean",
+            "example": false,
+            "description": "Wether this transaction used 3D Secure authentication."
+          },
+          "threeDSecureVersion": {
+            "type": "string",
+            "example": "2.1.0",
+            "description": "The protocol version of the 3DS challenge."
+          },
+          "expiration": {
+            "type": "integer",
+            "format": "int64",
+            "example": 2048544000,
+            "description": "Time at which the card will expire.\nMeasured in seconds since the Unix epoch.\n"
+          },
+          "last4": {
+            "type": "string",
+            "example": "0004",
+            "description": "The last four digits of the card."
+          }
+        }
+      },
+      "Subscription-CallbackUrl": {
+        "type": "string",
+        "example": "https://example.com/subscriptions/callback",
+        "description": "The URL will be called each time subscription status changes.\n"
+      },
+      "Subscription-PaymentCallbackUrl": {
+        "type": "string",
+        "example": "https://example.com/payments/callback",
+        "description": "The URL will be called each time subscription creates a new payments.\n"
+      },
+      "Subscription-Interval": {
+        "type": "string",
+        "example": "month",
+        "enum": [
+          "day",
+          "week",
+          "month",
+          "year"
+        ],
+        "description": "Subscription interval."
+      },
+      "Subscription-IntervalCount": {
+        "type": "integer",
+        "format": "int32",
+        "example": 1,
+        "description": "Number of intervals between subscription payments."
+      },
+      "Subscription-PauseIntervalCount": {
+        "type": "integer",
+        "format": "int32",
+        "example": 1,
+        "description": "Number of intervals when subscription will be paused before it activates again."
+      },
+      "Subscription-LastPayment": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/components/schemas/Payment-Id"
+          },
+          "status": {
+            "$ref": "#/components/schemas/Payment-Status"
+          },
+          "statusCode": {
+            "$ref": "#/components/schemas/Payment-StatusCode"
+          },
+          "statusMessage": {
+            "$ref": "#/components/schemas/Payment-StatusMessage"
+          }
+        }
+      },
+      "Subscription-NextPaymentAt": {
+        "type": "integer",
+        "format": "int64",
+        "example": 1636366897,
+        "description": "The date when the next payment will be made."
+      },
+      "Subscription-CurrentPeriodStart": {
+        "type": "number",
+        "format": "int64",
+        "example": 1636366897,
+        "description": "The start date of the current subscription period. Measured in seconds since the Unix epoch."
+      },
+      "Subscription-CurrentPeriodEnd": {
+        "type": "number",
+        "format": "int64",
+        "example": 1636366897,
+        "description": "The end date of the current subscription period. Measured in seconds since the Unix epoch."
+      },
+      "Subscription-TrialPeriodEnd": {
+        "type": "number",
+        "format": "int64",
+        "example": 1636366897,
+        "description": "The end date of the trial period. Measured in seconds since the Unix epoch."
+      },
+      "Subscription-RetryCount": {
+        "type": "integer",
+        "format": "int32",
+        "example": 1,
+        "description": "Number of retries left for the subscription."
+      },
+      "Subscription-CancelAtPeriodEnd": {
+        "type": "boolean",
+        "example": false,
+        "description": "If true, the subscription will be canceled at the end of the current period.\n"
+      },
+      "Subscription-PauseAtPeriodEnd": {
+        "type": "boolean",
+        "example": false,
+        "description": "If true, the subscription will be paused at the end of the current period.\n"
+      },
+      "Subscription-TrialPeriodDays": {
+        "type": "integer",
+        "format": "int32",
+        "example": 7,
+        "description": "Number of days the trial period lasts."
+      }
+    },
+    "parameters": {
+      "paymentId": {
+        "name": "id",
+        "in": "path",
+        "required": true,
+        "description": "The payment ID",
+        "schema": {
+          "$ref": "#/components/schemas/Payment-Id"
+        }
+      },
+      "sequenceId": {
+        "name": "sequenceId",
+        "in": "path",
+        "required": true,
+        "description": "The sequence ID",
+        "schema": {
+          "$ref": "#/components/schemas/Payment-SequenceId"
+        }
+      },
+      "subscriptionId": {
+        "name": "id",
+        "in": "path",
+        "required": true,
+        "description": "The subscription ID",
+        "schema": {
+          "$ref": "#/components/schemas/Subscription-Id"
+        }
+      }
+    },
+    "examples": {
+      "CreatePaymentBasicRequest": {
+        "value": {
+          "amount": 110,
+          "currency": "EUR",
+          "orderId": "14379133960355",
+          "paymentToken": "7cc38b08ff471ccd313ad62b23b9f362b107560b",
+          "callbackUrl": "https://example.com/checkout/callback",
+          "completeUrl": "https://example.com/checkout/complete"
+        }
+      },
+      "ConfirmPaymentBasicRequest": {
+        "value": {
+          "paymentToken": "7cc38b08ff471ccd313ad62b23b9f362b107560b"
+        }
+      },
+      "CapturePaymentFullRequest": {
+        "value": {
+          "amount": 100
+        }
+      },
+      "CancelPaymentFullRequest": {
+        "value": {
+          "cancellationReason": "requested_by_customer"
+        }
+      },
+      "RefundPaymentFullRequest": {
+        "value": {
+          "amount": 50,
+          "refundReason": "requested_by_customer"
+        }
+      },
+      "RecurringPaymentBasicRequest": {
+        "value": {
+          "orderId": "14379133960366",
+          "callbackUrl": "https://example.com/checkout/callback"
+        }
+      },
+      "SendPaymentLinkFullRequest": {
+        "value": {
+          "customerEmail": "john.doe@example.com",
+          "language": "es"
+        }
+      },
+      "SendPaymentReceiptFullRequest": {
+        "value": {
+          "customerEmail": "john.doe@example.com",
+          "language": "es"
+        }
+      },
+      "CreateSubscriptionBasicRequest": {
+        "value": {
+          "customer": {
+            "name": "John Doe",
+            "email": "john.doe@monei.com"
+          },
+          "amount": 110,
+          "currency": "EUR",
+          "interval": "month",
+          "intervalCount": 1,
+          "description": "MoonMail Lite Monthly",
+          "callbackUrl": "https://example.com/subscription/callback",
+          "paymentCallbackUrl": "https://example.com/payment/callback"
+        }
+      },
+      "ActivateSubscriptionBasicRequest": {
+        "value": {
+          "paymentToken": "7cc38b08ff471ccd313ad62b23b9f362b107560b"
+        }
+      },
+      "CancelSubscriptionBasicRequest": {
+        "value": {
+          "calncelAtPeriodEnd": true
+        }
+      },
+      "PauseSubscriptionBasicRequest": {
+        "value": {
+          "pauseAtPeriodEnd": true
+        }
+      },
+      "UpdateSubscriptionBasicRequest": {
+        "value": {
+          "amount": 990
+        }
+      }
+    }
+  },
+  "paths": {
+    "/apple-pay/domains": {
+      "post": {
+        "operationId": "domain_register",
+        "summary": "Register",
+        "description": "<p>Registers custom domain for Apple Pay.</p>\n<p>Download\nthis <a href=\"https://assets.monei.com/apple-pay/apple-developer-merchantid-domain-association/\">domain association file</a>\nand host it at <code>/.well-known/apple-developer-merchantid-domain-association</code> on your site.</p>\n<p>For example, if you’re registering <code>example.com</code>, make that file available\nat <code>https://example.com/.well-known/apple-developer-merchantid-domain-association</code>.</p>\n",
+        "security": [
+          {
+            "APIKey": []
+          }
+        ],
+        "tags": [
+          "ApplePay Domain"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterDomainRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/RegisterDomainResponse"
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "Node.js",
+            "source": "const {Monei} = require('@monei-js/node-sdk');\nconst monei = new Monei('pk_test_36cf3e8a15eff3f5be983562ea6b13ec');\nmonei.applePayDomain.register({\n  domainName: 'example.com'\n});\n"
+          },
+          {
+            "lang": "PHP",
+            "source": "<?php\n$monei = new Monei\\MoneiClient('pk_test_36cf3e8a15eff3f5be983562ea6b13ec');\n$monei->applePayDomain->register([\n    'domainName' => 'example.com'\n]);\n"
+          },
+          {
+            "lang": "Python",
+            "source": "import Monei\nfrom Monei import RegisterDomainRequest\n\nmonei = Monei.MoneiClient(api_key=\"pk_test_36cf3e8a15eff3f5be983562ea6b13ec\")\nmonei.ApplePayDomain.register(RegisterDomainRequest(domain_name=\"example.com\"))\n\n"
+          }
+        ]
+      }
+    },
+    "/payments": {
+      "post": {
+        "operationId": "payments_create",
+        "summary": "Create Payment",
+        "description": "To charge a credit card or other payment method, you create a Payment.\n\nPayment can also be created without a payment method to initiate a\npayment process and redirect a customer to the hosted payment page.\n",
+        "security": [
+          {
+            "APIKey": []
+          }
+        ],
+        "tags": [
+          "Payments"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePaymentRequest"
+              },
+              "examples": {
+                "basic": {
+                  "$ref": "#/components/examples/CreatePaymentBasicRequest"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Payment"
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "Node.js",
+            "source": "const {Monei, PaymentTransactionType} = require('@monei-js/node-sdk');\nconst monei = new Monei('pk_test_36cf3e8a15eff3f5be983562ea6b13ec');\nmonei.payments.create({\n  amount: 110, // 1.10 EUR\n  currency: 'EUR',\n  orderId: '14379133960355',\n  paymentToken: '7cc38b08ff471ccd313ad62b23b9f362b107560b',\n  callbackUrl: 'https://example.com/checkout/callback',\n  completeUrl: 'https://example.com/checkout/complete',\n  customer: {\n    name: 'John Doe',\n    email: 'example@example.com',\n    phone: '+49123456789'\n  }\n});\n"
+          },
+          {
+            "lang": "PHP",
+            "source": "<?php\n$monei = new Monei\\MoneiClient('pk_test_36cf3e8a15eff3f5be983562ea6b13ec');\n$monei->payments->create([\n    'amount' => 110, // 1.10 EUR\n    'orderId' => '14379133960355',\n    'currency' => 'EUR',\n    'paymentToken' => '7cc38b08ff471ccd313ad62b23b9f362b107560b',\n    'callbackUrl' => 'https://example.com/checkout/callback',\n    'completeUrl' => 'https://example.com/checkout/complete'\n]);\n"
+          },
+          {
+            "lang": "Python",
+            "source": "import Monei\nfrom Monei import CreatePaymentRequest\n\nmonei = Monei.MoneiClient(api_key=\"pk_test_36cf3e8a15eff3f5be983562ea6b13ec\")\nmonei.Payments.create(CreatePaymentRequest(\n    amount=110,\n    currency=\"EUR\",\n    order_id=\"14379133960355\",\n    payment_token=\"7cc38b08ff471ccd313ad62b23b9f362b107560b\",\n    callback_url=\"https://example.com/checkout/callback\",\n    complete_url=\"https://example.com/checkout/complete\"\n))\n"
+          }
+        ]
+      }
+    },
+    "/payments/{id}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/paymentId"
+        }
+      ],
+      "get": {
+        "operationId": "payments_get",
+        "summary": "Get Payment",
+        "description": "Get the details of a payment that has previously been created.\nSupply the unique payment ID that was returned from your previous request.\n",
+        "security": [
+          {
+            "APIKey": []
+          }
+        ],
+        "tags": [
+          "Payments"
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Payment"
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "Node.js",
+            "source": "const {Monei} = require('@monei-js/node-sdk');\nconst monei = new Monei('pk_test_36cf3e8a15eff3f5be983562ea6b13ec');\nmonei.payments.get('832b77d1a4b372349a7ae0bb1b2af059');\n"
+          },
+          {
+            "lang": "PHP",
+            "source": "<?php\n$monei = new Monei\\MoneiClient('pk_test_36cf3e8a15eff3f5be983562ea6b13ec');\n$monei->payments->get('832b77d1a4b372349a7ae0bb1b2af059');\n"
+          },
+          {
+            "lang": "Python",
+            "source": "import Monei\n\nmonei = Monei.MoneiClient(api_key=\"pk_test_36cf3e8a15eff3f5be983562ea6b13ec\")\nmonei.Payments.get(\"832b77d1a4b372349a7ae0bb1b2af059\")\n"
+          }
+        ]
+      }
+    },
+    "/payments/{id}/confirm": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/paymentId"
+        }
+      ],
+      "post": {
+        "operationId": "payments_confirm",
+        "summary": "Confirm Payment",
+        "description": "Confirm a payment that was created without a `paymentToken` or\n`paymentMethod`. You can only confirm a payment with the `PENDING` status.\n\nYou can charge a customer in two steps. First create a payment\nwithout payment details and then confirm it after you generate\na `paymentToken` on the front-end with monei.js\n[Components](https://docs.monei.com/docs/monei-js-overview).\n\nYou can provide additional customer information, it will override\nthe information passed in **create payment** request.\n",
+        "security": [
+          {
+            "APIKey": []
+          }
+        ],
+        "tags": [
+          "Payments"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConfirmPaymentRequest"
+              },
+              "examples": {
+                "full": {
+                  "$ref": "#/components/examples/ConfirmPaymentBasicRequest"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Payment"
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "Node.js",
+            "source": "const {Monei} = require('@monei-js/node-sdk');\nconst monei = new Monei('pk_test_36cf3e8a15eff3f5be983562ea6b13ec');\nmonei.payments.confirm('832b77d1a4b372349a7ae0bb1b2af059', {\n  paymentToken: '7cc38b08ff471ccd313ad62b23b9f362b107560b'\n});\n"
+          },
+          {
+            "lang": "PHP",
+            "source": "<?php\n$monei = new Monei\\MoneiClient('pk_test_36cf3e8a15eff3f5be983562ea6b13ec');\n$monei->payments->confirm(\n  '832b77d1a4b372349a7ae0bb1b2af059',\n  ['paymentToken' => '7cc38b08ff471ccd313ad62b23b9f362b107560b']\n);\n"
+          },
+          {
+            "lang": "Python",
+            "source": "import Monei\nfrom Monei import ConfirmPaymentRequest\n\nmonei = Monei.MoneiClient(api_key=\"pk_test_36cf3e8a15eff3f5be983562ea6b13ec\")\nmonei.Payments.confirm(\n    \"832b77d1a4b372349a7ae0bb1b2af059\",\n    ConfirmPaymentRequest(payment_token=\"7cc38b08ff471ccd313ad62b23b9f362b107560b\")\n)\n"
+          }
+        ]
+      }
+    },
+    "/payments/{id}/capture": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/paymentId"
+        }
+      ],
+      "post": {
+        "operationId": "payments_capture",
+        "summary": "Capture Payment",
+        "description": "Capture the payment of an existing, uncaptured, payment. This is\nthe second half of the two-step payment flow, where first you\ncreated a payment with the `transactionType` set to `AUTH`.\n\nUncaptured payments expire exactly seven days after they are\ncreated. If they are not captured by that point in time, they\nwill be marked as expired and will no longer be capturable.\n",
+        "security": [
+          {
+            "APIKey": []
+          }
+        ],
+        "tags": [
+          "Payments"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CapturePaymentRequest"
+              },
+              "examples": {
+                "full": {
+                  "$ref": "#/components/examples/CapturePaymentFullRequest"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Payment"
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "Node.js",
+            "source": "const {Monei} = require('@monei-js/node-sdk');\nconst monei = new Monei('pk_test_36cf3e8a15eff3f5be983562ea6b13ec');\nmonei.payments.capture(\n  '832b77d1a4b372349a7ae0bb1b2af059',\n  {amount: 100} // 1.00 EUR\n);\n"
+          },
+          {
+            "lang": "PHP",
+            "source": "<?php\n$monei = new Monei\\MoneiClient('pk_test_36cf3e8a15eff3f5be983562ea6b13ec');\n$monei->payments->capture(\n   '832b77d1a4b372349a7ae0bb1b2af059',\n   ['amount' => 100] // 1.00 EUR\n);\n"
+          },
+          {
+            "lang": "Python",
+            "source": "import Monei\nfrom Monei import CapturePaymentRequest\n\nmonei = Monei.MoneiClient(api_key=\"pk_test_36cf3e8a15eff3f5be983562ea6b13ec\")\nmonei.Payments.capture(\n    \"832b77d1a4b372349a7ae0bb1b2af059\",\n    CapturePaymentRequest(amount=100) # 1.00 EUR\n)\n"
+          }
+        ]
+      }
+    },
+    "/payments/{id}/cancel": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/paymentId"
+        }
+      ],
+      "post": {
+        "operationId": "payments_cancel",
+        "summary": "Cancel Payment",
+        "description": "Release customer's funds that were reserved earlier. You\ncan only cancel a payment with the `AUTHORIZED` status.\n\nThis is the second half of the two-step payment flow, where first\nyou created a payment with the `transactionType` set to `AUTH`.\n",
+        "security": [
+          {
+            "APIKey": []
+          }
+        ],
+        "tags": [
+          "Payments"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CancelPaymentRequest"
+              },
+              "examples": {
+                "full": {
+                  "$ref": "#/components/examples/CancelPaymentFullRequest"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Payment"
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "Node.js",
+            "source": "const {Monei, PaymentCancellationReason} = require('@monei-js/node-sdk');\nconst monei = new Monei('pk_test_36cf3e8a15eff3f5be983562ea6b13ec');\nmonei.payments.cancel('832b77d1a4b372349a7ae0bb1b2af059', {\n  cancellationReason: PaymentCancellationReason.RequestedByCustomer\n});\n"
+          },
+          {
+            "lang": "PHP",
+            "source": "<?php\n$monei = new Monei\\MoneiClient('pk_test_36cf3e8a15eff3f5be983562ea6b13ec');\n$monei->payments->cancel(\n  '832b77d1a4b372349a7ae0bb1b2af059',\n  ['cancellationReason' => 'requested_by_customer']\n);\n"
+          },
+          {
+            "lang": "Python",
+            "source": "import Monei\nfrom Monei import CancelPaymentRequest\n\nmonei = Monei.MoneiClient(api_key=\"pk_test_36cf3e8a15eff3f5be983562ea6b13ec\")\nmonei.Payments.cancel(\n    \"832b77d1a4b372349a7ae0bb1b2af059\",\n    CancelPaymentRequest(cancellation_reason=\"requested_by_customer\")\n)\n"
+          }
+        ]
+      }
+    },
+    "/payments/{id}/refund": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/paymentId"
+        }
+      ],
+      "post": {
+        "operationId": "payments_refund",
+        "summary": "Refund Payment",
+        "description": "Refund a payment that has previously been created but not yet\nrefunded. Funds will be refunded to the credit or debit card\nthat was originally charged.\n\nYou can optionally refund only part of a payment. You can do so\nmultiple times, until the entire payment has been refunded.\n\nOnce entirely refunded, a payment can’t be refunded again. This\nmethod will throw an error when called on an already-refunded\npayment, or when trying to refund more money than is left on a payment.\n",
+        "security": [
+          {
+            "APIKey": []
+          }
+        ],
+        "tags": [
+          "Payments"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefundPaymentRequest"
+              },
+              "examples": {
+                "full": {
+                  "$ref": "#/components/examples/RefundPaymentFullRequest"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Payment"
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "Node.js",
+            "source": "const {Monei, PaymentRefundReason} = require('@monei-js/node-sdk');\nconst monei = new Monei('pk_test_36cf3e8a15eff3f5be983562ea6b13ec');\nmonei.payments.refund('832b77d1a4b372349a7ae0bb1b2af059', {\n  refundReason: PaymentRefundReason.RequestedByCustomer\n});\n"
+          },
+          {
+            "lang": "PHP",
+            "source": "<?php\n$monei = new Monei\\MoneiClient('pk_test_36cf3e8a15eff3f5be983562ea6b13ec');\n$monei->payments->refund(\n  '832b77d1a4b372349a7ae0bb1b2af059',\n  ['refundReason' => 'requested_by_customer']\n);\n"
+          },
+          {
+            "lang": "Python",
+            "source": "import Monei\nfrom Monei import RefundPaymentRequest\n\nmonei = Monei.MoneiClient(api_key=\"pk_test_36cf3e8a15eff3f5be983562ea6b13ec\")\nmonei.payments.refund(\n    \"832b77d1a4b372349a7ae0bb1b2af059\",\n    RefundPaymentRequest(refund_reason=\"requested_by_customer\")\n)\n"
+          }
+        ]
+      }
+    },
+    "/payments/{sequenceId}/recurring": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/sequenceId"
+        }
+      ],
+      "post": {
+        "operationId": "payments_recurring",
+        "summary": "Recurring Payment",
+        "description": "Creates a subsequent operation for a recurring payment, previously created.\nThe specified amount will be charged to the same credit or debit card of\nthe originally payment.\n\nIf amount is not specified, it will default to\nthe same amount from the original payment.\n",
+        "security": [
+          {
+            "APIKey": []
+          }
+        ],
+        "tags": [
+          "Payments"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecurringPaymentRequest"
+              },
+              "examples": {
+                "basic": {
+                  "$ref": "#/components/examples/RecurringPaymentBasicRequest"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Payment"
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "Node.js",
+            "source": "const {Monei} = require('@monei-js/node-sdk');\nconst monei = new Monei('pk_test_36cf3e8a15eff3f5be983562ea6b13ec');\nmonei.payments.recurring('7cc38b08ff471ccd313ad62b23b9f362b107560b', {\n  orderId: '14379133960355',\n  callbackUrl: 'https://example.com/checkout/callback'\n});\n"
+          },
+          {
+            "lang": "PHP",
+            "source": "<?php\n$monei = new Monei\\MoneiClient('pk_test_36cf3e8a15eff3f5be983562ea6b13ec');\n$monei->payments->recurring('7cc38b08ff471ccd313ad62b23b9f362b107560b', [\n  'orderId' => '14379133960355',\n  'callbackUrl' => 'https://example.com/checkout/callback',\n]);\n"
+          },
+          {
+            "lang": "Python",
+            "source": "import Monei\nfrom Monei import RecurringPaymentRequest\n\nmonei = Monei.MoneiClient(api_key=\"pk_test_36cf3e8a15eff3f5be983562ea6b13ec\")\nmonei.Payments.recurring(\n    \"7cc38b08ff471ccd313ad62b23b9f362b107560b\",\n    RecurringPaymentRequest(\n        order_id=\"14379133960355\",\n        callback_url=\"https://example.com/checkout/callback\"\n    )\n)\n"
+          }
+        ]
+      }
+    },
+    "/payments/{id}/link": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/paymentId"
+        }
+      ],
+      "post": {
+        "operationId": "payments_send_link",
+        "summary": "Send Payment Link",
+        "description": "Sends a payment link to the customer via email.\n",
+        "security": [
+          {
+            "APIKey": []
+          }
+        ],
+        "tags": [
+          "Payments"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendPaymentLinkRequest"
+              },
+              "examples": {
+                "full": {
+                  "$ref": "#/components/examples/SendPaymentLinkFullRequest"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Payment"
+          }
+        }
+      }
+    },
+    "/payments/{id}/receipt": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/paymentId"
+        }
+      ],
+      "post": {
+        "operationId": "payments_send_receipt",
+        "summary": "Send Payment Receipt",
+        "description": "Sends a payment receipt to the customer via email.\n",
+        "security": [
+          {
+            "APIKey": []
+          }
+        ],
+        "tags": [
+          "Payments"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendPaymentReceiptRequest"
+              },
+              "examples": {
+                "full": {
+                  "$ref": "#/components/examples/SendPaymentReceiptFullRequest"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Payment"
+          }
+        }
+      }
+    },
+    "/subscriptions": {
+      "post": {
+        "operationId": "subscriptions_create",
+        "summary": "Create Subscription",
+        "description": "Creates a new subscription. Subscription is created with status: `PENDING`.\nIn order to activate it you need to call [activate endpoint](#operation/subscriptions_activate).\n",
+        "security": [
+          {
+            "APIKey": []
+          }
+        ],
+        "tags": [
+          "Subscriptions"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSubscriptionRequest"
+              },
+              "examples": {
+                "basic": {
+                  "$ref": "#/components/examples/CreateSubscriptionBasicRequest"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Subscription"
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "Node.js",
+            "source": "const {Monei} = require('@monei-js/node-sdk');\nconst monei = new Monei('pk_test_36cf3e8a15eff3f5be983562ea6b13ec');\nmonei.subscriptions.create({\n  customer: {\n    name: 'John Doe',\n    email: 'john.doe@monei.com'\n  },\n  amount: 110,\n  currency: 'EUR',\n  interval: 'month',\n  intervalCount: 1,\n  description: 'MoonMail Lite Monthly',\n  callbackUrl: 'https://example.com/subscription/callback',\n  paymentCallbackUrl: 'https://example.com/payment/callback'\n});\n"
+          },
+          {
+            "lang": "PHP",
+            "source": "<?php\n$monei = new Monei\\MoneiClient('pk_test_36cf3e8a15eff3f5be983562ea6b13ec');\n$monei->subscriptions->create([\n    'customer' => [\n        'name' => 'John Doe',\n        'email' => 'john.doe@monei.com'\n    ],\n    'amount' => 110,\n    'currency' => 'EUR',\n    'intervalCount' => 'month',\n    'intervalCount' => 1,\n    'description' => 'MoonMail Lite Monthly',\n    'callbackUrl' => 'https=>//example.com/subscription/callback',\n    'paymentCallbackUrl' => 'https=>//example.com/payment/callback'\n]);\n"
+          },
+          {
+            "lang": "Python",
+            "source": "import Monei\nfrom Monei import CreateSubscriptionRequest, PaymentCustomer\n\nmonei = Monei.MoneiClient(api_key=\"pk_test_36cf3e8a15eff3f5be983562ea6b13ec\")\nmonei.Subscriptions.create(\n    CreateSubscriptionRequest(\n        customer=PaymentCustomer(name=\"John Doe\", email=\"john.doe@monei.com\"),\n        amount=100,\n        currency=\"EUR\",\n        interval_count=1,\n        interval=\"month\",\n        description=\"MoonMail Lite Monthly\",\n        callback_url=\"https://example.com/subscription/callback\",\n        payment_callback_url=\"https://example.com/payment/callback\"\n    )\n)\n"
+          }
+        ]
+      }
+    },
+    "/subscriptions/{id}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/subscriptionId"
+        }
+      ],
+      "get": {
+        "operationId": "subscriptions_get",
+        "summary": "Get Subscription",
+        "description": "Get the details of a subscription that has previously been created.\nSupply the unique subscription ID that was returned from your previous request.\n",
+        "security": [
+          {
+            "APIKey": []
+          }
+        ],
+        "tags": [
+          "Subscriptions"
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Subscription"
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "Node.js",
+            "source": "const {Monei} = require('@monei-js/node-sdk');\nconst monei = new Monei('pk_test_36cf3e8a15eff3f5be983562ea6b13ec');\nmonei.subscriptions.get('575bcd84-09fc-4a6e-8c4c-f88b8eb90bfa');\n"
+          },
+          {
+            "lang": "PHP",
+            "source": "<?php\n$monei = new Monei\\MoneiClient('575bcd84-09fc-4a6e-8c4c-f88b8eb90bfa');\n$monei->subscriptions->get('575bcd84-09fc-4a6e-8c4c-f88b8eb90bfa');\n"
+          },
+          {
+            "lang": "Python",
+            "source": "import Monei\n\nmonei = Monei.MoneiClient(api_key=\"pk_test_36cf3e8a15eff3f5be983562ea6b13ec\")\nmonei.Subscriptions.get(\"575bcd84-09fc-4a6e-8c4c-f88b8eb90bfa\")\n"
+          }
+        ]
+      },
+      "put": {
+        "operationId": "subscriptions_update",
+        "summary": "Update Subscription",
+        "description": "Updates an existing subscription. Supply the unique subscription ID that was\nreturned from your previous request.\n",
+        "security": [
+          {
+            "APIKey": []
+          }
+        ],
+        "tags": [
+          "Subscriptions"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSubscriptionRequest"
+              },
+              "examples": {
+                "basic": {
+                  "$ref": "#/components/examples/UpdateSubscriptionBasicRequest"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Subscription"
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "Node.js",
+            "source": "const {Monei, PaymentCancellationReason} = require('@monei-js/node-sdk');\nconst monei = new Monei('pk_test_36cf3e8a15eff3f5be983562ea6b13ec');\nmonei.subscriptions.cancel('575bcd84-09fc-4a6e-8c4c-f88b8eb90bfa', {amount: 990});\n"
+          },
+          {
+            "lang": "PHP",
+            "source": "<?php\n$monei = new Monei\\MoneiClient('pk_test_36cf3e8a15eff3f5be983562ea6b13ec');\n$monei->subscriptions->cancel(\n    '575bcd84-09fc-4a6e-8c4c-f88b8eb90bfa',\n    ['amount' => 990]\n);\n"
+          },
+          {
+            "lang": "Python",
+            "source": "import Monei\nfrom Monei import UpdateSubscriptionRequest\n\nmonei = Monei.MoneiClient(api_key=\"pk_test_36cf3e8a15eff3f5be983562ea6b13ec\")\nmonei.Subscriptions.update(\n    \"575bcd84-09fc-4a6e-8c4c-f88b8eb90bfa\",\n    UpdateSubscriptionRequest(amount=990)\n)\n"
+          }
+        ]
+      }
+    },
+    "/subscriptions/{id}/activate": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/subscriptionId"
+        }
+      ],
+      "post": {
+        "operationId": "subscriptions_activate",
+        "summary": "Activate Subscription",
+        "description": "Activates the subscription that was previously created. Activation of the subscription will create an initial payment.\nIf the subscription has trial period, the initial payment will have zero amount.\nThe subscription is automatically activated when initial payment is confirmed.\n\nIf the subscription is already activated, this endpoint can be used to update payment method.\nThis will also generate zero amount payment.\n",
+        "security": [
+          {
+            "APIKey": []
+          }
+        ],
+        "tags": [
+          "Subscriptions"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActivateSubscriptionRequest"
+              },
+              "examples": {
+                "basic": {
+                  "$ref": "#/components/examples/ActivateSubscriptionBasicRequest"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Payment"
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "Node.js",
+            "source": "const {Monei} = require('@monei-js/node-sdk');\nconst monei = new Monei('pk_test_36cf3e8a15eff3f5be983562ea6b13ec');\nmonei.subscriptions.activate('575bcd84-09fc-4a6e-8c4c-f88b8eb90bfa', {\n  paymentToken: '7cc38b08ff471ccd313ad62b23b9f362b107560b'\n});\n"
+          },
+          {
+            "lang": "PHP",
+            "source": "<?php\n$monei = new Monei\\MoneiClient('pk_test_36cf3e8a15eff3f5be983562ea6b13ec');\n$monei->subscriptions->activate(\n    '575bcd84-09fc-4a6e-8c4c-f88b8eb90bfa',\n    ['paymentToken' => '7cc38b08ff471ccd313ad62b23b9f362b107560b']\n);\n"
+          },
+          {
+            "lang": "Python",
+            "source": "import Monei\nfrom Monei import ActivateSubscriptionRequest\n\nmonei = Monei.MoneiClient(api_key=\"pk_test_36cf3e8a15eff3f5be983562ea6b13ec\")\nmonei.Subscriptions.activate(\n    \"575bcd84-09fc-4a6e-8c4c-f88b8eb90bfa\",\n    ActivateSubscriptionRequest(payment_token=\"7cc38b08ff471ccd313ad62b23b9f362b107560b\")\n)\n"
+          }
+        ]
+      }
+    },
+    "/subscriptions/{id}/cancel": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/subscriptionId"
+        }
+      ],
+      "post": {
+        "operationId": "subscriptions_cancel",
+        "summary": "Cancel Subscription",
+        "description": "Cancels the activate subscription.\n",
+        "security": [
+          {
+            "APIKey": []
+          }
+        ],
+        "tags": [
+          "Subscriptions"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CancelSubscriptionRequest"
+              },
+              "examples": {
+                "basic": {
+                  "$ref": "#/components/examples/CancelSubscriptionBasicRequest"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Subscription"
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "Node.js",
+            "source": "const {Monei, PaymentCancellationReason} = require('@monei-js/node-sdk');\nconst monei = new Monei('pk_test_36cf3e8a15eff3f5be983562ea6b13ec');\nmonei.subscriptions.cancel('575bcd84-09fc-4a6e-8c4c-f88b8eb90bfa', {cancelAtPeriodEnd: true});\n"
+          },
+          {
+            "lang": "PHP",
+            "source": "<?php\n$monei = new Monei\\MoneiClient('pk_test_36cf3e8a15eff3f5be983562ea6b13ec');\n$monei->subscriptions->cancel(\n    '575bcd84-09fc-4a6e-8c4c-f88b8eb90bfa',\n    ['cancelAtPeriodEnd' => true]\n);\n"
+          },
+          {
+            "lang": "Python",
+            "source": "import Monei\nfrom Monei import CancelPaymentRequest\n\nmonei = Monei.MoneiClient(api_key=\"pk_test_36cf3e8a15eff3f5be983562ea6b13ec\")\nmonei.subscriptions.cancel(\n    \"575bcd84-09fc-4a6e-8c4c-f88b8eb90bfa\",\n    CancelPaymentRequest(cancel_at_period_end=True)\n)\n"
+          }
+        ]
+      }
+    },
+    "/subscriptions/{id}/pause": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/subscriptionId"
+        }
+      ],
+      "post": {
+        "operationId": "subscriptions_pause",
+        "summary": "Pause Subscription",
+        "description": "Pauses the active subscription.\n",
+        "security": [
+          {
+            "APIKey": []
+          }
+        ],
+        "tags": [
+          "Subscriptions"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PauseSubscriptionRequest"
+              },
+              "examples": {
+                "basic": {
+                  "$ref": "#/components/examples/PauseSubscriptionBasicRequest"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Subscription"
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "Node.js",
+            "source": "const {Monei, PaymentCancellationReason} = require('@monei-js/node-sdk');\nconst monei = new Monei('pk_test_36cf3e8a15eff3f5be983562ea6b13ec');\nmonei.subscriptions.pause('575bcd84-09fc-4a6e-8c4c-f88b8eb90bfa', {pauseAtPeriodEnd: true});\n"
+          },
+          {
+            "lang": "PHP",
+            "source": "<?php\n$monei = new Monei\\MoneiClient('pk_test_36cf3e8a15eff3f5be983562ea6b13ec');\n$monei->subscriptions->pause(\n    '575bcd84-09fc-4a6e-8c4c-f88b8eb90bfa',\n    ['pauseAtPeriodEnd' => true]\n);\n"
+          },
+          {
+            "lang": "Python",
+            "source": "import Monei\nfrom Monei import PauseSubscriptionRequest\n\nmonei = Monei.MoneiClient(api_key=\"pk_test_36cf3e8a15eff3f5be983562ea6b13ec\")\nmonei.Subscriptions.pause(\n    \"575bcd84-09fc-4a6e-8c4c-f88b8eb90bfa\",\n    PauseSubscriptionRequest(pause_at_period_end=True)\n)\n"
+          }
+        ]
+      }
+    },
+    "/subscriptions/{id}/resume": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/subscriptionId"
+        }
+      ],
+      "post": {
+        "operationId": "subscriptions_resume",
+        "summary": "Resume Subscription",
+        "description": "Resumes the paused subscription.\n",
+        "security": [
+          {
+            "APIKey": []
+          }
+        ],
+        "tags": [
+          "Subscriptions"
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Subscription"
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "Node.js",
+            "source": "const {Monei, PaymentCancellationReason} = require('@monei-js/node-sdk');\nconst monei = new Monei('pk_test_36cf3e8a15eff3f5be983562ea6b13ec');\nmonei.subscriptions.resume('575bcd84-09fc-4a6e-8c4c-f88b8eb90bfa');\n"
+          },
+          {
+            "lang": "PHP",
+            "source": "<?php\n$monei = new Monei\\MoneiClient('pk_test_36cf3e8a15eff3f5be983562ea6b13ec');\n$monei->subscriptions->resume('575bcd84-09fc-4a6e-8c4c-f88b8eb90bfa');\n"
+          },
+          {
+            "lang": "Python",
+            "source": "import Monei\n\nmonei = Monei.MoneiClient(api_key=\"pk_test_36cf3e8a15eff3f5be983562ea6b13ec\")\nmonei.Subscriptions.resume(\"575bcd84-09fc-4a6e-8c4c-f88b8eb90bfa\")\n"
+          }
+        ]
+      }
+    }
+  }
+}
