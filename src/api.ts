@@ -406,6 +406,12 @@ export interface CreatePaymentRequest {
      * @memberof CreatePaymentRequest
      */
     sessionDetails?: PaymentSessionDetails;
+    /**
+     * Payment expiration time.
+     * @type {number}
+     * @memberof CreatePaymentRequest
+     */
+    expireAt?: number;
 }
 /**
  * 
@@ -834,7 +840,7 @@ export enum PaymentMessageLanguage {
  */
 export interface PaymentNextAction {
     /**
-     * - `CONFIRM` - Your customer needs to be redirected to a   [hosted payment page](https://docs.monei.com/docs/use-prebuilt-payment-page)   or confirm payment using   [payment token](https://docs.monei.com/docs/accept-card-payment#3-submitting-the-payment-to-monei-client-side).   The **redirectUrl** will point to the hosted payment page. - `FRICTIONLESS_CHALLENGE` - Your customer needs to be redirected to the frictionless    3d secure challenge page provided by the bank. The **redirectUrl**    will point to the frictionless 3d secure challenge page provided by the bank. - `CHALLENGE` - Your customer needs to be redirected to the   3d secure challenge page provided by the bank. The **redirectUrl**   will point to the 3d secure challenge page provided by the bank. - `COMPLETE` - The payment is completed. The **redirectUrl** will be   the **completeUrl** if it was provided when the payment was created. 
+     * - `CONFIRM` - Your customer needs to be redirected to a   [hosted payment page](https://docs.monei.com/docs/use-prebuilt-payment-page)   or confirm payment using   [payment token](https://docs.monei.com/docs/accept-card-payment#3-submitting-the-payment-to-monei-client-side).   The **redirectUrl** will point to the hosted payment page. - `FRICTIONLESS_CHALLENGE` - Your customer needs to be redirected to the frictionless    3d secure challenge page provided by the bank. The **redirectUrl**    will point to the frictionless 3d secure challenge page provided by the bank. - `CHALLENGE` - Your customer needs to be redirected to the   3d secure challenge page provided by the bank. The **redirectUrl**   will point to the 3d secure challenge page provided by the bank. - `COMPLETE` - The payment is completed. The **redirectUrl** will be   the **completeUrl** if it was provided when the payment was created. - `BIZUM_CHALLENGE` - Your customer will be redirected to the Bizum hosted payment page. 
      * @type {string}
      * @memberof PaymentNextAction
      */
@@ -861,6 +867,7 @@ export enum PaymentNextActionTypeEnum {
     CONFIRM = 'CONFIRM',
     CHALLENGE = 'CHALLENGE',
     FRICTIONLESSCHALLENGE = 'FRICTIONLESS_CHALLENGE',
+    BIZUMCHALLENGE = 'BIZUM_CHALLENGE',
     COMPLETE = 'COMPLETE'
 }
 
