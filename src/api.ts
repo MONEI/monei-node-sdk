@@ -767,9 +767,9 @@ export interface PaymentBillingDetails {
  * @enum {string}
  */
 export enum PaymentCancellationReason {
-    Duplicated = 'duplicated',
-    Fraudulent = 'fraudulent',
-    RequestedByCustomer = 'requested_by_customer'
+    duplicated = 'duplicated',
+    fraudulent = 'fraudulent',
+    requested_by_customer = 'requested_by_customer'
 }
 
 /**
@@ -803,9 +803,9 @@ export interface PaymentCustomer {
  * @enum {string}
  */
 export enum PaymentLastRefundReason {
-    Duplicated = 'duplicated',
-    Fraudulent = 'fraudulent',
-    RequestedByCustomer = 'requested_by_customer'
+    duplicated = 'duplicated',
+    fraudulent = 'fraudulent',
+    requested_by_customer = 'requested_by_customer'
 }
 
 /**
@@ -824,13 +824,13 @@ export enum PaymentMessageChannel {
  * @enum {string}
  */
 export enum PaymentMessageLanguage {
-    En = 'en',
-    Es = 'es',
-    Ca = 'ca',
-    Pt = 'pt',
-    De = 'de',
-    It = 'it',
-    Fr = 'fr'
+    en = 'en',
+    es = 'es',
+    ca = 'ca',
+    pt = 'pt',
+    de = 'de',
+    it = 'it',
+    fr = 'fr'
 }
 
 /**
@@ -866,8 +866,8 @@ export interface PaymentNextAction {
 export enum PaymentNextActionTypeEnum {
     CONFIRM = 'CONFIRM',
     CHALLENGE = 'CHALLENGE',
-    FRICTIONLESSCHALLENGE = 'FRICTIONLESS_CHALLENGE',
-    BIZUMCHALLENGE = 'BIZUM_CHALLENGE',
+    FRICTIONLESS_CHALLENGE = 'FRICTIONLESS_CHALLENGE',
+    BIZUM_CHALLENGE = 'BIZUM_CHALLENGE',
     COMPLETE = 'COMPLETE'
 }
 
@@ -914,13 +914,13 @@ export interface PaymentPaymentMethod {
     * @enum {string}
     */
 export enum PaymentPaymentMethodMethodEnum {
-    Card = 'card',
-    Bizum = 'bizum',
-    GooglePay = 'googlePay',
-    ApplePay = 'applePay',
-    ClickToPay = 'clickToPay',
-    Paypal = 'paypal',
-    Cofidis = 'cofidis'
+    card = 'card',
+    bizum = 'bizum',
+    googlePay = 'googlePay',
+    applePay = 'applePay',
+    clickToPay = 'clickToPay',
+    paypal = 'paypal',
+    cofidis = 'cofidis'
 }
 
 /**
@@ -1015,21 +1015,21 @@ export interface PaymentPaymentMethodCard {
     * @enum {string}
     */
 export enum PaymentPaymentMethodCardBrandEnum {
-    Visa = 'visa',
-    Mastercard = 'mastercard',
-    Diners = 'diners',
-    Amex = 'amex',
-    Jcb = 'jcb',
-    Unionpay = 'unionpay',
-    Unknown = 'unknown'
+    visa = 'visa',
+    mastercard = 'mastercard',
+    diners = 'diners',
+    amex = 'amex',
+    jcb = 'jcb',
+    unionpay = 'unionpay',
+    unknown = 'unknown'
 }
 /**
     * @export
     * @enum {string}
     */
 export enum PaymentPaymentMethodCardTypeEnum {
-    Debit = 'debit',
-    Credit = 'credit'
+    debit = 'debit',
+    credit = 'credit'
 }
 /**
     * @export
@@ -1038,7 +1038,7 @@ export enum PaymentPaymentMethodCardTypeEnum {
 export enum PaymentPaymentMethodCardThreeDSecureFlowEnum {
     CHALLENGE = 'CHALLENGE',
     FRICTIONLESS = 'FRICTIONLESS',
-    FRICTIONLESSCHALLENGE = 'FRICTIONLESS_CHALLENGE',
+    FRICTIONLESS_CHALLENGE = 'FRICTIONLESS_CHALLENGE',
     DIRECT = 'DIRECT'
 }
 /**
@@ -1046,9 +1046,9 @@ export enum PaymentPaymentMethodCardThreeDSecureFlowEnum {
     * @enum {string}
     */
 export enum PaymentPaymentMethodCardTokenizationMethodEnum {
-    ApplePay = 'applePay',
-    GooglePay = 'googlePay',
-    ClickToPay = 'clickToPay'
+    applePay = 'applePay',
+    googlePay = 'googlePay',
+    clickToPay = 'clickToPay'
 }
 
 /**
@@ -1103,9 +1103,9 @@ export interface PaymentPaymentMethods extends Array<string> {
  * @enum {string}
  */
 export enum PaymentRefundReason {
-    Duplicated = 'duplicated',
-    Fraudulent = 'fraudulent',
-    RequestedByCustomer = 'requested_by_customer'
+    duplicated = 'duplicated',
+    fraudulent = 'fraudulent',
+    requested_by_customer = 'requested_by_customer'
 }
 
 /**
@@ -1133,7 +1133,7 @@ export interface PaymentSequence {
     * @enum {string}
     */
 export enum PaymentSequenceTypeEnum {
-    Recurring = 'recurring'
+    recurring = 'recurring'
 }
 
 /**
@@ -1331,7 +1331,7 @@ export enum PaymentStatus {
     FAILED = 'FAILED',
     CANCELED = 'CANCELED',
     REFUNDED = 'REFUNDED',
-    PARTIALLYREFUNDED = 'PARTIALLY_REFUNDED',
+    PARTIALLY_REFUNDED = 'PARTIALLY_REFUNDED',
     AUTHORIZED = 'AUTHORIZED',
     EXPIRED = 'EXPIRED'
 }
@@ -1803,10 +1803,10 @@ export interface Subscription {
  * @enum {string}
  */
 export enum SubscriptionInterval {
-    Day = 'day',
-    Week = 'week',
-    Month = 'month',
-    Year = 'year'
+    day = 'day',
+    week = 'week',
+    month = 'month',
+    year = 'year'
 }
 
 /**
@@ -1865,7 +1865,7 @@ export interface SubscriptionPaymentMethod {
     * @enum {string}
     */
 export enum SubscriptionPaymentMethodMethodEnum {
-    Card = 'card'
+    card = 'card'
 }
 
 /**
@@ -1923,21 +1923,21 @@ export interface SubscriptionPaymentMethodCard {
     * @enum {string}
     */
 export enum SubscriptionPaymentMethodCardBrandEnum {
-    Visa = 'visa',
-    Mastercard = 'mastercard',
-    Diners = 'diners',
-    Amex = 'amex',
-    Jcb = 'jcb',
-    Unionpay = 'unionpay',
-    Unknown = 'unknown'
+    visa = 'visa',
+    mastercard = 'mastercard',
+    diners = 'diners',
+    amex = 'amex',
+    jcb = 'jcb',
+    unionpay = 'unionpay',
+    unknown = 'unknown'
 }
 /**
     * @export
     * @enum {string}
     */
 export enum SubscriptionPaymentMethodCardTypeEnum {
-    Debit = 'debit',
-    Credit = 'credit'
+    debit = 'debit',
+    credit = 'credit'
 }
 
 /**
@@ -1950,7 +1950,7 @@ export enum SubscriptionStatus {
     EXPIRED = 'EXPIRED',
     TRIALING = 'TRIALING',
     ACTIVE = 'ACTIVE',
-    PASTDUE = 'PAST_DUE',
+    PAST_DUE = 'PAST_DUE',
     PAUSED = 'PAUSED',
     CANCELED = 'CANCELED'
 }

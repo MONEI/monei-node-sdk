@@ -1,4 +1,5 @@
 {
   "supportsES6": true,
-  "generateAliasAsModel": true
+  "generateAliasAsModel": true,
+  "enumPropertyNaming":"original"
 }
