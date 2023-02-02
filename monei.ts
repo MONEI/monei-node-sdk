@@ -1,12 +1,10 @@
-import axios, {AxiosResponse} from 'axios';
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 import pkg from './package.json';
 import {ApplePayDomainApi, PaymentsApi, SubscriptionsApi} from './src';
 import {BASE_PATH} from './src/base';
 import crypto from 'crypto';
 
 export * from './src';
-
-const instance = axios.create();
 
 type ServerErrorResponse = {
   status: string;
@@ -42,20 +40,21 @@ const errorHandler = (error: any) => {
   throw new Error('Something when wrong');
 };
 
-instance.interceptors.response.use(responseHandler, errorHandler);
-instance.defaults.headers.common['User-Agent'] = `MONEI/Node/${pkg.version}`;
-
 export class Monei {
   private apiKey: string;
+  client: AxiosInstance;
   payments: PaymentsApi;
   subscriptions: SubscriptionsApi;
   applePayDomain: ApplePayDomainApi;
 
-  constructor(apiKey: string) {
+  constructor(apiKey: string, baseOptions?: AxiosRequestConfig) {
+    this.client = axios.create();
+    this.client.interceptors.response.use(responseHandler, errorHandler);
+    this.client.defaults.headers.common['User-Agent'] = `MONEI/Node/${pkg.version}`;
     this.apiKey = apiKey;
-    this.payments = new PaymentsApi({apiKey}, BASE_PATH, instance);
-    this.subscriptions = new SubscriptionsApi({apiKey}, BASE_PATH, instance);
-    this.applePayDomain = new ApplePayDomainApi({apiKey}, BASE_PATH, instance);
+    this.payments = new PaymentsApi({apiKey, baseOptions}, BASE_PATH, this.client);
+    this.subscriptions = new SubscriptionsApi({apiKey, baseOptions}, BASE_PATH, this.client);
+    this.applePayDomain = new ApplePayDomainApi({apiKey, baseOptions}, BASE_PATH, this.client);
   }
 
   verifySignature(body: string, signature: string) {
