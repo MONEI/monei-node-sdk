@@ -1648,7 +1648,7 @@ export interface SendPaymentRequest {
      * @type {string}
      * @memberof SendPaymentRequest
      */
-    phoneNumber?: string;
+    phoneNumber: string;
     /**
      * 
      * @type {PaymentMessageLanguage}
@@ -2645,14 +2645,18 @@ export const PaymentsApiAxiosParamCreator = function (configuration?: Configurat
          * Sends a payment request directly to the customer\'s phone. If Bizum payment method is available and the phone number is registered in Bizum, the customer will get a push notification to confirm the payment directly in the banking app, otherwise, he will receive a link to pay via WhatsApp. 
          * @summary Send Payment Request
          * @param {string} id The payment ID
-         * @param {SendPaymentRequest} [sendPaymentRequest] 
+         * @param {SendPaymentRequest} sendPaymentRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        sendRequest: async (id: string, sendPaymentRequest?: SendPaymentRequest, options: any = {}): Promise<RequestArgs> => {
+        sendRequest: async (id: string, sendPaymentRequest: SendPaymentRequest, options: any = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             if (id === null || id === undefined) {
                 throw new RequiredError('id','Required parameter id was null or undefined when calling sendRequest.');
+            }
+            // verify required parameter 'sendPaymentRequest' is not null or undefined
+            if (sendPaymentRequest === null || sendPaymentRequest === undefined) {
+                throw new RequiredError('sendPaymentRequest','Required parameter sendPaymentRequest was null or undefined when calling sendRequest.');
             }
             const localVarPath = `/payments/{id}/rtp`
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)));
@@ -2836,11 +2840,11 @@ export const PaymentsApiFp = function(configuration?: Configuration) {
          * Sends a payment request directly to the customer\'s phone. If Bizum payment method is available and the phone number is registered in Bizum, the customer will get a push notification to confirm the payment directly in the banking app, otherwise, he will receive a link to pay via WhatsApp. 
          * @summary Send Payment Request
          * @param {string} id The payment ID
-         * @param {SendPaymentRequest} [sendPaymentRequest] 
+         * @param {SendPaymentRequest} sendPaymentRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async sendRequest(id: string, sendPaymentRequest?: SendPaymentRequest, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Payment>> {
+        async sendRequest(id: string, sendPaymentRequest: SendPaymentRequest, options?: any): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Payment>> {
             const localVarAxiosArgs = await PaymentsApiAxiosParamCreator(configuration).sendRequest(id, sendPaymentRequest, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -2957,11 +2961,11 @@ export const PaymentsApiFactory = function (configuration?: Configuration, baseP
          * Sends a payment request directly to the customer\'s phone. If Bizum payment method is available and the phone number is registered in Bizum, the customer will get a push notification to confirm the payment directly in the banking app, otherwise, he will receive a link to pay via WhatsApp. 
          * @summary Send Payment Request
          * @param {string} id The payment ID
-         * @param {SendPaymentRequest} [sendPaymentRequest] 
+         * @param {SendPaymentRequest} sendPaymentRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        sendRequest(id: string, sendPaymentRequest?: SendPaymentRequest, options?: any): AxiosPromise<Payment> {
+        sendRequest(id: string, sendPaymentRequest: SendPaymentRequest, options?: any): AxiosPromise<Payment> {
             return PaymentsApiFp(configuration).sendRequest(id, sendPaymentRequest, options).then((request) => request(axios, basePath));
         },
     };
@@ -3093,12 +3097,12 @@ export class PaymentsApi extends BaseAPI {
      * Sends a payment request directly to the customer\'s phone. If Bizum payment method is available and the phone number is registered in Bizum, the customer will get a push notification to confirm the payment directly in the banking app, otherwise, he will receive a link to pay via WhatsApp. 
      * @summary Send Payment Request
      * @param {string} id The payment ID
-     * @param {SendPaymentRequest} [sendPaymentRequest] 
+     * @param {SendPaymentRequest} sendPaymentRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof PaymentsApi
      */
-    public sendRequest(id: string, sendPaymentRequest?: SendPaymentRequest, options?: any) {
+    public sendRequest(id: string, sendPaymentRequest: SendPaymentRequest, options?: any) {
         return PaymentsApiFp(this.configuration).sendRequest(id, sendPaymentRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
