@@ -1,4 +1,4 @@
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
+import axios, {AxiosInstance, AxiosRequestConfig, AxiosResponse} from 'axios';
 import pkg from './package.json';
 import {ApplePayDomainApi, PaymentsApi, SubscriptionsApi} from './src';
 import {BASE_PATH} from './src/base';
@@ -67,6 +67,8 @@ export class Monei {
       .createHmac('SHA256', this.apiKey)
       .update(`${parts.t}.${body}`)
       .digest('hex');
+
+    console.log(hmac, parts.v1);
 
     if (hmac !== parts.v1) {
       throw new Error('Signature verification failed.');

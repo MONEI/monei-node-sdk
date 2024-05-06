@@ -14,7 +14,7 @@
 
 import * as globalImportUrl from 'url';
 import { Configuration } from './configuration';
-import globalAxios, { AxiosPromise, AxiosInstance } from '../axios';
+import globalAxios, { AxiosPromise, AxiosInstance } from 'axios';
 // Some imports not used depending on template conditions
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from './base';
@@ -951,22 +951,23 @@ export interface PaymentPaymentMethod {
     * @enum {string}
     */
 export enum PaymentPaymentMethodMethodEnum {
+    alipay = 'alipay',
     card = 'card',
     bizum = 'bizum',
-    googlePay = 'googlePay',
-    applePay = 'applePay',
-    clickToPay = 'clickToPay',
     paypal = 'paypal',
     cofidis = 'cofidis',
     cofidisLoan = 'cofidisLoan',
-    iDeal = 'iDeal',
     mbway = 'mbway',
     multibanco = 'multibanco',
+    iDeal = 'iDeal',
+    bancontact = 'bancontact',
     sofort = 'sofort',
     trustly = 'trustly',
     sepa = 'sepa',
     klarna = 'klarna',
-    giropay = 'giropay'
+    giropay = 'giropay',
+    eps = 'eps',
+    blik = 'blik'
 }
 
 /**
@@ -1333,7 +1334,7 @@ export interface PaymentPaymentMethodTrustly {
     customerId?: string;
 }
 /**
- * An array of allowed payment methods (used in hosted payment page). Must be enabled payment methods. Possible values:   - `card`   - `bizum`   - `paypal`   - `cofidis`   - `cofidisLoan`   - `multibanco`   - `iDeal`   - `bancontact`   - `sofort`   - `trustly`   - `sepa`   - `klarna`   - `giropay` 
+ * An array of allowed payment methods (used in hosted payment page). Must be enabled payment methods. Possible values:   - `alipay`   - `card`   - `bizum`   - `paypal`   - `cofidis`   - `cofidisLoan`   - `mbway`   - `multibanco`   - `iDeal`   - `bancontact`   - `sofort`   - `trustly`   - `sepa`   - `klarna`   - `giropay`   - `eps`   - `blik` 
  * @export
  * @interface PaymentPaymentMethods
  */
