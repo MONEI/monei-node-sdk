@@ -80,5 +80,6 @@
         "yarn test"
       ]
     }
-  }
+  },
+  "packageManager": "yarn@4.2.1"
 }
