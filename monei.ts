@@ -68,8 +68,6 @@ export class Monei {
       .update(`${parts.t}.${body}`)
       .digest('hex');
 
-    console.log(hmac, parts.v1);
-
     if (hmac !== parts.v1) {
       throw new Error('Signature verification failed.');
     }
