@@ -224,3 +224,70 @@ const monei = new Monei('pk_partner_test_...', {
 // For a platform named "PaymentHub" with version 3.0.1
 monei.setUserAgent('MONEI/PaymentHub/3.0.1');
 ```
+
+## Webhook Signature Verification
+
+When receiving webhooks from MONEI, you should verify the signature to ensure the request is authentic:
+
+```js
+import {Monei} from '@monei-js/node-sdk';
+import express from 'express';
+
+const app = express();
+const monei = new Monei('pk_test_...');
+
+// Parse raw body for signature verification
+app.use('/webhook', express.raw({type: 'application/json'}));
+
+app.post('/webhook', (req, res) => {
+  try {
+    // Get the signature from the headers
+    const signature = req.headers['monei-signature'];
+    
+    // Verify the signature and get the decoded payload
+    const payload = monei.verifySignature(req.body.toString(), signature);
+    
+    // Process the webhook
+    const eventType = payload.type;
+    
+    // The data field contains the Payment object
+    const payment = payload.data;
+    
+    // Access Payment object properties directly
+    const paymentId = payment.id;
+    const amount = payment.amount;
+    const currency = payment.currency;
+    const status = payment.status;
+    
+    // Handle the event based on its type
+    switch (eventType) {
+      case 'payment.succeeded':
+        // Handle successful payment
+        console.log(`Payment ${paymentId} succeeded: ${amount/100} ${currency}`);
+        break;
+      case 'payment.failed':
+        // Handle failed payment
+        console.log(`Payment ${paymentId} failed with status: ${status}`);
+        break;
+      // Handle other event types
+    }
+    
+    res.status(200).json({received: true});
+  } catch (error) {
+    console.error('Webhook signature verification failed:', error.message);
+    res.status(401).json({error: 'Invalid signature'});
+  }
+});
+
+app.listen(3000, () => {
+  console.log('Server listening on port 3000');
+});
+```
+
+### Important Notes About Webhooks
+
+1. Always verify the signature to ensure the webhook is coming from MONEI
+2. Use the raw request body for signature verification
+3. Return a 2xx status code to acknowledge receipt of the webhook
+4. Process webhooks asynchronously for time-consuming operations
+5. Implement idempotency to handle duplicate webhook events
