@@ -7,6 +7,8 @@ import {BASE_PATH} from './src/base';
 
 export * from './src';
 
+const DEFAULT_USER_AGENT = `MONEI/Node/${pkg.version}`;
+
 type ServerErrorResponse = {
   status: string;
   statusCode: number;
@@ -57,16 +59,22 @@ export class Monei {
 
     this.apiKey = apiKey;
     this.accountId = accountId;
-    this.userAgent = userAgent || `MONEI/Node/${pkg.version}`;
-
-    // If accountId is provided, userAgent must be provided as well
-    if (this.accountId && !userAgent) {
-      throw new Error('User-Agent must be provided when using Account ID');
-    }
+    this.userAgent = userAgent || DEFAULT_USER_AGENT;
 
     // Initialize the client
     this.client = axios.create(baseOptions);
+
+    // Add response interceptor
     this.client.interceptors.response.use(responseHandler, errorHandler);
+
+    // Add request interceptor for user agent validation
+    this.client.interceptors.request.use((config) => {
+      // If accountId is being used, validate that a custom userAgent is set
+      if (this.accountId && this.userAgent === DEFAULT_USER_AGENT) {
+        throw new Error('User-Agent must be provided when using Account ID');
+      }
+      return config;
+    });
 
     // Set headers
     this.client.defaults.headers.common['User-Agent'] = this.userAgent;
@@ -88,7 +96,7 @@ export class Monei {
    */
   setAccountId(accountId: string | undefined) {
     // If setting accountId and using default User-Agent
-    if (accountId && this.userAgent === `MONEI/Node/${pkg.version}`) {
+    if (accountId && this.userAgent === DEFAULT_USER_AGENT) {
       throw new Error('User-Agent must be set before using Account ID');
     }
 

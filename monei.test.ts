@@ -8,6 +8,24 @@ const monei = new Monei(process.env.MONEI_API_KEY!);
 const rawBody =
   '{"id":"3690bd3f7294db82fed08c7371bace32","amount":11700,"currency":"EUR","orderId":"588439","status":"SUCCEEDED","message":"Transaction Approved"}';
 
+// Mock axios to prevent actual API calls
+jest.mock('axios', () => {
+  const mockAxios: Record<string, any> = {
+    create: jest.fn(() => mockAxios),
+    interceptors: {
+      request: {use: jest.fn()},
+      response: {use: jest.fn()}
+    },
+    defaults: {
+      headers: {
+        common: {}
+      }
+    },
+    get: jest.fn().mockResolvedValue({data: {}})
+  };
+  return mockAxios;
+});
+
 describe('verifySignature', () => {
   it('should verify signature correctly', () => {
     const signature =
@@ -26,6 +44,10 @@ describe('verifySignature', () => {
 });
 
 describe('Account ID', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   it('should set Account ID in headers when provided in constructor with userAgent', () => {
     const testAccountId = 'test-account-id';
     const testUserAgent = 'TestPlatform/1.0';
@@ -39,11 +61,11 @@ describe('Account ID', () => {
     expect(moneiWithAccountId.client.defaults.headers.common['User-Agent']).toBe(testUserAgent);
   });
 
-  it('should throw error when Account ID is provided without userAgent in constructor', () => {
+  it('should allow Account ID to be provided without userAgent in constructor', () => {
     const testAccountId = 'test-account-id';
-    expect(() => new Monei(process.env.MONEI_API_KEY!, {accountId: testAccountId})).toThrow(
-      'User-Agent must be provided when using Account ID'
-    );
+    // This should no longer throw in the constructor
+    const moneiInstance = new Monei(process.env.MONEI_API_KEY!, {accountId: testAccountId});
+    expect(moneiInstance.client.defaults.headers.common['MONEI-Account-ID']).toBe(testAccountId);
   });
 
   it('should set Account ID in headers when User-Agent is already set', () => {
