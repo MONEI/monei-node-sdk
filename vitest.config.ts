@@ -7,7 +7,7 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
-      include: ['monei.ts'],
+      include: ['index.ts'],
       exclude: ['src/**', 'scripts/**', 'axios.ts']
     }
   }

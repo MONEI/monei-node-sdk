@@ -19,10 +19,10 @@
     "credit cards",
     "api"
   ],
-  "source": "./monei.ts",
-  "main": "dist/monei.js",
-  "module": "dist/monei.module.js",
-  "types": "dist/monei.d.ts",
+  "source": "./index.ts",
+  "main": "dist/index.js",
+  "module": "dist/index.module.js",
+  "types": "dist/index.d.ts",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
@@ -30,8 +30,8 @@
   "scripts": {
     "generate": "openapi-generator-cli generate -i https://js.monei.com/api/v1/openapi.json -g typescript-axios --remove-operation-id-prefix -c ./config.json -o ./src",
     "generate:local": "openapi-generator-cli generate -i ./openapi.json -g typescript-axios --remove-operation-id-prefix -c ./config.json -o ./src",
-    "compile": "microbundle -f es,cjs --target node --strict",
-    "dev": "microbundle watch  -f es,cjs --target node --strict",
+    "compile": "microbundle -f es,cjs --target node --strict --name index",
+    "dev": "microbundle watch -f es,cjs --target node --strict --name index",
     "build": "yarn generate && yarn replace && yarn compile",
     "build:local": "yarn generate:local && yarn replace && yarn compile",
     "replace": "node scripts/replace.js",

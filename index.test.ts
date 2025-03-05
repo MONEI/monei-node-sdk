@@ -2,7 +2,7 @@ import axios, {AxiosInstance} from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import * as crypto from 'crypto';
 import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest';
-import {Monei} from './monei';
+import {Monei} from './index';
 import {BASE_PATH} from './src/base';
 
 // Use dummy API key instead of environment variable
