@@ -4,6 +4,7 @@ import * as crypto from 'crypto';
 import pkg from './package.json';
 import {ApplePayDomainApi, PaymentMethodsApi, PaymentsApi, SubscriptionsApi} from './src';
 import {BASE_PATH} from './src/base';
+import {Configuration} from './src/configuration';
 
 export * from './src';
 
@@ -83,7 +84,7 @@ export class Monei {
     }
 
     // Initialize API instances with the same client and config
-    const config = {apiKey: this.apiKey, baseOptions: {}};
+    const config = new Configuration({apiKey: this.apiKey, baseOptions: {}});
     this.payments = new PaymentsApi(config, BASE_PATH, this.client);
     this.paymentMethods = new PaymentMethodsApi(config, BASE_PATH, this.client);
     this.subscriptions = new SubscriptionsApi(config, BASE_PATH, this.client);

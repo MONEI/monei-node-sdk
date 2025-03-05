@@ -1,8 +1,7 @@
-import axios, {AxiosRequestConfig} from 'axios';
+import axios from 'axios';
 
 export * from 'axios';
 export default axios;
-export type AxiosPromise<T> = Promise<T>;
-export interface AxiosInstance {
-  request<T = any>(config: AxiosRequestConfig): Promise<T>;
-}
+
+// Define AxiosPromise as Promise<T> for compatibility with generated code
+export type AxiosPromise<T = any> = Promise<T>;
