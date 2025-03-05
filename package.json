@@ -33,6 +33,7 @@
     "compile": "microbundle -f es,cjs --target node --strict",
     "dev": "microbundle watch  -f es,cjs --target node --strict",
     "build": "yarn generate && yarn replace && yarn compile",
+    "build:local": "yarn generate:local && yarn replace && yarn compile",
     "replace": "node replace.js",
     "release": "release-it",
     "prepare": "yarn run build",
@@ -81,5 +82,5 @@
       ]
     }
   },
-  "packageManager": "yarn@4.2.1"
+  "packageManager": "yarn@4.7.0"
 }

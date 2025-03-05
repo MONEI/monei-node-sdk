@@ -24,3 +24,29 @@ describe('verifySignature', () => {
     );
   });
 });
+
+describe('Account ID', () => {
+  it('should set Account ID in headers when provided in constructor', () => {
+    const testAccountId = 'test-account-id';
+    const moneiWithAccountId = new Monei(process.env.MONEI_API_KEY!, undefined, testAccountId);
+    expect(moneiWithAccountId.client.defaults.headers.common['MONEI-Account-ID']).toBe(
+      testAccountId
+    );
+  });
+
+  it('should set Account ID in headers when using setAccountId method', () => {
+    const testAccountId = 'test-account-id';
+    const moneiInstance = new Monei(process.env.MONEI_API_KEY!);
+    moneiInstance.setAccountId(testAccountId);
+    expect(moneiInstance.client.defaults.headers.common['MONEI-Account-ID']).toBe(testAccountId);
+  });
+
+  it('should remove Account ID from headers when setting to undefined', () => {
+    const testAccountId = 'test-account-id';
+    const moneiInstance = new Monei(process.env.MONEI_API_KEY!, undefined, testAccountId);
+    expect(moneiInstance.client.defaults.headers.common['MONEI-Account-ID']).toBe(testAccountId);
+
+    moneiInstance.setAccountId(undefined);
+    expect(moneiInstance.client.defaults.headers.common['MONEI-Account-ID']).toBeUndefined();
+  });
+});

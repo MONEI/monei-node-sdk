@@ -4,10 +4,15 @@ test.js
 .idea
 .env
 
+# OpenAPI
+openapi.json
+
 # Yarn
-/build/.yarn/*
-!/build/.yarn/patches
-!/build/.yarn/plugins
-!/build/.yarn/releases
-!/build/.yarn/sdks
-!/build/.yarn/versions
+.pnp.*
+.yarn/*
+!.yarn/cache
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
