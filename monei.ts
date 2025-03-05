@@ -30,41 +30,56 @@ class ServerError extends Error {
   }
 }
 
-const responseHandler = (res: AxiosResponse) => {
-  return res.data;
-};
+const responseHandler = (res: AxiosResponse) => res.data;
 
 const errorHandler = (error: any) => {
   if (error?.response?.data) {
     throw new ServerError(error.response.data);
   }
-  throw new Error('Something when wrong');
+  throw error instanceof Error ? error : new Error('Something went wrong');
 };
 
 export class Monei {
   private apiKey: string;
   private accountId?: string;
-  client: AxiosInstance;
-  payments: PaymentsApi;
-  paymentMethods: PaymentMethodsApi;
-  subscriptions: SubscriptionsApi;
-  applePayDomain: ApplePayDomainApi;
+  private userAgent: string;
+  client!: AxiosInstance;
+  payments!: PaymentsApi;
+  paymentMethods!: PaymentMethodsApi;
+  subscriptions!: SubscriptionsApi;
+  applePayDomain!: ApplePayDomainApi;
 
-  constructor(apiKey: string, baseOptions?: AxiosRequestConfig, accountId?: string) {
-    this.client = axios.create();
-    this.client.interceptors.response.use(responseHandler, errorHandler);
-    this.client.defaults.headers.common['User-Agent'] = `MONEI/Node/${pkg.version}`;
+  constructor(
+    apiKey: string,
+    options?: AxiosRequestConfig & {accountId?: string; userAgent?: string}
+  ) {
+    const {accountId, userAgent, ...baseOptions} = options || {};
+
     this.apiKey = apiKey;
     this.accountId = accountId;
+    this.userAgent = userAgent || `MONEI/Node/${pkg.version}`;
 
+    // If accountId is provided, userAgent must be provided as well
+    if (this.accountId && !userAgent) {
+      throw new Error('User-Agent must be provided when using Account ID');
+    }
+
+    // Initialize the client
+    this.client = axios.create(baseOptions);
+    this.client.interceptors.response.use(responseHandler, errorHandler);
+
+    // Set headers
+    this.client.defaults.headers.common['User-Agent'] = this.userAgent;
     if (this.accountId) {
       this.client.defaults.headers.common['MONEI-Account-ID'] = this.accountId;
     }
 
-    this.payments = new PaymentsApi({apiKey, baseOptions}, BASE_PATH, this.client);
-    this.paymentMethods = new PaymentMethodsApi({apiKey, baseOptions}, BASE_PATH, this.client);
-    this.subscriptions = new SubscriptionsApi({apiKey, baseOptions}, BASE_PATH, this.client);
-    this.applePayDomain = new ApplePayDomainApi({apiKey, baseOptions}, BASE_PATH, this.client);
+    // Initialize API instances with the same client and config
+    const config = {apiKey: this.apiKey, baseOptions: {}};
+    this.payments = new PaymentsApi(config, BASE_PATH, this.client);
+    this.paymentMethods = new PaymentMethodsApi(config, BASE_PATH, this.client);
+    this.subscriptions = new SubscriptionsApi(config, BASE_PATH, this.client);
+    this.applePayDomain = new ApplePayDomainApi(config, BASE_PATH, this.client);
   }
 
   /**
@@ -72,8 +87,14 @@ export class Monei {
    * @param accountId - The merchant's account ID
    */
   setAccountId(accountId: string | undefined) {
+    // If setting accountId and using default User-Agent
+    if (accountId && this.userAgent === `MONEI/Node/${pkg.version}`) {
+      throw new Error('User-Agent must be set before using Account ID');
+    }
+
     this.accountId = accountId;
 
+    // Update headers in client
     if (accountId) {
       this.client.defaults.headers.common['MONEI-Account-ID'] = accountId;
     } else {
@@ -81,12 +102,30 @@ export class Monei {
     }
   }
 
+  /**
+   * Set a custom User-Agent header
+   * @param userAgent - Custom User-Agent string
+   */
+  setUserAgent(userAgent: string) {
+    this.userAgent = userAgent;
+
+    // Update headers in client
+    this.client.defaults.headers.common['User-Agent'] = userAgent;
+  }
+
+  /**
+   * Verify webhook signature
+   * @param body - Raw request body as string
+   * @param signature - Signature from the MONEI-Signature header
+   * @returns Parsed body as object
+   */
   verifySignature(body: string, signature: string) {
     const parts = signature.split(',').reduce<Record<string, string>>((result, part) => {
       const [key, value] = part.split('=');
       result[key] = value;
       return result;
     }, {});
+
     const hmac = crypto
       .createHmac('SHA256', this.apiKey)
       .update(`${parts.t}.${body}`)
