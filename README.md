@@ -35,13 +35,18 @@ monei.payments.create({orderId: '12345', amount: 110}).then((result) => {
 
 If you're a partner or platform integrating with MONEI, you can act on behalf of your merchants by providing their Account ID. This is useful for platforms that need to manage multiple merchant accounts.
 
+**Note:** When using Account ID, you must also provide a custom User-Agent to identify your platform.
+
 ### Setting Account ID in the constructor
 
 ```js
 const {Monei} = require('@monei-js/node-sdk');
 
-// Initialize with Account ID
-const monei = new Monei('pk_test_...', undefined, 'merchant_account_id');
+// Initialize with Account ID and User-Agent
+const monei = new Monei('pk_test_...', {
+  accountId: 'merchant_account_id',
+  userAgent: 'YourPlatform/1.0'
+});
 
 // Make API calls on behalf of the merchant
 monei.payments.create({orderId: '12345', amount: 110}).then((result) => {
@@ -56,6 +61,9 @@ const {Monei} = require('@monei-js/node-sdk');
 
 const monei = new Monei('pk_test_...');
 
+// Set User-Agent for your platform (required before setting Account ID)
+monei.setUserAgent('YourPlatform/1.0');
+
 // Set Account ID to act on behalf of a merchant
 monei.setAccountId('merchant_account_id');
 
@@ -66,4 +74,20 @@ monei.payments.create({orderId: '12345', amount: 110}).then((result) => {
 
 // Remove Account ID to stop acting on behalf of the merchant
 monei.setAccountId(undefined);
+```
+
+## Custom User-Agent
+
+You can set a custom User-Agent to identify your application or platform. This is required when using Account ID.
+
+```js
+const {Monei} = require('@monei-js/node-sdk');
+
+// Set User-Agent in constructor
+const monei = new Monei('pk_test_...', {
+  userAgent: 'YourApp/1.0'
+});
+
+// Or set it after initialization
+monei.setUserAgent('YourApp/2.0');
 ```
