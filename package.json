@@ -34,7 +34,7 @@
     "dev": "microbundle watch  -f es,cjs --target node --strict",
     "build": "yarn generate && yarn replace && yarn compile",
     "build:local": "yarn generate:local && yarn replace && yarn compile",
-    "replace": "node replace.js",
+    "replace": "node scripts/replace.js",
     "release": "release-it",
     "prepare": "yarn run build",
     "test": "jest"
