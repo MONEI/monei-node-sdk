@@ -2,6 +2,30 @@
   "$schema": "./node_modules/@openapitools/openapi-generator-cli/config.schema.json",
   "spaces": 2,
   "generator-cli": {
-    "version": "7.12.0"
+    "version": "7.12.0",
+    "generators": {
+      "typescript-axios": {
+        "generatorName": "typescript-axios",
+        "output": "./src",
+        "inputSpec": "https://js.monei.com/api/v1/openapi.json",
+        "removeOperationIdPrefix": true,
+        "additionalProperties": {
+          "supportsES6": true,
+          "generateAliasAsModel": true,
+          "enumPropertyNaming": "original"
+        }
+      },
+      "typescript-axios-local": {
+        "generatorName": "typescript-axios",
+        "output": "./src",
+        "inputSpec": "./openapi.json",
+        "removeOperationIdPrefix": true,
+        "additionalProperties": {
+          "supportsES6": true,
+          "generateAliasAsModel": true,
+          "enumPropertyNaming": "original"
+        }
+      }
+    }
   }
 }

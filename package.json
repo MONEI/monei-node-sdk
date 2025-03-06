@@ -28,8 +28,8 @@
     "registry": "https://registry.npmjs.org/"
   },
   "scripts": {
-    "generate": "openapi-generator-cli generate -i https://js.monei.com/api/v1/openapi.json -g typescript-axios --remove-operation-id-prefix -c ./config.json -o ./src",
-    "generate:local": "openapi-generator-cli generate -i ./openapi.json -g typescript-axios --remove-operation-id-prefix -c ./config.json -o ./src",
+    "generate": "openapi-generator-cli generate --generator-key typescript-axios",
+    "generate:local": "openapi-generator-cli generate --generator-key typescript-axios-local",
     "compile": "microbundle -f es,cjs --target node --strict --name index",
     "dev": "microbundle watch -f es,cjs --target node --strict --name index",
     "build": "yarn generate && yarn replace && yarn compile",
