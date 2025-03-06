@@ -7,8 +7,7 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json-summary', 'json'],
-      include: ['index.ts'],
-      exclude: ['src/**', 'axios.ts']
+      include: ['index.ts', 'src/api.ts']
     }
   }
 });
