@@ -6,6 +6,9 @@ For collecting customer and payment information in the browser, use [monei.js](h
 
 [![npm version](https://img.shields.io/npm/v/@monei-js/node-sdk.svg)](https://www.npmjs.com/package/@monei-js/node-sdk)
 [![License](https://img.shields.io/npm/l/@monei-js/node-sdk.svg)](https://github.com/MONEI/monei-node-sdk/blob/master/LICENSE)
+[![Downloads](https://img.shields.io/npm/dm/@monei-js/node-sdk.svg)](https://www.npmjs.com/package/@monei-js/node-sdk)
+[![TypeScript](https://img.shields.io/badge/TypeScript-Ready-blue.svg)](https://www.typescriptlang.org/)
+[![GitHub stars](https://img.shields.io/github/stars/MONEI/monei-node-sdk.svg?style=social&label=Star)](https://github.com/MONEI/monei-node-sdk)
 
 ## Table of Contents
 
