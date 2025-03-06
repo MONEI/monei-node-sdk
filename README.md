@@ -23,7 +23,7 @@ For collecting customer and payment information in the browser, use [monei.js](h
       - [Integration Flow](#integration-flow)
   - [Webhooks](#webhooks)
     - [Signature Verification](#signature-verification)
-    - [Handling Webhook Events](#handling-webhook-events)
+    - [Handling Payment Callbacks](#handling-payment-callbacks)
       - [Important Notes About Webhooks](#important-notes-about-webhooks)
   - [MONEI Connect for Partners](#monei-connect-for-partners)
     - [Account ID](#account-id)
@@ -197,12 +197,14 @@ For more information about the hosted payment page, visit the [MONEI Hosted Paym
 
 ## Webhooks
 
+Webhooks can be configured in the [MONEI Dashboard → Settings → Webhooks](https://dashboard.monei.com/settings/webhooks).
+
 ### Signature Verification
 
 When receiving webhooks from MONEI, you should verify the signature to ensure the request is authentic:
 
 ```js
-import {Monei} from '@monei-js/node-sdk';
+import {Monei, PaymentStatus} from '@monei-js/node-sdk';
 import express from 'express';
 
 const app = express();
@@ -223,7 +225,7 @@ app.post('/webhook', (req, res) => {
     const eventType = payload.type;
     
     // The data field contains the Payment object
-    const payment = payload.data;
+    const payment = payload.object;
     
     // Access Payment object properties directly
     const paymentId = payment.id;
@@ -256,7 +258,9 @@ app.listen(3000, () => {
 });
 ```
 
-### Handling Webhook Events
+### Handling Payment Callbacks
+
+MONEI sends an HTTP POST request to your `callbackUrl` with the payment result. This ensures you receive the payment status even if the customer closes their browser during the redirect.
 
 Example of handling the callback in an Express.js server:
 
@@ -266,15 +270,14 @@ app.post('/checkout/callback', express.raw({type: 'application/json'}), (req, re
   
   try {
     // Verify the signature
-    const payload = monei.verifySignature(req.body.toString(), signature);
-    
-    // Process the payment result
-    const payment = payload.data;
+    const payment = monei.verifySignature(req.body.toString(), signature);
+  
     
     // Update your order status based on the payment status
-    if (payment.status === 'COMPLETED') {
+    // Could be PaymentStatus.AUTHORIZED for pre-authorization payments
+    if (payment.status === PaymentStatus.SUCCEEDED) {
       // Payment successful - fulfill the order
-    } else if (payment.status === 'FAILED') {
+    } else if (payment.status === PaymentStatus.FAILED) {
       // Payment failed - notify the customer
     }
     
