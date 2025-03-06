@@ -3,7 +3,7 @@ dist
 test.js
 .idea
 .env
-.coverage
+coverage
 
 # OpenAPI
 openapi.json
