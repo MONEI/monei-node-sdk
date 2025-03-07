@@ -14,8 +14,14 @@ For collecting customer and payment information in the browser, use [monei.js](h
 
 - [MONEI Node.js SDK](#monei-nodejs-sdk)
   - [Table of Contents](#table-of-contents)
+  - [Requirements](#requirements)
   - [Installation](#installation)
   - [Basic Usage](#basic-usage)
+    - [API Keys](#api-keys)
+      - [Types of API Keys](#types-of-api-keys)
+      - [API Key Security](#api-key-security)
+    - [Test Mode](#test-mode)
+    - [Basic Client Usage](#basic-client-usage)
   - [Payment Operations](#payment-operations)
     - [Creating a Payment](#creating-a-payment)
     - [Retrieving a Payment](#retrieving-a-payment)
@@ -37,6 +43,10 @@ For collecting customer and payment information in the browser, use [monei.js](h
     - [Managing Multiple Merchant Accounts](#managing-multiple-merchant-accounts)
   - [Documentation](#documentation)
 
+## Requirements
+
+- Node.js 12 or later
+
 ## Installation
 
 Install the package using npm or yarn:
@@ -51,16 +61,76 @@ yarn add @monei-js/node-sdk
 
 ## Basic Usage
 
-The MONEI Node.js SDK uses API key to authenticate requests. You can view and manage your API key in the [MONEI Dashboard](https://dashboard.monei.com/settings/api).
+### API Keys
+
+The MONEI API uses API keys for authentication. You can obtain and manage your API keys in the [MONEI Dashboard](https://dashboard.monei.com/settings/api).
+
+#### Types of API Keys
+
+MONEI provides two types of API keys:
+
+- **Test API Keys**: Use these for development and testing. Transactions made with test API keys are not processed by real payment providers.
+- **Live API Keys**: Use these in production environments. Transactions made with live API keys are processed by real payment providers and will move actual money.
+
+Each API key has a distinct prefix that indicates its environment:
+
+- Test API keys start with `pk_test_` (e.g., `pk_test_12345abcdef`)
+- Live API keys start with `pk_live_` (e.g., `pk_live_12345abcdef`)
+
+By checking the prefix of an API key, you can quickly determine which environment you're working in. This is especially useful when you're managing multiple projects or environments.
+
+#### API Key Security
+
+Your API keys carry significant privileges, so be sure to keep them secure:
+
+- Keep your API keys confidential and never share them in publicly accessible areas such as GitHub, client-side code, or in your frontend application.
+- Use environment variables or a secure vault to store your API keys.
+- Restrict API key access to only the IP addresses that need them.
+- Regularly rotate your API keys, especially if you suspect they may have been compromised.
+
+```js
+// Example of loading API key from environment variable (recommended)
+const apiKey = process.env.MONEI_API_KEY;
+const monei = new Monei(apiKey);
+```
+
+### Test Mode
+
+To test your integration with MONEI, you need to switch to **test mode** using the toggle in the header of your MONEI Dashboard. When in test mode:
+
+1. Generate your test API key in [MONEI Dashboard → Settings → API Access](https://dashboard.monei.com/settings/api)
+2. Configure your payment methods in [MONEI Dashboard → Settings → Payment Methods](https://dashboard.monei.com/settings/payment-methods)
+
+**Important:** Account ID and API key generated in test mode are different from those in live (production) mode and can only be used for testing purposes.
+
+When using test mode, you can simulate various payment scenarios using test card numbers, Bizum phone numbers, and PayPal accounts provided in the [MONEI Testing documentation](https://docs.monei.com/docs/testing/).
+
+### Basic Client Usage
 
 ```js
 import {Monei} from '@monei-js/node-sdk';
 
-const monei = new Monei('pk_test_...');
+// Instantiate the client using the API key
+const monei = new Monei('YOUR_API_KEY');
 
-monei.payments.create({orderId: '12345', amount: 110}).then((result) => {
-  console.log(result);
-});
+try {
+  // Create a simple payment
+  monei.payments.create({
+    amount: 1250, // 12.50€
+    orderId: '100100000001',
+    currency: 'EUR',
+    description: 'Items description',
+    customer: {
+      email: 'john.doe@monei.com',
+      name: 'John Doe'
+    }
+  })
+  .then(result => {
+    console.log(result);
+  });
+} catch (error) {
+  console.error('Error while creating payment:', error.message);
+}
 ```
 
 ## Payment Operations
@@ -72,7 +142,7 @@ Create a payment with customer information:
 ```js
 import {Monei} from '@monei-js/node-sdk';
 
-const monei = new Monei('pk_test_...');
+const monei = new Monei('YOUR_API_KEY');
 
 monei.payments
   .create({
@@ -92,10 +162,16 @@ monei.payments
         country: 'ES',
         postalCode: '08001'
       }
-    }
+    },
+    completeUrl: 'https://example.com/success',
+    cancelUrl: 'https://example.com/failure',
+    callbackUrl: 'https://example.com/webhook'
   })
   .then((result) => {
     console.log(result);
+  })
+  .catch((error) => {
+    console.error('Error while creating payment:', error.message);
   });
 ```
 
@@ -106,11 +182,15 @@ Retrieve an existing payment by ID:
 ```js
 import {Monei} from '@monei-js/node-sdk';
 
-const monei = new Monei('pk_test_...');
+const monei = new Monei('YOUR_API_KEY');
 
-monei.payments.get('pay_123456789').then((payment) => {
-  console.log(payment);
-});
+monei.payments.get('pay_123456789')
+  .then((payment) => {
+    console.log('Payment status:', payment.status);
+  })
+  .catch((error) => {
+    console.error('Error retrieving payment:', error.message);
+  });
 ```
 
 ### Refunding a Payment
@@ -120,7 +200,7 @@ Process a full or partial refund:
 ```js
 import {Monei} from '@monei-js/node-sdk';
 
-const monei = new Monei('pk_test_...');
+const monei = new Monei('YOUR_API_KEY');
 
 monei.refunds
   .create({
@@ -129,7 +209,10 @@ monei.refunds
     reason: 'customer_request'
   })
   .then((refund) => {
-    console.log(refund);
+    console.log('Refund created with ID:', refund.id);
+  })
+  .catch((error) => {
+    console.error('Error refunding payment:', error.message);
   });
 ```
 
@@ -158,7 +241,7 @@ You can customize the appearance in your MONEI Dashboard → Settings → Brandi
 ```js
 import {Monei} from '@monei-js/node-sdk';
 
-const monei = new Monei('pk_test_...');
+const monei = new Monei('YOUR_API_KEY');
 
 monei.payments.create({
   amount: 110, // Amount in cents (1.10)
@@ -171,11 +254,17 @@ monei.payments.create({
   callbackUrl: 'https://example.com/checkout/callback', // For asynchronous notifications
   completeUrl: 'https://example.com/checkout/complete', // Redirect after payment
   cancelUrl: 'https://example.com/checkout/cancel' // Redirect if customer cancels
-}).then(payment => {
+})
+.then(payment => {
   // Redirect the customer to the payment page
   if (payment.nextAction && payment.nextAction.redirectUrl) {
-    window.location.href = payment.nextAction.redirectUrl;
+    // In a browser environment:
+    // window.location.href = payment.nextAction.redirectUrl;
+    console.log('Redirect URL:', payment.nextAction.redirectUrl);
   }
+})
+.catch(error => {
+  console.error('Error while creating payment:', error.message);
 });
 ```
 
@@ -211,7 +300,7 @@ import {Monei, PaymentStatus} from '@monei-js/node-sdk';
 import express from 'express';
 
 const app = express();
-const monei = new Monei('pk_test_...');
+const monei = new Monei('YOUR_API_KEY');
 
 // Parse raw body for signature verification
 app.use('/webhook', express.raw({type: 'application/json'}));
@@ -273,15 +362,21 @@ app.post('/checkout/callback', express.raw({type: 'application/json'}), (req, re
   
   try {
     // Verify the signature
-    const payment = monei.verifySignature(req.body.toString(), signature);
-  
+    const payload = monei.verifySignature(req.body.toString(), signature);
+    const payment = payload.data;
     
     // Update your order status based on the payment status
-    // Could be PaymentStatus.AUTHORIZED for pre-authorization payments
     if (payment.status === PaymentStatus.SUCCEEDED) {
       // Payment successful - fulfill the order
+      // Update your database, send confirmation email, etc.
     } else if (payment.status === PaymentStatus.FAILED) {
       // Payment failed - notify the customer
+      // Log the failure, update your database, etc.
+    } else if (payment.status === PaymentStatus.AUTHORIZED) {
+      // Payment is authorized but not yet captured
+      // You can capture it later
+    } else if (payment.status === PaymentStatus.CANCELED) {
+      // Payment was canceled
     }
     
     // Acknowledge receipt of the webhook
@@ -328,9 +423,13 @@ const monei = new Monei('pk_partner_test_...', {
 });
 
 // Make API calls on behalf of the merchant
-monei.payments.create({orderId: '12345', amount: 110}).then((result) => {
-  console.log(result);
-});
+monei.payments.create({orderId: '12345', amount: 110})
+  .then((result) => {
+    console.log(result);
+  })
+  .catch((error) => {
+    console.error('Error while creating payment:', error.message);
+  });
 ```
 
 #### Setting Account ID after initialization
@@ -348,9 +447,13 @@ monei.setUserAgent('MONEI/YourPlatform/1.0.0');
 monei.setAccountId('merchant_account_id');
 
 // Make API calls on behalf of the merchant
-monei.payments.create({orderId: '12345', amount: 110}).then((result) => {
-  console.log(result);
-});
+monei.payments.create({orderId: '12345', amount: 110})
+  .then((result) => {
+    console.log(result);
+  })
+  .catch((error) => {
+    console.error('Error while creating payment:', error.message);
+  });
 
 // Remove Account ID to stop acting on behalf of the merchant
 monei.setAccountId(undefined);
@@ -397,6 +500,10 @@ const monei = new Monei('pk_partner_test_...', {
 monei.setUserAgent('MONEI/PaymentHub/3.0.1');
 ```
 
+> **Note:** When using Account ID, you must set a custom User-Agent before making any API calls. The User-Agent is validated when making API requests.
+>
+> **Important:** To use this feature, you need to be registered as a MONEI partner and use your partner API key. Please contact connect@monei.com to register as a partner.
+
 ### Managing Multiple Merchant Accounts
 
 ```js
@@ -433,9 +540,19 @@ async function processPaymentsForMerchants(merchantAccounts) {
 }
 
 // Example usage
-processPaymentsForMerchants(['merchant_1', 'merchant_2', 'merchant_3']).then(console.log);
+const merchantAccounts = ['merchant_1', 'merchant_2', 'merchant_3'];
+processPaymentsForMerchants(merchantAccounts)
+  .then(results => console.log(results))
+  .catch(error => console.error('Error processing merchant payments:', error.message));
 ```
 
 ## Documentation
 
 For the full documentation, check our [Documentation portal](https://docs.monei.com/).
+
+For a comprehensive overview of all MONEI features and integration options, visit our [main documentation portal](https://docs.monei.com/). There you can explore guides for:
+
+- Using a prebuilt payment page with MONEI Hosted payment page
+- Building a custom checkout with MONEI UI components
+- Integrating with multiple e-commerce platforms
+- Connecting with business platforms and marketplaces
