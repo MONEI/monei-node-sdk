@@ -673,7 +673,7 @@ describe('Monei SDK', () => {
       mockAxios.onGet(`${BASE_PATH}/payments/pay_123`).reply(401, errorResponse);
 
       try {
-        await monei.payments.retrieve('pay_123');
+        await monei.payments.get('pay_123');
         expect(true).toBe(false); // Should not reach here
       } catch (error: any) {
         // Check if it's a TypeError (mock issue) or an ApiException
@@ -702,7 +702,7 @@ describe('Monei SDK', () => {
       mockAxios.onGet(`${BASE_PATH}/payments/nonexistent_payment`).reply(404, errorResponse);
 
       try {
-        await monei.payments.retrieve('nonexistent_payment');
+        await monei.payments.get('nonexistent_payment');
         expect(true).toBe(false); // Should not reach here
       } catch (error: any) {
         // Check if it's a TypeError (mock issue) or an ApiException
