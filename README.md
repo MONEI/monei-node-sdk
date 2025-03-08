@@ -396,8 +396,6 @@ app.post('/checkout/callback', express.raw({type: 'application/json'}), (req, re
 4. Process webhooks asynchronously for time-consuming operations
 5. Implement idempotency to handle duplicate webhook events
 
-For more information about webhooks, visit the [MONEI Webhooks documentation](https://docs.monei.com/docs/webhooks).
-
 ## MONEI Connect for Partners
 
 If you're a partner or platform integrating with MONEI, you can act on behalf of your merchants by providing their Account ID. This is part of [MONEI Connect](https://docs.monei.com/docs/monei-connect/), which allows platforms to manage multiple merchant accounts.
