@@ -1,5 +1,9 @@
 # Changelog
 
+## <small>1.6.1 (2025-03-08)</small>
+
+* chore: Update project configuration and test setup ([93d07fb](https://github.com/MONEI/monei-node-sdk/commit/93d07fb))
+
 ## 1.6.0 (2025-03-08)
 
 * feat: Implement comprehensive API error handling with ApiException ([9f3b4f9](https://github.com/MONEI/monei-node-sdk/commit/9f3b4f9))
