@@ -10,7 +10,10 @@ export * from './src';
 
 const DEFAULT_USER_AGENT = `MONEI/Node/${pkg.version}`;
 
-type ServerErrorResponse = {
+/**
+ * Response structure for API exceptions returned by the MONEI API
+ */
+export type ApiExceptionResponse = {
   status: string;
   statusCode: number;
   requestId: string;
@@ -18,13 +21,22 @@ type ServerErrorResponse = {
   requestTime: string;
 };
 
-class ServerError extends Error {
+/**
+ * Exception class for handling MONEI API errors
+ * Contains detailed information about the error including status, statusCode,
+ * requestId, and requestTime for debugging and logging purposes
+ */
+export class ApiException extends Error {
   status: string;
   statusCode: number;
   requestId: string;
   requestTime: Date;
 
-  constructor(res: ServerErrorResponse) {
+  /**
+   * Creates a new ApiException instance
+   * @param res - The API exception response from the MONEI API
+   */
+  constructor(res: ApiExceptionResponse) {
     super(res.message);
     this.status = res.status;
     this.statusCode = res.statusCode;
@@ -33,25 +45,53 @@ class ServerError extends Error {
   }
 }
 
+/**
+ * Extracts and returns the data from an Axios response
+ * @param res - The Axios response object
+ * @returns The data contained in the response
+ */
 const responseHandler = (res: AxiosResponse) => res.data;
 
+/**
+ * Handles errors from API requests
+ * Transforms API errors into ApiException instances or rethrows other errors
+ * @param error - The error object from a failed request
+ * @throws {ApiException} When the error contains response data from the API
+ * @throws {Error} When the error is of another type
+ */
 const errorHandler = (error: any) => {
   if (error?.response?.data) {
-    throw new ServerError(error.response.data);
+    throw new ApiException(error.response.data);
   }
   throw error instanceof Error ? error : new Error('Something went wrong');
 };
 
+/**
+ * Main MONEI SDK client class
+ * Provides access to MONEI's payment processing APIs including payments,
+ * payment methods, subscriptions, and Apple Pay domain verification
+ */
 export class Monei {
   private apiKey: string;
   private accountId?: string;
   private userAgent: string;
+  /** Axios HTTP client instance used for API requests */
   client!: AxiosInstance;
+  /** API for managing payments */
   payments!: PaymentsApi;
+  /** API for managing payment methods */
   paymentMethods!: PaymentMethodsApi;
+  /** API for managing subscriptions */
   subscriptions!: SubscriptionsApi;
+  /** API for Apple Pay domain verification */
   applePayDomain!: ApplePayDomainApi;
 
+  /**
+   * Creates a new MONEI SDK client instance
+   * @param apiKey - Your MONEI API key
+   * @param options - Additional configuration options including accountId for acting on behalf of merchants,
+   *                  userAgent for identifying your application, and any Axios request configuration
+   */
   constructor(
     apiKey: string,
     options?: AxiosRequestConfig & {accountId?: string; userAgent?: string}
@@ -94,6 +134,7 @@ export class Monei {
   /**
    * Set the account ID to act on behalf of a merchant
    * @param accountId - The merchant's account ID
+   * @throws {Error} When trying to set an account ID with the default User-Agent
    */
   setAccountId(accountId: string | undefined) {
     // If setting accountId and using default User-Agent
@@ -113,7 +154,7 @@ export class Monei {
 
   /**
    * Set a custom User-Agent header
-   * @param userAgent - Custom User-Agent string
+   * @param userAgent - Custom User-Agent string to identify your application
    */
   setUserAgent(userAgent: string) {
     this.userAgent = userAgent;
@@ -123,10 +164,11 @@ export class Monei {
   }
 
   /**
-   * Verify webhook signature
+   * Verify webhook signature to ensure the webhook was sent by MONEI
    * @param body - Raw request body as string
    * @param signature - Signature from the MONEI-Signature header
    * @returns Parsed body as object
+   * @throws {Error} When signature verification fails
    */
   verifySignature(body: string, signature: string) {
     const parts = signature.split(',').reduce<Record<string, string>>((result, part) => {

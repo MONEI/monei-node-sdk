@@ -1,8 +1,8 @@
-const replace = require('replace-in-file');
-const path = require('path');
+import {join} from 'path';
+import {replaceInFile} from 'replace-in-file';
 
-replace.replaceInFile({
-  files: [path.join(__dirname, '../src/api.ts'), path.join(__dirname, '../src/base.ts')],
+replaceInFile({
+  files: [join(import.meta.dirname, '../src/api.ts'), join(import.meta.dirname, '../src/base.ts')],
   from: 'axios',
   to: '../axios'
 });
