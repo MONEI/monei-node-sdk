@@ -362,8 +362,7 @@ app.post('/checkout/callback', express.raw({type: 'application/json'}), (req, re
   
   try {
     // Verify the signature
-    const payload = monei.verifySignature(req.body.toString(), signature);
-    const payment = payload.data;
+    const payment = monei.verifySignature(req.body.toString(), signature);
     
     // Update your order status based on the payment status
     if (payment.status === PaymentStatus.SUCCEEDED) {
