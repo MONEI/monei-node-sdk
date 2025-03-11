@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.7.0 (2025-03-11)
+
+* feat: Add Bizum API support and improve OpenAPI generator configuration ([74990fe](https://github.com/MONEI/monei-node-sdk/commit/74990fe))
+* fix: Update MONEI webhook signature verification and commitlint config ([b136ff6](https://github.com/MONEI/monei-node-sdk/commit/b136ff6))
+
 ## <small>1.6.1 (2025-03-08)</small>
 
 * chore: Update project configuration and test setup ([93d07fb](https://github.com/MONEI/monei-node-sdk/commit/93d07fb))
