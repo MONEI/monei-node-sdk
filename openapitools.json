@@ -12,7 +12,10 @@
         "additionalProperties": {
           "supportsES6": true,
           "generateAliasAsModel": true,
-          "enumPropertyNaming": "original"
+          "enumPropertyNaming": "original",
+          "withSeparateModelsAndApi": true,
+          "apiPackage": "api",
+          "modelPackage": "model"
         }
       },
       "typescript-axios-local": {
@@ -23,7 +26,10 @@
         "additionalProperties": {
           "supportsES6": true,
           "generateAliasAsModel": true,
-          "enumPropertyNaming": "original"
+          "enumPropertyNaming": "original",
+          "withSeparateModelsAndApi": true,
+          "apiPackage": "api",
+          "modelPackage": "model"
         }
       }
     }

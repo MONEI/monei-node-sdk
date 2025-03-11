@@ -1,8 +1,7 @@
 import axios, {AxiosInstance, AxiosRequestConfig, AxiosResponse} from 'axios';
 import * as crypto from 'crypto';
-// @ts-ignore
 import pkg from './package.json';
-import {ApplePayDomainApi, PaymentMethodsApi, PaymentsApi, SubscriptionsApi} from './src';
+import {ApplePayDomainApi, BizumApi, PaymentMethodsApi, PaymentsApi, SubscriptionsApi} from './src';
 import {BASE_PATH} from './src/base';
 import {Configuration} from './src/configuration';
 
@@ -85,6 +84,8 @@ export class Monei {
   subscriptions!: SubscriptionsApi;
   /** API for Apple Pay domain verification */
   applePayDomain!: ApplePayDomainApi;
+  /** API for managing Bizum */
+  bizum!: BizumApi;
 
   /**
    * Creates a new MONEI SDK client instance
@@ -129,6 +130,7 @@ export class Monei {
     this.paymentMethods = new PaymentMethodsApi(config, BASE_PATH, this.client);
     this.subscriptions = new SubscriptionsApi(config, BASE_PATH, this.client);
     this.applePayDomain = new ApplePayDomainApi(config, BASE_PATH, this.client);
+    this.bizum = new BizumApi(config, BASE_PATH, this.client);
   }
 
   /**
@@ -167,25 +169,28 @@ export class Monei {
    * Verify webhook signature to ensure the webhook was sent by MONEI
    * @param body - Raw request body as string
    * @param signature - Signature from the MONEI-Signature header
-   * @returns Parsed body as object
-   * @throws {Error} When signature verification fails
+   * @returns boolean indicating if the signature is valid
    */
-  verifySignature(body: string, signature: string) {
-    const parts = signature.split(',').reduce<Record<string, string>>((result, part) => {
-      const [key, value] = part.split('=');
-      result[key] = value;
-      return result;
-    }, {});
+  verifySignature(body: string, signature: string): boolean {
+    try {
+      const parts = signature.split(',').reduce<Record<string, string>>((result, part) => {
+        const [key, value] = part.split('=');
+        result[key] = value;
+        return result;
+      }, {});
 
-    const hmac = crypto
-      .createHmac('SHA256', this.apiKey)
-      .update(`${parts.t}.${body}`)
-      .digest('hex');
+      if (!parts.t || !parts.v1) {
+        return false;
+      }
 
-    if (hmac !== parts.v1) {
-      throw new Error('Signature verification failed.');
+      const hmac = crypto
+        .createHmac('SHA256', this.apiKey)
+        .update(`${parts.t}.${body}`)
+        .digest('hex');
+
+      return hmac === parts.v1;
+    } catch (error) {
+      return false;
     }
-
-    return JSON.parse(body);
   }
 }

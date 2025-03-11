@@ -1,5 +1,5 @@
 {
-  "include": ["src", "test", "index.ts", "index.test.ts"],
+  "include": ["src", "index.ts", "tests"],
   "compilerOptions": {
     "target": "ES2015",
     "module": "esnext",

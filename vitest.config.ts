@@ -9,6 +9,6 @@ export default defineConfig({
       reporter: ['text', 'json-summary', 'json'],
       include: ['index.ts', 'src/*.ts']
     },
-    include: ['index.test.ts', 'test/**/*.test.ts']
+    include: ['tests/**/*.test.ts']
   }
 });

@@ -31,8 +31,8 @@
   "scripts": {
     "generate": "openapi-generator-cli generate --generator-key typescript-axios",
     "generate:local": "openapi-generator-cli generate --generator-key typescript-axios-local",
-    "compile": "microbundle -f es,cjs --target node --strict --name index",
-    "dev": "microbundle watch -f es,cjs --target node --strict --name index",
+    "compile": "microbundle -f es,cjs --target node --strict --name index --tsconfig tsconfig.build.json",
+    "dev": "microbundle watch -f es,cjs --target node --strict --name index --tsconfig tsconfig.build.json",
     "build": "yarn generate && yarn replace && yarn compile",
     "build:local": "yarn generate:local && yarn replace && yarn compile",
     "replace": "node scripts/replace.js",
@@ -45,12 +45,12 @@
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
-    "@commitlint/cli": "^19.7.1",
-    "@commitlint/config-conventional": "^19.7.1",
+    "@commitlint/cli": "^19.8.0",
+    "@commitlint/config-conventional": "^19.8.0",
     "@openapitools/openapi-generator-cli": "^2.17.0",
     "@release-it/conventional-changelog": "^10.0.0",
-    "@types/node": "^22.13.9",
-    "@vitest/coverage-v8": "^3.0.7",
+    "@types/node": "^22.13.10",
+    "@vitest/coverage-v8": "^3.0.8",
     "axios-mock-adapter": "^2.1.0",
     "husky": "^9.1.7",
     "microbundle": "^0.15.1",
@@ -59,15 +59,10 @@
     "replace-in-file": "^8.3.0",
     "tsup": "^8.4.0",
     "typescript": "^5.8.2",
-    "vitest": "^3.0.7"
+    "vitest": "^3.0.8"
   },
   "dependencies": {
-    "axios": "^1.8.1"
+    "axios": "^1.8.2"
   },
-  "packageManager": "yarn@4.7.0",
-  "vitest": {
-    "testMatch": [
-      "**/*.test.ts"
-    ]
-  }
+  "packageManager": "yarn@4.7.0"
 }
