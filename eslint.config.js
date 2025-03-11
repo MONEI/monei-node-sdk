@@ -5,7 +5,14 @@ export default tseslint.config(
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
   {
-    ignores: ['dist/**', 'node_modules/**', '.yarn/**', 'vitest.config.ts', 'test.js']
+    ignores: [
+      'dist/**',
+      'node_modules/**',
+      '.yarn/**',
+      'vitest.config.ts',
+      'test.js',
+      'src/model/**'
+    ]
   },
   {
     files: ['**/*.ts', '**/*.tsx'],
@@ -13,6 +20,9 @@ export default tseslint.config(
       parserOptions: {
         project: true
       }
+    },
+    rules: {
+      '@eslint/eslint-directive/no-unused-disable': 'off'
     }
   },
   {

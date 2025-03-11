@@ -1,3 +1,5 @@
+// This is a test comment for lint-staged
+
 import axios, {AxiosInstance, AxiosRequestConfig, AxiosResponse} from 'axios';
 import * as crypto from 'crypto';
 import pkg from './package.json';
