@@ -3,6 +3,8 @@
   "include": ["src", "index.ts"],
   "exclude": ["tests", "**/*.test.ts", "**/*.spec.ts"],
   "compilerOptions": {
-    "rootDir": "."
+    "rootDir": ".",
+    "noUnusedLocals": false,
+    "noUnusedParameters": false
   }
 }
