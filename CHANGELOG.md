@@ -1,5 +1,12 @@
 # Changelog
 
+## <small>1.7.1 (2025-03-14)</small>
+
+* chore: Update ESLint configuration and lint-staged settings ([946812c](https://github.com/MONEI/monei-node-sdk/commit/946812c))
+* chore: Update model files with ESLint configuration ([f9ce450](https://github.com/MONEI/monei-node-sdk/commit/f9ce450))
+* chore: Update OpenAPI document version to 1.6.0 across all relevant files ([19ad1e7](https://github.com/MONEI/monei-node-sdk/commit/19ad1e7))
+* refactor: Clean up generated API and model files ([4f5047d](https://github.com/MONEI/monei-node-sdk/commit/4f5047d))
+
 ## 1.7.0 (2025-03-11)
 
 * feat: Add Bizum API support and improve OpenAPI generator configuration ([74990fe](https://github.com/MONEI/monei-node-sdk/commit/74990fe))
