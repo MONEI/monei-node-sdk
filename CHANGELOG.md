@@ -1,5 +1,10 @@
 # Changelog
 
+## <small>1.7.4 (2025-03-25)</small>
+
+* chore: Update package.json scripts for prepack and prepublish ([6107bbf](https://github.com/MONEI/monei-node-sdk/commit/6107bbf))
+* chore: Update package.json to remove prepublish script and add prepare script for husky ([73d0380](https://github.com/MONEI/monei-node-sdk/commit/73d0380))
+
 ## <small>1.7.3 (2025-03-25)</small>
 
 * chore: Update prepare script in package.json to build before preparing ([dad82fb](https://github.com/MONEI/monei-node-sdk/commit/dad82fb))
