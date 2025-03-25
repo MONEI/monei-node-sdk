@@ -20,10 +20,15 @@
     "credit cards",
     "api"
   ],
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
   "source": "./index.ts",
   "main": "./dist/index.cjs",
   "module": "./dist/index.module.js",
-  "types": "dist/index.d.ts",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "require": "./dist/index.cjs",
