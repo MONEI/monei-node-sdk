@@ -1,5 +1,9 @@
 # Changelog
 
+## <small>1.7.2 (2025-03-25)</small>
+
+* chore: Update package.json exports ([833e5c9](https://github.com/MONEI/monei-node-sdk/commit/833e5c9))
+
 ## <small>1.7.1 (2025-03-14)</small>
 
 * chore: Update ESLint configuration and lint-staged settings ([946812c](https://github.com/MONEI/monei-node-sdk/commit/946812c))
