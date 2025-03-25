@@ -1,5 +1,9 @@
 # Changelog
 
+## <small>1.7.3 (2025-03-25)</small>
+
+* chore: Update prepare script in package.json to build before preparing ([dad82fb](https://github.com/MONEI/monei-node-sdk/commit/dad82fb))
+
 ## <small>1.7.2 (2025-03-25)</small>
 
 * chore: Update package.json exports ([833e5c9](https://github.com/MONEI/monei-node-sdk/commit/833e5c9))
