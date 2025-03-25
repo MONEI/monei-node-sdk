@@ -44,7 +44,6 @@
     "replace": "node scripts/replace.js",
     "release": "release-it",
     "prepack": "yarn build",
-    "prepublish": "husky",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
@@ -53,7 +52,8 @@
     "lint-staged": "lint-staged",
     "format": "prettier --write \"**/*.ts\"",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "prepare": "husky"
   },
   "lint-staged": {
     "*.ts": [
