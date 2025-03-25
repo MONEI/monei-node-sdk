@@ -21,9 +21,15 @@
     "api"
   ],
   "source": "./index.ts",
-  "main": "dist/index.js",
-  "module": "dist/index.module.js",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.module.js",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.module.js"
+    }
+  },
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
@@ -31,8 +37,8 @@
   "scripts": {
     "generate": "openapi-generator-cli generate --generator-key typescript-axios",
     "generate:local": "openapi-generator-cli generate --generator-key typescript-axios-local",
-    "compile": "microbundle -f es,cjs --target node --strict --name index --tsconfig tsconfig.build.json",
-    "dev": "microbundle watch -f es,cjs --target node --strict --name index --tsconfig tsconfig.build.json",
+    "compile": "microbundle -f modern,cjs --target node --strict --name index --tsconfig tsconfig.build.json",
+    "dev": "microbundle watch -f modern,cjs --target node --strict --name index --tsconfig tsconfig.build.json",
     "build": "run-s generate replace format compile",
     "build:local": "run-s generate:local replace format compile",
     "replace": "node scripts/replace.js",

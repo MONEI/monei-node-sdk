@@ -44,7 +44,7 @@ export interface RecurringPaymentRequest {
    */
   amount?: number;
   /**
-   * Same as the `transactionType` parameter from [create payment](https://docs.monei.com/api/#operation/payments_create). If not sent, it will default in the same transaction type used in the initial payment.
+   * Same as the `transactionType` parameter from [create payment](https://docs.monei.com/api/payments-create). If not sent, it will default in the same transaction type used in the initial payment.
    * @type {PaymentTransactionType}
    * @memberof RecurringPaymentRequest
    */
