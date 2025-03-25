@@ -1,5 +1,9 @@
 # Changelog
 
+## <small>1.7.5 (2025-03-25)</small>
+
+* chore: Update package.json to include additional files and correct types path ([c89a558](https://github.com/MONEI/monei-node-sdk/commit/c89a558))
+
 ## <small>1.7.4 (2025-03-25)</small>
 
 * chore: Update package.json scripts for prepack and prepublish ([6107bbf](https://github.com/MONEI/monei-node-sdk/commit/6107bbf))
