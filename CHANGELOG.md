@@ -1,5 +1,9 @@
 # Changelog
 
+## <small>1.7.7 (2025-05-26)</small>
+
+* chore: update OpenAPI document version to 1.6.2 and modify package.json for types path ([ac6a8a8](https://github.com/MONEI/monei-node-sdk/commit/ac6a8a8))
+
 ## <small>1.7.6 (2025-04-16)</small>
 
 * chore: update OpenAPI document version to 1.6.1 and change enumPropertyNaming to UPPERCASE ([e6b5e4d](https://github.com/MONEI/monei-node-sdk/commit/e6b5e4d))
