@@ -50,7 +50,6 @@ export * from './payment-payment-method-bizum';
 export * from './payment-payment-method-bizum-input';
 export * from './payment-payment-method-card';
 export * from './payment-payment-method-card-input';
-export * from './payment-payment-method-cofidis';
 export * from './payment-payment-method-input';
 export * from './payment-payment-method-klarna';
 export * from './payment-payment-method-mbway';

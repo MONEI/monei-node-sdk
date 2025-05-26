@@ -59,7 +59,6 @@ model/payment-payment-method-bizum-input.ts
 model/payment-payment-method-bizum.ts
 model/payment-payment-method-card-input.ts
 model/payment-payment-method-card.ts
-model/payment-payment-method-cofidis.ts
 model/payment-payment-method-input.ts
 model/payment-payment-method-klarna.ts
 model/payment-payment-method-mbway.ts
