@@ -1,5 +1,9 @@
 # Changelog
 
+## <small>1.7.8 (2025-05-26)</small>
+
+* chore: update OpenAPI document version to 1.6.3 ([4d3f4fa](https://github.com/MONEI/monei-node-sdk/commit/4d3f4fa))
+
 ## <small>1.7.7 (2025-05-26)</small>
 
 * chore: update OpenAPI document version to 1.6.2 and modify package.json for types path ([ac6a8a8](https://github.com/MONEI/monei-node-sdk/commit/ac6a8a8))
