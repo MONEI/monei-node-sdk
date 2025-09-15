@@ -7,7 +7,7 @@ import {Configuration} from './src/configuration';
 
 export * from './src';
 
-const DEFAULT_USER_AGENT = `MONEI/Node/${pkg.version}`;
+const DEFAULT_USER_AGENT = `MONEI/Node/${pkg.version} (NodeJS ${process.version})`;
 
 /**
  * Response structure for API exceptions returned by the MONEI API

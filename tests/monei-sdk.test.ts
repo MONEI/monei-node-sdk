@@ -104,6 +104,15 @@ describe('Monei SDK', () => {
       expect(instance).toBeInstanceOf(Monei);
       expect(instance.client.defaults.headers.common['User-Agent']).toContain(userAgent);
     });
+
+    it('should use default user agent with Node.js version when no custom user agent is provided', () => {
+      const instance = new Monei(API_KEY);
+      const pkg = require('../package.json');
+      const expectedUserAgent = `MONEI/Node/${pkg.version} (NodeJS ${process.version})`;
+
+      expect(instance).toBeInstanceOf(Monei);
+      expect(instance.client.defaults.headers.common['User-Agent']).toBe(expectedUserAgent);
+    });
   });
 
   describe('Configuration', () => {
