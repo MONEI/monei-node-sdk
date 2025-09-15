@@ -1,5 +1,9 @@
 # Changelog
 
+## <small>1.7.13 (2025-09-15)</small>
+
+* chore: update default user agent to include Node.js version ([d1a7930](https://github.com/MONEI/monei-node-sdk/commit/d1a7930))
+
 ## <small>1.7.12 (2025-08-27)</small>
 
 * chore: update OpenAPI document version to 1.7.3 ([93f1aae](https://github.com/MONEI/monei-node-sdk/commit/93f1aae))
