@@ -1,5 +1,9 @@
 # Changelog
 
+## <small>1.7.14 (2025-11-11)</small>
+
+* chore: update subscription API to include allowed payment methods in requests and responses ([4b7cb3b](https://github.com/MONEI/monei-node-sdk/commit/4b7cb3b))
+
 ## <small>1.7.13 (2025-09-15)</small>
 
 * chore: update default user agent to include Node.js version ([d1a7930](https://github.com/MONEI/monei-node-sdk/commit/d1a7930))
