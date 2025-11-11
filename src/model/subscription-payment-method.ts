@@ -14,6 +14,9 @@
 
 // May contain unused imports in some cases
 // @ts-ignore
+import type {PaymentPaymentMethodBizum} from './payment-payment-method-bizum';
+// May contain unused imports in some cases
+// @ts-ignore
 import type {PaymentPaymentMethodCard} from './payment-payment-method-card';
 
 /**
@@ -34,10 +37,17 @@ export interface SubscriptionPaymentMethod {
    * @memberof SubscriptionPaymentMethod
    */
   card?: PaymentPaymentMethodCard;
+  /**
+   *
+   * @type {PaymentPaymentMethodBizum}
+   * @memberof SubscriptionPaymentMethod
+   */
+  bizum?: PaymentPaymentMethodBizum;
 }
 
 export const SubscriptionPaymentMethodMethodEnum = {
-  CARD: 'card'
+  CARD: 'card',
+  BIZUM: 'bizum'
 } as const;
 
 export type SubscriptionPaymentMethodMethodEnum =
