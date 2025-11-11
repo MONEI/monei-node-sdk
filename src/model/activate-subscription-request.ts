@@ -12,6 +12,10 @@
  * Do not edit the class manually.
  */
 
+// May contain unused imports in some cases
+// @ts-ignore
+import type {SubscriptionPaymentMethods} from './subscription-payment-methods';
+
 /**
  *
  * @export
@@ -36,6 +40,12 @@ export interface ActivateSubscriptionRequest {
    * @memberof ActivateSubscriptionRequest
    */
   addAmount?: number;
+  /**
+   *
+   * @type {SubscriptionPaymentMethods}
+   * @memberof ActivateSubscriptionRequest
+   */
+  allowedPaymentMethods?: SubscriptionPaymentMethods;
   /**
    * A permanent identifier that refers to the initial payment of a sequence of payments. This value needs to be sent in the path for `RECURRING` payments.
    * @type {string}

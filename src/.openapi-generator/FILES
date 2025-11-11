@@ -90,6 +90,7 @@ model/subscription-interval.ts
 model/subscription-last-payment.ts
 model/subscription-payment-method-card.ts
 model/subscription-payment-method.ts
+model/subscription-payment-methods.ts
 model/subscription-retry-schedule-inner.ts
 model/subscription-retry-schedule.ts
 model/subscription-status.ts

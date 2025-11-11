@@ -35,6 +35,9 @@ import type {SubscriptionLastPayment} from './subscription-last-payment';
 import type {SubscriptionPaymentMethod} from './subscription-payment-method';
 // May contain unused imports in some cases
 // @ts-ignore
+import type {SubscriptionPaymentMethods} from './subscription-payment-methods';
+// May contain unused imports in some cases
+// @ts-ignore
 import type {SubscriptionRetrySchedule} from './subscription-retry-schedule';
 // May contain unused imports in some cases
 // @ts-ignore
@@ -64,6 +67,12 @@ export interface Subscription {
    * @memberof Subscription
    */
   currency?: string;
+  /**
+   *
+   * @type {SubscriptionPaymentMethods}
+   * @memberof Subscription
+   */
+  allowedPaymentMethods?: SubscriptionPaymentMethods;
   /**
    * An arbitrary string attached to the subscription. Often useful for displaying to users.
    * @type {string}

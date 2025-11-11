@@ -80,6 +80,7 @@ export * from './subscription-interval';
 export * from './subscription-last-payment';
 export * from './subscription-payment-method';
 export * from './subscription-payment-method-card';
+export * from './subscription-payment-methods';
 export * from './subscription-retry-schedule';
 export * from './subscription-retry-schedule-inner';
 export * from './subscription-status';

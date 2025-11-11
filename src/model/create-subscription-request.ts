@@ -26,6 +26,9 @@ import type {PaymentShippingDetails} from './payment-shipping-details';
 import type {SubscriptionInterval} from './subscription-interval';
 // May contain unused imports in some cases
 // @ts-ignore
+import type {SubscriptionPaymentMethods} from './subscription-payment-methods';
+// May contain unused imports in some cases
+// @ts-ignore
 import type {SubscriptionRetrySchedule} from './subscription-retry-schedule';
 
 /**
@@ -58,6 +61,12 @@ export interface CreateSubscriptionRequest {
    * @memberof CreateSubscriptionRequest
    */
   intervalCount?: number;
+  /**
+   *
+   * @type {SubscriptionPaymentMethods}
+   * @memberof CreateSubscriptionRequest
+   */
+  allowedPaymentMethods?: SubscriptionPaymentMethods;
   /**
    * An arbitrary string attached to the subscription. Often useful for displaying to users.
    * @type {string}
