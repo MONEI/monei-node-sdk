@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.8.0 (2025-11-11)
+
+* feat: add Bizum as a payment method to SubscriptionPaymentMethod interface ([81b5d49](https://github.com/MONEI/monei-node-sdk/commit/81b5d49))
+
 ## <small>1.7.14 (2025-11-11)</small>
 
 * chore: update subscription API to include allowed payment methods in requests and responses ([4b7cb3b](https://github.com/MONEI/monei-node-sdk/commit/4b7cb3b))
