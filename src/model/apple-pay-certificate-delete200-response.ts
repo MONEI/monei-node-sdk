@@ -15,13 +15,13 @@
 /**
  *
  * @export
- * @interface PaymentMethodsMetadataBlik
+ * @interface ApplePayCertificateDelete200Response
  */
-export interface PaymentMethodsMetadataBlik {
+export interface ApplePayCertificateDelete200Response {
   /**
-   * List of countries where the payment method is available
-   * @type {Array<string>}
-   * @memberof PaymentMethodsMetadataBlik
+   *
+   * @type {boolean}
+   * @memberof ApplePayCertificateDelete200Response
    */
-  countries?: Array<string>;
+  success?: boolean;
 }

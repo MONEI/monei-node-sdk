@@ -15,13 +15,13 @@
 /**
  *
  * @export
- * @interface PaymentMethodsMetadataBlik
+ * @interface UpdateApplePayCertificateRequest
  */
-export interface PaymentMethodsMetadataBlik {
+export interface UpdateApplePayCertificateRequest {
   /**
-   * List of countries where the payment method is available
-   * @type {Array<string>}
-   * @memberof PaymentMethodsMetadataBlik
+   * Set to true to enable or false to disable the certificate.
+   * @type {boolean}
+   * @memberof UpdateApplePayCertificateRequest
    */
-  countries?: Array<string>;
+  active: boolean;
 }

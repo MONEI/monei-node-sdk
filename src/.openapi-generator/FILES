@@ -1,4 +1,5 @@
 api.ts
+api/apple-pay-certificate-api.ts
 api/apple-pay-domain-api.ts
 api/bizum-api.ts
 api/payment-methods-api.ts
@@ -8,10 +9,12 @@ base.ts
 common.ts
 configuration.ts
 index.ts
+model/activate-apple-pay-certificate-request.ts
 model/activate-subscription-request.ts
 model/address.ts
 model/api-exception.ts
-model/apple-pay-domain-register200-response.ts
+model/apple-pay-certificate-delete200-response.ts
+model/apple-pay-certificate.ts
 model/bad-request-error.ts
 model/bizum-validate-phone200-response.ts
 model/cancel-payment-request.ts
@@ -97,5 +100,6 @@ model/subscription-status.ts
 model/subscription.ts
 model/unauthorized-error.ts
 model/unprocessable-entity-error.ts
+model/update-apple-pay-certificate-request.ts
 model/update-subscription-request.ts
 model/validate-bizum-phone-request.ts

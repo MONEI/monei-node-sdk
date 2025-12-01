@@ -1,7 +1,14 @@
 import axios, {AxiosInstance, AxiosRequestConfig, AxiosResponse} from 'axios';
 import * as crypto from 'crypto';
 import pkg from './package.json';
-import {ApplePayDomainApi, BizumApi, PaymentMethodsApi, PaymentsApi, SubscriptionsApi} from './src';
+import {
+  ApplePayDomainApi,
+  BizumApi,
+  PaymentMethodsApi,
+  PaymentsApi,
+  SubscriptionsApi,
+  ApplePayCertificateApi
+} from './src';
 import {BASE_PATH} from './src/base';
 import {Configuration} from './src/configuration';
 
@@ -84,6 +91,8 @@ export class Monei {
   subscriptions!: SubscriptionsApi;
   /** API for Apple Pay domain verification */
   applePayDomain!: ApplePayDomainApi;
+  /** API for managing Apple Pay certificates */
+  applePayCertificate!: ApplePayCertificateApi;
   /** API for managing Bizum */
   bizum!: BizumApi;
 
@@ -130,6 +139,7 @@ export class Monei {
     this.paymentMethods = new PaymentMethodsApi(config, BASE_PATH, this.client);
     this.subscriptions = new SubscriptionsApi(config, BASE_PATH, this.client);
     this.applePayDomain = new ApplePayDomainApi(config, BASE_PATH, this.client);
+    this.applePayCertificate = new ApplePayCertificateApi(config, BASE_PATH, this.client);
     this.bizum = new BizumApi(config, BASE_PATH, this.client);
   }
 
