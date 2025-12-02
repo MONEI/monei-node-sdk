@@ -13,15 +13,51 @@
  */
 
 /**
- *
+ * An Apple Pay certificate for iOS app integration.
  * @export
- * @interface PaymentMethodsMetadataBancontact
+ * @interface ApplePayCertificate
  */
-export interface PaymentMethodsMetadataBancontact {
+export interface ApplePayCertificate {
   /**
-   * List of countries where the payment method is available
-   * @type {Array<string>}
-   * @memberof PaymentMethodsMetadataBancontact
+   * Unique identifier of the certificate.
+   * @type {string}
+   * @memberof ApplePayCertificate
    */
-  countries?: Array<string>;
+  id: string;
+  /**
+   * The account ID this certificate belongs to.
+   * @type {string}
+   * @memberof ApplePayCertificate
+   */
+  accountId: string;
+  /**
+   * The Certificate Signing Request in base64url format (URL-safe base64). Only present before activation. To decode, replace - with + and _ with /, then use standard base64 decoder. Use this to create a certificate in Apple Developer Portal.
+   * @type {string}
+   * @memberof ApplePayCertificate
+   */
+  csr?: string;
+  /**
+   * The certificate body in base64 format. Only present after activation.
+   * @type {string}
+   * @memberof ApplePayCertificate
+   */
+  cert?: string;
+  /**
+   * Whether the certificate is active for payment processing.
+   * @type {boolean}
+   * @memberof ApplePayCertificate
+   */
+  active: boolean;
+  /**
+   * The certificate expiration date in ISO 8601 format. Only present after activation.
+   * @type {string}
+   * @memberof ApplePayCertificate
+   */
+  expireAt?: string;
+  /**
+   * The certificate creation date in ISO 8601 format.
+   * @type {string}
+   * @memberof ApplePayCertificate
+   */
+  createdAt: string;
 }

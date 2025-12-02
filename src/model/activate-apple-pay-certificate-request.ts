@@ -15,13 +15,13 @@
 /**
  *
  * @export
- * @interface PaymentMethodsMetadataBancontact
+ * @interface ActivateApplePayCertificateRequest
  */
-export interface PaymentMethodsMetadataBancontact {
+export interface ActivateApplePayCertificateRequest {
   /**
-   * List of countries where the payment method is available
-   * @type {Array<string>}
-   * @memberof PaymentMethodsMetadataBancontact
+   * The signed certificate from Apple in base64 format. Download this from Apple Developer Portal after creating the certificate with your CSR.
+   * @type {string}
+   * @memberof ActivateApplePayCertificateRequest
    */
-  countries?: Array<string>;
+  cert: string;
 }

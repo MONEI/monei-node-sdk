@@ -71,25 +71,25 @@
     "@commitlint/cli": "^20.1.0",
     "@commitlint/config-conventional": "^20.0.0",
     "@eslint/js": "^9.39.1",
-    "@openapitools/openapi-generator-cli": "^2.25.0",
-    "@release-it/conventional-changelog": "^10.0.1",
-    "@types/node": "^22.19.0",
-    "@vitest/coverage-v8": "^3.2.4",
+    "@openapitools/openapi-generator-cli": "^2.25.2",
+    "@release-it/conventional-changelog": "^10.0.2",
+    "@types/node": "^22.19.1",
+    "@vitest/coverage-v8": "^4.0.14",
     "axios-mock-adapter": "^2.1.0",
     "eslint": "^9.39.1",
     "husky": "^9.1.7",
-    "lint-staged": "^16.2.6",
+    "lint-staged": "^16.2.7",
     "microbundle": "^0.15.1",
     "npm-run-all": "^4.1.5",
-    "prettier": "^3.6.2",
+    "prettier": "^3.7.3",
     "release-it": "^19.0.6",
     "replace-in-file": "^8.3.0",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.46.4",
-    "vitest": "^3.0.8"
+    "typescript-eslint": "^8.48.0",
+    "vitest": "^4.0.14"
   },
   "dependencies": {
     "axios": "^1.13.2"
   },
-  "packageManager": "yarn@4.11.0"
+  "packageManager": "yarn@4.12.0"
 }

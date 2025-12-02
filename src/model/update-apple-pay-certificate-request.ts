@@ -15,13 +15,13 @@
 /**
  *
  * @export
- * @interface PaymentMethodsMetadataBancontact
+ * @interface UpdateApplePayCertificateRequest
  */
-export interface PaymentMethodsMetadataBancontact {
+export interface UpdateApplePayCertificateRequest {
   /**
-   * List of countries where the payment method is available
-   * @type {Array<string>}
-   * @memberof PaymentMethodsMetadataBancontact
+   * Set to true to enable or false to disable the certificate.
+   * @type {boolean}
+   * @memberof UpdateApplePayCertificateRequest
    */
-  countries?: Array<string>;
+  active: boolean;
 }
