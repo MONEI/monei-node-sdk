@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.9.0 (2025-12-02)
+
+* chore: downgrade @release-it/conventional-changelog to version 10.0.1 and update related dependencie ([c46795f](https://github.com/MONEI/monei-node-sdk/commit/c46795f))
+* chore: update OpenAPI document version to 1.8.1 and add Node types to TypeScript configuration ([f05495e](https://github.com/MONEI/monei-node-sdk/commit/f05495e))
+* feat: add Apple Pay Certificate API and tests ([e899311](https://github.com/MONEI/monei-node-sdk/commit/e899311))
+
 ## 1.8.0 (2025-11-11)
 
 * feat: add Bizum as a payment method to SubscriptionPaymentMethod interface ([81b5d49](https://github.com/MONEI/monei-node-sdk/commit/81b5d49))
