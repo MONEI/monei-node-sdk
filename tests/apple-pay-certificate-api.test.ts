@@ -41,7 +41,7 @@ describe('Apple Pay Certificate API', () => {
     });
   });
 
-  describe('list', () => {
+  describe('getAll', () => {
     it('should list all certificates', async () => {
       const expectedResponse = [
         {id: 'cert_123', active: true},
@@ -50,7 +50,7 @@ describe('Apple Pay Certificate API', () => {
 
       mockAxios.onGet(`${BASE_PATH}/apple-pay/certificates`).reply(200, expectedResponse);
 
-      const response = await monei.applePayCertificate.list();
+      const response = await monei.applePayCertificate.getAll();
       expect(response).toEqual(expectedResponse);
     });
   });
@@ -96,7 +96,7 @@ describe('Apple Pay Certificate API', () => {
     });
   });
 
-  describe('_delete', () => {
+  describe('remove', () => {
     it('should delete a certificate', async () => {
       const certId = 'cert_123';
       const expectedResponse = {
@@ -107,7 +107,7 @@ describe('Apple Pay Certificate API', () => {
         .onDelete(`${BASE_PATH}/apple-pay/certificates/${certId}`)
         .reply(200, expectedResponse);
 
-      const response = await monei.applePayCertificate._delete(certId);
+      const response = await monei.applePayCertificate.remove(certId);
       expect(response).toEqual(expectedResponse);
     });
   });

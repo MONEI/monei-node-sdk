@@ -3,7 +3,7 @@ export * from './activate-subscription-request';
 export * from './address';
 export * from './api-exception';
 export * from './apple-pay-certificate';
-export * from './apple-pay-certificate-delete200-response';
+export * from './apple-pay-certificates-remove200-response';
 export * from './bad-request-error';
 export * from './bizum-validate-phone200-response';
 export * from './cancel-payment-request';

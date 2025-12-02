@@ -5,6 +5,7 @@
   "compilerOptions": {
     "rootDir": ".",
     "noUnusedLocals": false,
-    "noUnusedParameters": false
+    "noUnusedParameters": false,
+    "types": ["node"]
   }
 }

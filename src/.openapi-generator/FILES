@@ -13,8 +13,8 @@ model/activate-apple-pay-certificate-request.ts
 model/activate-subscription-request.ts
 model/address.ts
 model/api-exception.ts
-model/apple-pay-certificate-delete200-response.ts
 model/apple-pay-certificate.ts
+model/apple-pay-certificates-remove200-response.ts
 model/bad-request-error.ts
 model/bizum-validate-phone200-response.ts
 model/cancel-payment-request.ts

@@ -15,13 +15,13 @@
 /**
  *
  * @export
- * @interface PaymentMethodsMetadataBancontact
+ * @interface ApplePayCertificatesRemove200Response
  */
-export interface PaymentMethodsMetadataBancontact {
+export interface ApplePayCertificatesRemove200Response {
   /**
-   * List of countries where the payment method is available
-   * @type {Array<string>}
-   * @memberof PaymentMethodsMetadataBancontact
+   *
+   * @type {boolean}
+   * @memberof ApplePayCertificatesRemove200Response
    */
-  countries?: Array<string>;
+  success?: boolean;
 }
