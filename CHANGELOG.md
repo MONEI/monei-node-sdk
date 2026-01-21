@@ -1,5 +1,9 @@
 # Changelog
 
+## <small>1.9.1 (2026-01-21)</small>
+
+* chore: update OpenAPI document version to 1.8.3 ([b1afcd2](https://github.com/MONEI/monei-node-sdk/commit/b1afcd2))
+
 ## 1.9.0 (2025-12-02)
 
 * chore: downgrade @release-it/conventional-changelog to version 10.0.1 and update related dependencie ([c46795f](https://github.com/MONEI/monei-node-sdk/commit/c46795f))
