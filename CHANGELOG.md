@@ -2,10 +2,19 @@
 
 # [2.0.0](https://github.com/MONEI/monei-node-sdk/compare/v1.9.1...v2.0.0) (2026-03-30)
 
+### Breaking Changes
+
+- Build output and `package.json` `exports` now use explicit `.mjs`/`.cjs` bundles and `.d.mts`/`.d.cts` declarations from the new compiler pipeline. Ensure your TypeScript `moduleResolution` and bundler handle these entrypoints (Node 18+ recommended).
+
+### Changed
+
+- Migrated the library toolchain to **Vite+** (`vite-plus`): `vp pack` (tsdown) replaces microbundle for publishing; `vp test` drives Vitest; `vp check` (Oxlint/Oxfmt) replaces ESLint and Prettier; git hooks use `vp config` and `.vite-hooks` instead of Husky/lint-staged.
+- Switched from Yarn Berry to **pnpm** (lockfile, scripts, and CI).
+- Raised the supported Node baseline to **24** (`.nvmrc` and CI).
 
 ### Bug Fixes
 
-* update release-it hook from yarn to pnpm ([738954b](https://github.com/MONEI/monei-node-sdk/commit/738954bc3c0d4eb299ab96e48cda585479162aa7))
+- Update release-it hook from yarn to pnpm ([738954b](https://github.com/MONEI/monei-node-sdk/commit/738954bc3c0d4eb299ab96e48cda585479162aa7))
 
 ## <small>1.9.1 (2026-01-21)</small>
 
