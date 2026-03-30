@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.0.1](https://github.com/MONEI/monei-node-sdk/compare/v2.0.0...v2.0.1) (2026-03-30)
+
+
+### Bug Fixes
+
+* **changelog:** match angular preset sections and list style for 2.0.0 ([d7f1159](https://github.com/MONEI/monei-node-sdk/commit/d7f11594b106bf9bf02617574557bd90a00d2538))
+
+
+### Features
+
+* expose POSAuthTokenApi on Monei client ([d2fe1a1](https://github.com/MONEI/monei-node-sdk/commit/d2fe1a1aebb35babf68c766ac5bfe8cf6826a614))
+
 # [2.0.0](https://github.com/MONEI/monei-node-sdk/compare/v1.9.1...v2.0.0) (2026-03-30)
 
 
