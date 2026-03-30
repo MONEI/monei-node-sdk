@@ -41,39 +41,35 @@ import {
 // @ts-ignore
 import type { BadRequestError } from "../model";
 // @ts-ignore
-import type { BizumValidatePhone200Response } from "../model";
+import type { CreatePosAuthTokenRequest } from "../model";
 // @ts-ignore
 import type { InternalServerError } from "../model";
 // @ts-ignore
-import type { NotFoundError } from "../model";
+import type { PosAuthTokenCreate200Response } from "../model";
 // @ts-ignore
 import type { ServiceUnavailableError } from "../model";
 // @ts-ignore
 import type { UnauthorizedError } from "../model";
-// @ts-ignore
-import type { UnprocessableEntityError } from "../model";
-// @ts-ignore
-import type { ValidateBizumPhoneRequest } from "../model";
 /**
- * BizumApi - axios parameter creator
+ * POSAuthTokenApi - axios parameter creator
  * @export
  */
-export const BizumApiAxiosParamCreator = function (configuration?: Configuration) {
+export const POSAuthTokenApiAxiosParamCreator = function (configuration?: Configuration) {
   return {
     /**
-     * Validates if a phone number is registered with Bizum.  Use this endpoint to check if a customer\'s phone number can be used for Bizum payments before attempting to process a payment. This helps provide a better user experience by preventing failed payment attempts for non-registered numbers.  The response will indicate whether the phone number is valid for Bizum payments.
-     * @summary Validate Phone
-     * @param {ValidateBizumPhoneRequest} validateBizumPhoneRequest
+     * Generates an RS256-signed JWT token for POS terminal authentication.  Use this endpoint to create an auth token that a POS terminal (via MONEI Pay) can use to process payments. This is designed for app-to-app flows where your backend generates the token and passes it to the MONEI Pay app running on a POS device.  `pointOfSaleId` is optional — when provided, it is included in the JWT payload as `pos_id` and `device_id`, allowing you to associate payments with a specific terminal. `storeId` is also optional — included as `store_id` when provided. If `pointOfSaleId` is omitted, the system generates a `device_id` automatically.  The token is valid for 24 hours.
+     * @summary Create POS Auth Token
+     * @param {CreatePosAuthTokenRequest} createPosAuthTokenRequest
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    validatePhone: async (
-      validateBizumPhoneRequest: ValidateBizumPhoneRequest,
+    create: async (
+      createPosAuthTokenRequest: CreatePosAuthTokenRequest,
       options: RawAxiosRequestConfig = {},
     ): Promise<RequestArgs> => {
-      // verify required parameter 'validateBizumPhoneRequest' is not null or undefined
-      assertParamExists("validatePhone", "validateBizumPhoneRequest", validateBizumPhoneRequest);
-      const localVarPath = `/bizum/validate-phone`;
+      // verify required parameter 'createPosAuthTokenRequest' is not null or undefined
+      assertParamExists("create", "createPosAuthTokenRequest", createPosAuthTokenRequest);
+      const localVarPath = `/pos/auth-token`;
       // use dummy base URL string because the URL constructor only accepts absolute URLs.
       const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
       let baseOptions;
@@ -98,7 +94,7 @@ export const BizumApiAxiosParamCreator = function (configuration?: Configuration
         ...options.headers,
       };
       localVarRequestOptions.data = serializeDataIfNeeded(
-        validateBizumPhoneRequest,
+        createPosAuthTokenRequest,
         localVarRequestOptions,
         configuration,
       );
@@ -112,32 +108,32 @@ export const BizumApiAxiosParamCreator = function (configuration?: Configuration
 };
 
 /**
- * BizumApi - functional programming interface
+ * POSAuthTokenApi - functional programming interface
  * @export
  */
-export const BizumApiFp = function (configuration?: Configuration) {
-  const localVarAxiosParamCreator = BizumApiAxiosParamCreator(configuration);
+export const POSAuthTokenApiFp = function (configuration?: Configuration) {
+  const localVarAxiosParamCreator = POSAuthTokenApiAxiosParamCreator(configuration);
   return {
     /**
-     * Validates if a phone number is registered with Bizum.  Use this endpoint to check if a customer\'s phone number can be used for Bizum payments before attempting to process a payment. This helps provide a better user experience by preventing failed payment attempts for non-registered numbers.  The response will indicate whether the phone number is valid for Bizum payments.
-     * @summary Validate Phone
-     * @param {ValidateBizumPhoneRequest} validateBizumPhoneRequest
+     * Generates an RS256-signed JWT token for POS terminal authentication.  Use this endpoint to create an auth token that a POS terminal (via MONEI Pay) can use to process payments. This is designed for app-to-app flows where your backend generates the token and passes it to the MONEI Pay app running on a POS device.  `pointOfSaleId` is optional — when provided, it is included in the JWT payload as `pos_id` and `device_id`, allowing you to associate payments with a specific terminal. `storeId` is also optional — included as `store_id` when provided. If `pointOfSaleId` is omitted, the system generates a `device_id` automatically.  The token is valid for 24 hours.
+     * @summary Create POS Auth Token
+     * @param {CreatePosAuthTokenRequest} createPosAuthTokenRequest
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    async validatePhone(
-      validateBizumPhoneRequest: ValidateBizumPhoneRequest,
+    async create(
+      createPosAuthTokenRequest: CreatePosAuthTokenRequest,
       options?: RawAxiosRequestConfig,
     ): Promise<
-      (axios?: AxiosInstance, basePath?: string) => AxiosPromise<BizumValidatePhone200Response>
+      (axios?: AxiosInstance, basePath?: string) => AxiosPromise<PosAuthTokenCreate200Response>
     > {
-      const localVarAxiosArgs = await localVarAxiosParamCreator.validatePhone(
-        validateBizumPhoneRequest,
+      const localVarAxiosArgs = await localVarAxiosParamCreator.create(
+        createPosAuthTokenRequest,
         options,
       );
       const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
       const localVarOperationServerBasePath =
-        operationServerMap["BizumApi.validatePhone"]?.[localVarOperationServerIndex]?.url;
+        operationServerMap["POSAuthTokenApi.create"]?.[localVarOperationServerIndex]?.url;
       return (axios, basePath) =>
         createRequestFunction(
           localVarAxiosArgs,
@@ -150,55 +146,55 @@ export const BizumApiFp = function (configuration?: Configuration) {
 };
 
 /**
- * BizumApi - factory interface
+ * POSAuthTokenApi - factory interface
  * @export
  */
-export const BizumApiFactory = function (
+export const POSAuthTokenApiFactory = function (
   configuration?: Configuration,
   basePath?: string,
   axios?: AxiosInstance,
 ) {
-  const localVarFp = BizumApiFp(configuration);
+  const localVarFp = POSAuthTokenApiFp(configuration);
   return {
     /**
-     * Validates if a phone number is registered with Bizum.  Use this endpoint to check if a customer\'s phone number can be used for Bizum payments before attempting to process a payment. This helps provide a better user experience by preventing failed payment attempts for non-registered numbers.  The response will indicate whether the phone number is valid for Bizum payments.
-     * @summary Validate Phone
-     * @param {ValidateBizumPhoneRequest} validateBizumPhoneRequest
+     * Generates an RS256-signed JWT token for POS terminal authentication.  Use this endpoint to create an auth token that a POS terminal (via MONEI Pay) can use to process payments. This is designed for app-to-app flows where your backend generates the token and passes it to the MONEI Pay app running on a POS device.  `pointOfSaleId` is optional — when provided, it is included in the JWT payload as `pos_id` and `device_id`, allowing you to associate payments with a specific terminal. `storeId` is also optional — included as `store_id` when provided. If `pointOfSaleId` is omitted, the system generates a `device_id` automatically.  The token is valid for 24 hours.
+     * @summary Create POS Auth Token
+     * @param {CreatePosAuthTokenRequest} createPosAuthTokenRequest
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      */
-    validatePhone(
-      validateBizumPhoneRequest: ValidateBizumPhoneRequest,
+    create(
+      createPosAuthTokenRequest: CreatePosAuthTokenRequest,
       options?: RawAxiosRequestConfig,
-    ): AxiosPromise<BizumValidatePhone200Response> {
+    ): AxiosPromise<PosAuthTokenCreate200Response> {
       return localVarFp
-        .validatePhone(validateBizumPhoneRequest, options)
+        .create(createPosAuthTokenRequest, options)
         .then((request) => request(axios, basePath));
     },
   };
 };
 
 /**
- * BizumApi - object-oriented interface
+ * POSAuthTokenApi - object-oriented interface
  * @export
- * @class BizumApi
+ * @class POSAuthTokenApi
  * @extends {BaseAPI}
  */
-export class BizumApi extends BaseAPI {
+export class POSAuthTokenApi extends BaseAPI {
   /**
-   * Validates if a phone number is registered with Bizum.  Use this endpoint to check if a customer\'s phone number can be used for Bizum payments before attempting to process a payment. This helps provide a better user experience by preventing failed payment attempts for non-registered numbers.  The response will indicate whether the phone number is valid for Bizum payments.
-   * @summary Validate Phone
-   * @param {ValidateBizumPhoneRequest} validateBizumPhoneRequest
+   * Generates an RS256-signed JWT token for POS terminal authentication.  Use this endpoint to create an auth token that a POS terminal (via MONEI Pay) can use to process payments. This is designed for app-to-app flows where your backend generates the token and passes it to the MONEI Pay app running on a POS device.  `pointOfSaleId` is optional — when provided, it is included in the JWT payload as `pos_id` and `device_id`, allowing you to associate payments with a specific terminal. `storeId` is also optional — included as `store_id` when provided. If `pointOfSaleId` is omitted, the system generates a `device_id` automatically.  The token is valid for 24 hours.
+   * @summary Create POS Auth Token
+   * @param {CreatePosAuthTokenRequest} createPosAuthTokenRequest
    * @param {*} [options] Override http request option.
    * @throws {RequiredError}
-   * @memberof BizumApi
+   * @memberof POSAuthTokenApi
    */
-  public validatePhone(
-    validateBizumPhoneRequest: ValidateBizumPhoneRequest,
+  public create(
+    createPosAuthTokenRequest: CreatePosAuthTokenRequest,
     options?: RawAxiosRequestConfig,
   ) {
-    return BizumApiFp(this.configuration)
-      .validatePhone(validateBizumPhoneRequest, options)
+    return POSAuthTokenApiFp(this.configuration)
+      .create(createPosAuthTokenRequest, options)
       .then((request) => request(this.axios, this.basePath));
   }
 }

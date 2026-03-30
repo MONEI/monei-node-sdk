@@ -1,36 +1,36 @@
-import {afterEach, describe, expect, it} from 'vitest';
-import {SubscriptionInterval} from '../src';
-import {BASE_PATH, createTestClient, mockAxios, resetTestEnv} from './test-utils';
+import { afterEach, describe, expect, it } from "vite-plus/test";
+import { SubscriptionInterval } from "../src";
+import { BASE_PATH, createTestClient, mockAxios, resetTestEnv } from "./test-utils";
 
 // Reset mock after each test
 afterEach(() => {
   resetTestEnv();
 });
 
-describe('Subscriptions API', () => {
+describe("Subscriptions API", () => {
   const monei = createTestClient();
 
-  describe('Create Subscription', () => {
-    it('should create a subscription', async () => {
+  describe("Create Subscription", () => {
+    it("should create a subscription", async () => {
       const subscriptionData = {
-        customerId: 'cus_123',
-        paymentMethodId: 'pm_123',
+        customerId: "cus_123",
+        paymentMethodId: "pm_123",
         amount: 1000,
-        currency: 'EUR',
-        interval: SubscriptionInterval.month,
-        description: 'Monthly subscription'
+        currency: "EUR",
+        interval: SubscriptionInterval.MONTH,
+        description: "Monthly subscription",
       };
 
       const expectedResponse = {
-        id: 'sub_123',
-        customerId: 'cus_123',
-        paymentMethodId: 'pm_123',
+        id: "sub_123",
+        customerId: "cus_123",
+        paymentMethodId: "pm_123",
         amount: 1000,
-        currency: 'EUR',
-        interval: 'month',
-        status: 'ACTIVE',
-        description: 'Monthly subscription',
-        startDate: new Date().toISOString()
+        currency: "EUR",
+        interval: "month",
+        status: "ACTIVE",
+        description: "Monthly subscription",
+        startDate: new Date().toISOString(),
       };
 
       mockAxios.onPost(`${BASE_PATH}/subscriptions`).reply(200, expectedResponse);
@@ -40,17 +40,17 @@ describe('Subscriptions API', () => {
     });
   });
 
-  describe('Get Subscription', () => {
-    it('should get a subscription by ID', async () => {
-      const subscriptionId = 'sub_123';
+  describe("Get Subscription", () => {
+    it("should get a subscription by ID", async () => {
+      const subscriptionId = "sub_123";
       const expectedResponse = {
         id: subscriptionId,
-        customerId: 'cus_123',
-        paymentMethodId: 'pm_123',
+        customerId: "cus_123",
+        paymentMethodId: "pm_123",
         amount: 1000,
-        currency: 'EUR',
-        interval: 'month',
-        status: 'ACTIVE'
+        currency: "EUR",
+        interval: "month",
+        status: "ACTIVE",
       };
 
       mockAxios.onGet(`${BASE_PATH}/subscriptions/${subscriptionId}`).reply(200, expectedResponse);
@@ -60,24 +60,24 @@ describe('Subscriptions API', () => {
     });
   });
 
-  describe('Update Subscription', () => {
-    it('should update a subscription', async () => {
-      const subscriptionId = 'sub_123';
+  describe("Update Subscription", () => {
+    it("should update a subscription", async () => {
+      const subscriptionId = "sub_123";
       const updateData = {
-        paymentMethodId: 'pm_456',
+        paymentMethodId: "pm_456",
         amount: 2000,
-        description: 'Updated subscription'
+        description: "Updated subscription",
       };
 
       const expectedResponse = {
         id: subscriptionId,
-        customerId: 'cus_123',
-        paymentMethodId: 'pm_456',
+        customerId: "cus_123",
+        paymentMethodId: "pm_456",
         amount: 2000,
-        currency: 'EUR',
-        interval: 'month',
-        status: 'ACTIVE',
-        description: 'Updated subscription'
+        currency: "EUR",
+        interval: "month",
+        status: "ACTIVE",
+        description: "Updated subscription",
       };
 
       mockAxios.onPut(`${BASE_PATH}/subscriptions/${subscriptionId}`).reply(200, expectedResponse);
@@ -87,19 +87,19 @@ describe('Subscriptions API', () => {
     });
   });
 
-  describe('Cancel Subscription', () => {
-    it('should cancel a subscription', async () => {
-      const subscriptionId = 'sub_123';
+  describe("Cancel Subscription", () => {
+    it("should cancel a subscription", async () => {
+      const subscriptionId = "sub_123";
 
       const expectedResponse = {
         id: subscriptionId,
-        customerId: 'cus_123',
-        paymentMethodId: 'pm_123',
+        customerId: "cus_123",
+        paymentMethodId: "pm_123",
         amount: 1000,
-        currency: 'EUR',
-        interval: 'month',
-        status: 'CANCELLED',
-        cancelledAt: new Date().toISOString()
+        currency: "EUR",
+        interval: "month",
+        status: "CANCELLED",
+        cancelledAt: new Date().toISOString(),
       };
 
       mockAxios
@@ -111,18 +111,18 @@ describe('Subscriptions API', () => {
     });
   });
 
-  describe('Pause Subscription', () => {
-    it('should pause a subscription', async () => {
-      const subscriptionId = 'sub_123';
+  describe("Pause Subscription", () => {
+    it("should pause a subscription", async () => {
+      const subscriptionId = "sub_123";
 
       const expectedResponse = {
         id: subscriptionId,
-        customerId: 'cus_123',
-        paymentMethodId: 'pm_123',
+        customerId: "cus_123",
+        paymentMethodId: "pm_123",
         amount: 1000,
-        currency: 'EUR',
-        interval: 'month',
-        status: 'PAUSED'
+        currency: "EUR",
+        interval: "month",
+        status: "PAUSED",
       };
 
       mockAxios
@@ -134,18 +134,18 @@ describe('Subscriptions API', () => {
     });
   });
 
-  describe('Resume Subscription', () => {
-    it('should resume a paused subscription', async () => {
-      const subscriptionId = 'sub_123';
+  describe("Resume Subscription", () => {
+    it("should resume a paused subscription", async () => {
+      const subscriptionId = "sub_123";
 
       const expectedResponse = {
         id: subscriptionId,
-        customerId: 'cus_123',
-        paymentMethodId: 'pm_123',
+        customerId: "cus_123",
+        paymentMethodId: "pm_123",
         amount: 1000,
-        currency: 'EUR',
-        interval: 'month',
-        status: 'ACTIVE'
+        currency: "EUR",
+        interval: "month",
+        status: "ACTIVE",
       };
 
       mockAxios
@@ -157,18 +157,18 @@ describe('Subscriptions API', () => {
     });
   });
 
-  describe('Send Subscription Link', () => {
-    it('should send a subscription link', async () => {
-      const subscriptionId = 'sub_123';
+  describe("Send Subscription Link", () => {
+    it("should send a subscription link", async () => {
+      const subscriptionId = "sub_123";
       const linkData = {
-        customerEmail: 'customer@example.com',
-        customerPhone: '+34600000000'
+        customerEmail: "customer@example.com",
+        customerPhone: "+34600000000",
       };
 
       const expectedResponse = {
         id: subscriptionId,
-        status: 'ACTIVE',
-        linkSent: true
+        status: "ACTIVE",
+        linkSent: true,
       };
 
       mockAxios
@@ -180,17 +180,17 @@ describe('Subscriptions API', () => {
     });
   });
 
-  describe('Send Subscription Status', () => {
-    it('should send a subscription status update', async () => {
-      const subscriptionId = 'sub_123';
+  describe("Send Subscription Status", () => {
+    it("should send a subscription status update", async () => {
+      const subscriptionId = "sub_123";
       const statusData = {
-        customerEmail: 'customer@example.com'
+        customerEmail: "customer@example.com",
       };
 
       const expectedResponse = {
         id: subscriptionId,
-        status: 'ACTIVE',
-        statusSent: true
+        status: "ACTIVE",
+        statusSent: true,
       };
 
       mockAxios
@@ -202,22 +202,22 @@ describe('Subscriptions API', () => {
     });
   });
 
-  describe('Activate Subscription', () => {
-    it('should activate a subscription', async () => {
-      const subscriptionId = 'sub_123';
+  describe("Activate Subscription", () => {
+    it("should activate a subscription", async () => {
+      const subscriptionId = "sub_123";
       const activateData = {
-        paymentToken: 'pm_123',
-        sessionId: 'sess_123'
+        paymentToken: "pm_123",
+        sessionId: "sess_123",
       };
 
       const expectedResponse = {
         id: subscriptionId,
-        customerId: 'cus_123',
-        paymentMethodId: 'pm_123',
+        customerId: "cus_123",
+        paymentMethodId: "pm_123",
         amount: 1000,
-        currency: 'EUR',
-        interval: 'month',
-        status: 'ACTIVE'
+        currency: "EUR",
+        interval: "month",
+        status: "ACTIVE",
       };
 
       mockAxios

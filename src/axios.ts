@@ -4,9 +4,9 @@
  * This file provides compatibility between the Axios library and the OpenAPI generated code.
  * It re-exports Axios and defines the AxiosPromise type to ensure proper type compatibility.
  */
-import axios from 'axios';
+import axios from "axios";
 
-export * from 'axios';
+export * from "axios";
 export default axios;
 
 /**

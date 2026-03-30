@@ -1,18 +1,18 @@
-import axios, {AxiosInstance, AxiosRequestConfig, AxiosResponse} from 'axios';
-import * as crypto from 'crypto';
-import pkg from './package.json';
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
+import * as crypto from "crypto";
+import pkg from "./package.json";
 import {
   ApplePayDomainApi,
   BizumApi,
   PaymentMethodsApi,
   PaymentsApi,
   SubscriptionsApi,
-  ApplePayCertificateApi
-} from './src';
-import {BASE_PATH} from './src/base';
-import {Configuration} from './src/configuration';
+  ApplePayCertificateApi,
+} from "./src";
+import { BASE_PATH } from "./src/base";
+import { Configuration } from "./src/configuration";
 
-export * from './src';
+export * from "./src";
 
 const DEFAULT_USER_AGENT = `MONEI/Node/${pkg.version} (NodeJS ${process.version})`;
 
@@ -69,7 +69,7 @@ const errorHandler = (error: any) => {
   if (error?.response?.data) {
     throw new ApiException(error.response.data);
   }
-  throw error instanceof Error ? error : new Error('Something went wrong');
+  throw error instanceof Error ? error : new Error("Something went wrong");
 };
 
 /**
@@ -104,9 +104,9 @@ export class Monei {
    */
   constructor(
     apiKey: string,
-    options?: AxiosRequestConfig & {accountId?: string; userAgent?: string}
+    options?: AxiosRequestConfig & { accountId?: string; userAgent?: string },
   ) {
-    const {accountId, userAgent, ...baseOptions} = options || {};
+    const { accountId, userAgent, ...baseOptions } = options || {};
 
     this.apiKey = apiKey;
     this.accountId = accountId;
@@ -122,19 +122,19 @@ export class Monei {
     this.client.interceptors.request.use((config) => {
       // If accountId is being used, validate that a custom userAgent is set
       if (this.accountId && this.userAgent === DEFAULT_USER_AGENT) {
-        throw new Error('User-Agent must be provided when using Account ID');
+        throw new Error("User-Agent must be provided when using Account ID");
       }
       return config;
     });
 
     // Set headers
-    this.client.defaults.headers.common['User-Agent'] = this.userAgent;
+    this.client.defaults.headers.common["User-Agent"] = this.userAgent;
     if (this.accountId) {
-      this.client.defaults.headers.common['MONEI-Account-ID'] = this.accountId;
+      this.client.defaults.headers.common["MONEI-Account-ID"] = this.accountId;
     }
 
     // Initialize API instances with the same client and config
-    const config = new Configuration({apiKey: this.apiKey, baseOptions: {}});
+    const config = new Configuration({ apiKey: this.apiKey, baseOptions: {} });
     this.payments = new PaymentsApi(config, BASE_PATH, this.client);
     this.paymentMethods = new PaymentMethodsApi(config, BASE_PATH, this.client);
     this.subscriptions = new SubscriptionsApi(config, BASE_PATH, this.client);
@@ -151,16 +151,16 @@ export class Monei {
   setAccountId(accountId: string | undefined) {
     // If setting accountId and using default User-Agent
     if (accountId && this.userAgent === DEFAULT_USER_AGENT) {
-      throw new Error('User-Agent must be set before using Account ID');
+      throw new Error("User-Agent must be set before using Account ID");
     }
 
     this.accountId = accountId;
 
     // Update headers in client
     if (accountId) {
-      this.client.defaults.headers.common['MONEI-Account-ID'] = accountId;
+      this.client.defaults.headers.common["MONEI-Account-ID"] = accountId;
     } else {
-      delete this.client.defaults.headers.common['MONEI-Account-ID'];
+      delete this.client.defaults.headers.common["MONEI-Account-ID"];
     }
   }
 
@@ -172,7 +172,7 @@ export class Monei {
     this.userAgent = userAgent;
 
     // Update headers in client
-    this.client.defaults.headers.common['User-Agent'] = userAgent;
+    this.client.defaults.headers.common["User-Agent"] = userAgent;
   }
 
   /**
@@ -183,8 +183,8 @@ export class Monei {
    */
   verifySignature(body: string, signature: string): boolean {
     try {
-      const parts = signature.split(',').reduce<Record<string, string>>((result, part) => {
-        const [key, value] = part.split('=');
+      const parts = signature.split(",").reduce<Record<string, string>>((result, part) => {
+        const [key, value] = part.split("=");
         result[key] = value;
         return result;
       }, {});
@@ -194,9 +194,9 @@ export class Monei {
       }
 
       const hmac = crypto
-        .createHmac('SHA256', this.apiKey)
+        .createHmac("SHA256", this.apiKey)
         .update(`${parts.t}.${body}`)
-        .digest('hex');
+        .digest("hex");
 
       return hmac === parts.v1;
     } catch (error) {

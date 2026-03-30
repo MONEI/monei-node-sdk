@@ -4,6 +4,7 @@ api/apple-pay-domain-api.ts
 api/bizum-api.ts
 api/payment-methods-api.ts
 api/payments-api.ts
+api/posauth-token-api.ts
 api/subscriptions-api.ts
 base.ts
 common.ts
@@ -24,6 +25,7 @@ model/confirm-payment-request-payment-method-card.ts
 model/confirm-payment-request-payment-method.ts
 model/confirm-payment-request.ts
 model/create-payment-request.ts
+model/create-pos-auth-token-request.ts
 model/create-subscription-request.ts
 model/index.ts
 model/internal-server-error.ts
@@ -80,6 +82,7 @@ model/payment-status.ts
 model/payment-trace-details.ts
 model/payment-transaction-type.ts
 model/payment.ts
+model/pos-auth-token-create200-response.ts
 model/recurring-payment-request.ts
 model/refund-payment-request.ts
 model/register-apple-pay-domain-request.ts

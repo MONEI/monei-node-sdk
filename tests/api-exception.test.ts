@@ -1,9 +1,9 @@
-import {describe, expect, it} from 'vitest';
-import {ApiException} from '..';
-import {createErrorResponse} from './test-utils';
+import { describe, expect, it } from "vite-plus/test";
+import { ApiException } from "../index";
+import { createErrorResponse } from "./test-utils";
 
-describe('ApiException', () => {
-  it('should create an instance with all properties', () => {
+describe("ApiException", () => {
+  it("should create an instance with all properties", () => {
     const errorResponse = createErrorResponse();
 
     const exception = new ApiException(errorResponse);
@@ -17,11 +17,11 @@ describe('ApiException', () => {
     expect(exception.requestTime.toISOString()).toBe(errorResponse.requestTime);
   });
 
-  it('should handle missing optional properties', () => {
+  it("should handle missing optional properties", () => {
     const partialErrorResponse = {
-      message: 'Error message',
-      requestId: 'req_456',
-      requestTime: new Date().toISOString()
+      message: "Error message",
+      requestId: "req_456",
+      requestTime: new Date().toISOString(),
     } as any; // Type assertion to bypass TypeScript checks
 
     const exception = new ApiException(partialErrorResponse);
@@ -34,9 +34,9 @@ describe('ApiException', () => {
     expect(exception.statusCode).toBeUndefined();
   });
 
-  it('should handle invalid date in requestTime', () => {
+  it("should handle invalid date in requestTime", () => {
     const errorWithInvalidDate = createErrorResponse({
-      requestTime: 'not-a-valid-date'
+      requestTime: "not-a-valid-date",
     });
 
     const exception = new ApiException(errorWithInvalidDate);

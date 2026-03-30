@@ -8,12 +8,10 @@ coverage
 # OpenAPI
 openapi.json
 
-# Yarn
+# Yarn (legacy)
+yarn.lock
+.yarn/
 .pnp.*
-.yarn/*
-!.yarn/cache
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/sdks
-!.yarn/versions
+
+# pnpm
+.pnpm-store/
