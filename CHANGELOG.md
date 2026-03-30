@@ -1,5 +1,12 @@
 # Changelog
 
+# [2.0.0](https://github.com/MONEI/monei-node-sdk/compare/v1.9.1...v2.0.0) (2026-03-30)
+
+
+### Bug Fixes
+
+* update release-it hook from yarn to pnpm ([738954b](https://github.com/MONEI/monei-node-sdk/commit/738954bc3c0d4eb299ab96e48cda585479162aa7))
+
 ## <small>1.9.1 (2026-01-21)</small>
 
 - chore: update OpenAPI document version to 1.8.3 ([b1afcd2](https://github.com/MONEI/monei-node-sdk/commit/b1afcd2))
