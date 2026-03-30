@@ -1,11 +1,17 @@
 {
   "name": "@monei-js/node-sdk",
-  "description": "Node.js SDK for MONEI Digital Payment Gateway",
   "version": "1.9.1",
+  "description": "Node.js SDK for MONEI Digital Payment Gateway",
+  "keywords": [
+    "api",
+    "credit cards",
+    "monei",
+    "payment gateway",
+    "payment processing"
+  ],
   "homepage": "https://monei.com",
-  "author": "MONEI <support@monei.com> (https://monei.com)",
-  "type": "module",
   "license": "MIT",
+  "author": "MONEI <support@monei.com> (https://monei.com)",
   "contributors": [
     "Dmitriy Nevzorov <dn@monei.com>"
   ],
@@ -13,27 +19,25 @@
     "type": "git",
     "url": "https://github.com/MONEI/monei-node-sdk"
   },
-  "keywords": [
-    "monei",
-    "payment gateway",
-    "payment processing",
-    "credit cards",
-    "api"
-  ],
   "files": [
     "dist",
     "LICENSE",
     "README.md"
   ],
-  "source": "./index.ts",
+  "type": "module",
   "main": "./dist/index.cjs",
-  "module": "./dist/index.module.js",
-  "types": "./dist/index.d.ts",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "require": "./dist/index.cjs",
-      "import": "./dist/index.module.js"
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
     }
   },
   "publishConfig": {
@@ -43,53 +47,51 @@
   "scripts": {
     "generate": "openapi-generator-cli generate --generator-key typescript-axios",
     "generate:local": "openapi-generator-cli generate --generator-key typescript-axios-local",
-    "compile": "microbundle -f modern,cjs --target node --strict --name index --tsconfig tsconfig.build.json",
-    "dev": "microbundle watch -f modern,cjs --target node --strict --name index --tsconfig tsconfig.build.json",
-    "build": "run-s generate replace format compile",
-    "build:local": "run-s generate:local replace format compile",
+    "compile": "vp pack",
+    "dev": "vp pack --watch",
+    "build": "pnpm generate && pnpm replace && pnpm format && pnpm compile",
+    "build:local": "pnpm generate:local && pnpm replace && pnpm format && pnpm compile",
     "replace": "node scripts/replace.js",
     "release": "release-it",
-    "prepack": "yarn build",
-    "test": "vitest run",
-    "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage",
+    "prepack": "pnpm build",
+    "test": "vp test run",
+    "test:watch": "vp test",
+    "test:coverage": "vp test run --coverage",
     "commitlint": "commitlint --edit",
     "typecheck": "tsc --noEmit",
-    "lint-staged": "lint-staged",
-    "format": "prettier --write \"**/*.ts\"",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
-    "prepare": "husky"
-  },
-  "lint-staged": {
-    "*.ts": [
-      "prettier --write",
-      "eslint --quiet --fix"
-    ]
-  },
-  "devDependencies": {
-    "@commitlint/cli": "^20.1.0",
-    "@commitlint/config-conventional": "^20.0.0",
-    "@eslint/js": "^9.39.1",
-    "@openapitools/openapi-generator-cli": "^2.25.2",
-    "@release-it/conventional-changelog": "10.0.1",
-    "@types/node": "^22.19.1",
-    "@vitest/coverage-v8": "^4.0.14",
-    "axios-mock-adapter": "^2.1.0",
-    "eslint": "^9.39.1",
-    "husky": "^9.1.7",
-    "lint-staged": "^16.2.7",
-    "microbundle": "^0.15.1",
-    "npm-run-all": "^4.1.5",
-    "prettier": "^3.7.3",
-    "release-it": "^19.0.6",
-    "replace-in-file": "^8.3.0",
-    "typescript": "^5.9.3",
-    "typescript-eslint": "^8.48.0",
-    "vitest": "^4.0.14"
+    "lint-staged": "vp staged",
+    "format": "vp fmt \"**/*.ts\"",
+    "lint": "vp lint .",
+    "lint:fix": "vp lint . --fix",
+    "prepare": "vp config"
   },
   "dependencies": {
-    "axios": "^1.13.2"
+    "axios": "^1.14.0"
   },
-  "packageManager": "yarn@4.12.0"
+  "devDependencies": {
+    "@commitlint/cli": "^20.5.0",
+    "@commitlint/config-conventional": "^20.5.0",
+    "@openapitools/openapi-generator-cli": "^2.31.0",
+    "@release-it/conventional-changelog": "10.0.6",
+    "@types/node": "^25.5.0",
+    "@vitest/coverage-v8": "^4.1.2",
+    "axios-mock-adapter": "^2.1.0",
+    "release-it": "^19.2.4",
+    "replace-in-file": "^8.4.0",
+    "typescript": "^6.0.2",
+    "vite-plus": "latest",
+    "vitest": "npm:@voidzero-dev/vite-plus-test@latest"
+  },
+  "packageManager": "pnpm@10.33.0",
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@nestjs/core",
+      "@openapitools/openapi-generator-cli",
+      "esbuild"
+    ],
+    "overrides": {
+      "vite": "npm:@voidzero-dev/vite-plus-core@latest",
+      "vitest": "npm:@voidzero-dev/vite-plus-test@latest"
+    }
+  }
 }

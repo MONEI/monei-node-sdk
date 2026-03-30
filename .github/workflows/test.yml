@@ -11,25 +11,24 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
-      - name: Enable Corepack
-        run: corepack enable
-
-      - name: Install Node.js
-        uses: actions/setup-node@v4
+      - uses: voidzero-dev/setup-vp@v1
         with:
           node-version-file: .nvmrc
-          cache: yarn
+          cache: true
 
       - name: Install dependencies
-        run: yarn install --immutable
+        run: vp install --frozen-lockfile
+
+      - name: Check (format, lint, types)
+        run: vp check
 
       - name: Run tests
-        run: yarn test
+        run: vp test
 
       - name: Generate coverage report
-        run: yarn test:coverage
+        run: vp test run --coverage
 
       - name: Report coverage
         uses: davelosert/vitest-coverage-report-action@v2

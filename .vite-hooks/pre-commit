@@ -1,5 +1,5 @@
 # Run lint-staged to format Python files with Black
-yarn lint-staged
+vp staged
 
 # Run tests to ensure everything works
-yarn test
+pnpm test

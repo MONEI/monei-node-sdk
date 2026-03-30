@@ -13,46 +13,21 @@
  */
 
 /**
- * Details from Klarna order used as payment method at the time of the transaction.
+ *
  * @export
- * @interface PaymentPaymentMethodKlarna
+ * @interface CreatePosAuthTokenRequest
  */
-export interface PaymentPaymentMethodKlarna {
+export interface CreatePosAuthTokenRequest {
   /**
-   *
+   * A unique identifier of the Point of Sale. If specified the payment is attached to this Point of Sale. If there is a QR code attached to the same Point of Sale, this payment will be available by scanning the QR code.
    * @type {string}
-   * @memberof PaymentPaymentMethodKlarna
+   * @memberof CreatePosAuthTokenRequest
    */
-  billingCategory?: PaymentPaymentMethodKlarnaBillingCategoryEnum;
+  pointOfSaleId?: string;
   /**
-   *
+   * A unique identifier of the Store. If specified the payment is attached to this Store.
    * @type {string}
-   * @memberof PaymentPaymentMethodKlarna
+   * @memberof CreatePosAuthTokenRequest
    */
-  authPaymentMethod?: PaymentPaymentMethodKlarnaAuthPaymentMethodEnum;
+  storeId?: string;
 }
-
-export const PaymentPaymentMethodKlarnaBillingCategoryEnum = {
-  PAY_LATER: "PAY_LATER",
-  PAY_NOW: "PAY_NOW",
-  SLICE_IT: "SLICE_IT",
-  SLICE_IT_BY_CARD: "SLICE_IT_BY_CARD",
-} as const;
-
-export type PaymentPaymentMethodKlarnaBillingCategoryEnum =
-  (typeof PaymentPaymentMethodKlarnaBillingCategoryEnum)[keyof typeof PaymentPaymentMethodKlarnaBillingCategoryEnum];
-export const PaymentPaymentMethodKlarnaAuthPaymentMethodEnum = {
-  INVOICE: "invoice",
-  FIXED_AMOUNT: "fixed_amount",
-  PIX: "pix",
-  BASE_ACCOUNT: "base_account",
-  DEFERRED_INTEREST: "deferred_interest",
-  DIRECT_DEBIT: "direct_debit",
-  DIRECT_BANK_TRANSFER: "direct_bank_transfer",
-  B2B_INVOICE: "b2b_invoice",
-  CARD: "card",
-  SLICE_IT_BY_CARD: "slice_it_by_card",
-} as const;
-
-export type PaymentPaymentMethodKlarnaAuthPaymentMethodEnum =
-  (typeof PaymentPaymentMethodKlarnaAuthPaymentMethodEnum)[keyof typeof PaymentPaymentMethodKlarnaAuthPaymentMethodEnum];

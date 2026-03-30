@@ -1,20 +1,20 @@
-import {afterEach, describe, expect, it} from 'vitest';
-import {BASE_PATH, createTestClient, mockAxios, resetTestEnv} from './test-utils';
+import { afterEach, describe, expect, it } from "vite-plus/test";
+import { BASE_PATH, createTestClient, mockAxios, resetTestEnv } from "./test-utils";
 
 afterEach(() => {
   resetTestEnv();
 });
 
-describe('Apple Pay Certificate API', () => {
+describe("Apple Pay Certificate API", () => {
   const monei = createTestClient();
 
-  describe('create', () => {
-    it('should create a new certificate with CSR', async () => {
+  describe("create", () => {
+    it("should create a new certificate with CSR", async () => {
       const expectedResponse = {
-        id: 'cert_123',
-        csr: 'base64url_encoded_csr',
+        id: "cert_123",
+        csr: "base64url_encoded_csr",
         active: false,
-        createdAt: '2024-01-01T00:00:00Z'
+        createdAt: "2024-01-01T00:00:00Z",
       };
 
       mockAxios.onPost(`${BASE_PATH}/apple-pay/certificates`).reply(200, expectedResponse);
@@ -24,14 +24,14 @@ describe('Apple Pay Certificate API', () => {
     });
   });
 
-  describe('get', () => {
-    it('should get a certificate by id', async () => {
-      const certId = 'cert_123';
+  describe("get", () => {
+    it("should get a certificate by id", async () => {
+      const certId = "cert_123";
       const expectedResponse = {
         id: certId,
         active: true,
-        expireAt: '2025-01-01T00:00:00Z',
-        createdAt: '2024-01-01T00:00:00Z'
+        expireAt: "2025-01-01T00:00:00Z",
+        createdAt: "2024-01-01T00:00:00Z",
       };
 
       mockAxios.onGet(`${BASE_PATH}/apple-pay/certificates/${certId}`).reply(200, expectedResponse);
@@ -41,11 +41,11 @@ describe('Apple Pay Certificate API', () => {
     });
   });
 
-  describe('getAll', () => {
-    it('should list all certificates', async () => {
+  describe("getAll", () => {
+    it("should list all certificates", async () => {
       const expectedResponse = [
-        {id: 'cert_123', active: true},
-        {id: 'cert_456', active: false}
+        { id: "cert_123", active: true },
+        { id: "cert_456", active: false },
       ];
 
       mockAxios.onGet(`${BASE_PATH}/apple-pay/certificates`).reply(200, expectedResponse);
@@ -55,16 +55,16 @@ describe('Apple Pay Certificate API', () => {
     });
   });
 
-  describe('activate', () => {
-    it('should activate a certificate with signed cert', async () => {
-      const certId = 'cert_123';
+  describe("activate", () => {
+    it("should activate a certificate with signed cert", async () => {
+      const certId = "cert_123";
       const activateData = {
-        cert: 'base64_encoded_signed_certificate'
+        cert: "base64_encoded_signed_certificate",
       };
       const expectedResponse = {
         id: certId,
         active: true,
-        expireAt: '2025-01-01T00:00:00Z'
+        expireAt: "2025-01-01T00:00:00Z",
       };
 
       mockAxios
@@ -76,15 +76,15 @@ describe('Apple Pay Certificate API', () => {
     });
   });
 
-  describe('update', () => {
-    it('should update certificate active status', async () => {
-      const certId = 'cert_123';
+  describe("update", () => {
+    it("should update certificate active status", async () => {
+      const certId = "cert_123";
       const updateData = {
-        active: false
+        active: false,
       };
       const expectedResponse = {
         id: certId,
-        active: false
+        active: false,
       };
 
       mockAxios
@@ -96,11 +96,11 @@ describe('Apple Pay Certificate API', () => {
     });
   });
 
-  describe('remove', () => {
-    it('should delete a certificate', async () => {
-      const certId = 'cert_123';
+  describe("remove", () => {
+    it("should delete a certificate", async () => {
+      const certId = "cert_123";
       const expectedResponse = {
-        success: true
+        success: true,
       };
 
       mockAxios

@@ -1,23 +1,23 @@
-import {afterEach, describe, expect, it} from 'vitest';
-import {BASE_PATH, createTestClient, mockAxios, resetTestEnv} from './test-utils';
+import { afterEach, describe, expect, it } from "vite-plus/test";
+import { BASE_PATH, createTestClient, mockAxios, resetTestEnv } from "./test-utils";
 
 // Reset mock after each test
 afterEach(() => {
   resetTestEnv();
 });
 
-describe('Apple Pay Domain API', () => {
+describe("Apple Pay Domain API", () => {
   const monei = createTestClient();
 
-  describe('Register Domain', () => {
-    it('should register a domain for Apple Pay', async () => {
+  describe("Register Domain", () => {
+    it("should register a domain for Apple Pay", async () => {
       const domainData = {
-        domainName: 'example.com'
+        domainName: "example.com",
       };
 
       const expectedResponse = {
-        domain: 'example.com',
-        status: 'ACTIVE'
+        domain: "example.com",
+        status: "ACTIVE",
       };
 
       mockAxios.onPost(`${BASE_PATH}/apple-pay/domains`).reply(200, expectedResponse);

@@ -1,32 +1,32 @@
-import {afterEach, describe, expect, it} from 'vitest';
-import {BASE_PATH, createTestClient, mockAxios, resetTestEnv} from './test-utils';
+import { afterEach, describe, expect, it } from "vite-plus/test";
+import { BASE_PATH, createTestClient, mockAxios, resetTestEnv } from "./test-utils";
 
 // Reset mock after each test
 afterEach(() => {
   resetTestEnv();
 });
 
-describe('Payment Methods API', () => {
+describe("Payment Methods API", () => {
   const monei = createTestClient();
 
-  describe('Get Payment Methods', () => {
-    it('should get available payment methods', async () => {
-      const accountId = 'acc_123456';
+  describe("Get Payment Methods", () => {
+    it("should get available payment methods", async () => {
+      const accountId = "acc_123456";
       const expectedResponse = {
         data: [
           {
-            type: 'CARD',
-            name: 'Credit Card',
-            countries: ['ES', 'US'],
-            currencies: ['EUR', 'USD']
+            type: "CARD",
+            name: "Credit Card",
+            countries: ["ES", "US"],
+            currencies: ["EUR", "USD"],
           },
           {
-            type: 'PAYPAL',
-            name: 'PayPal',
-            countries: ['ES', 'US'],
-            currencies: ['EUR', 'USD']
-          }
-        ]
+            type: "PAYPAL",
+            name: "PayPal",
+            countries: ["ES", "US"],
+            currencies: ["EUR", "USD"],
+          },
+        ],
       };
 
       mockAxios
@@ -37,17 +37,17 @@ describe('Payment Methods API', () => {
       expect(response).toEqual(expectedResponse);
     });
 
-    it('should get payment methods for a specific payment', async () => {
-      const paymentId = 'pay_123';
+    it("should get payment methods for a specific payment", async () => {
+      const paymentId = "pay_123";
       const expectedResponse = {
         data: [
           {
-            type: 'CARD',
-            name: 'Credit Card',
-            countries: ['ES'],
-            currencies: ['EUR']
-          }
-        ]
+            type: "CARD",
+            name: "Credit Card",
+            countries: ["ES"],
+            currencies: ["EUR"],
+          },
+        ],
       };
 
       mockAxios

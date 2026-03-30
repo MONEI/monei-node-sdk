@@ -4,7 +4,6 @@
     "target": "ES2015",
     "module": "esnext",
     "lib": ["esnext", "dom"],
-    "importHelpers": true,
     "declaration": true,
     "sourceMap": true,
     "rootDir": ".",
@@ -15,13 +14,14 @@
     "strictPropertyInitialization": true,
     "noImplicitThis": true,
     "alwaysStrict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "esModuleInterop": true,
-    "types": ["vitest/globals"]
+    "skipLibCheck": true,
+    "types": ["vite-plus/test/globals", "node"]
   }
 }

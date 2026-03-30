@@ -13,46 +13,15 @@
  */
 
 /**
- * Details from Klarna order used as payment method at the time of the transaction.
+ *
  * @export
- * @interface PaymentPaymentMethodKlarna
+ * @interface PosAuthTokenCreate200Response
  */
-export interface PaymentPaymentMethodKlarna {
+export interface PosAuthTokenCreate200Response {
   /**
-   *
+   * RS256-signed JWT token for POS authentication. Valid for 24 hours.
    * @type {string}
-   * @memberof PaymentPaymentMethodKlarna
+   * @memberof PosAuthTokenCreate200Response
    */
-  billingCategory?: PaymentPaymentMethodKlarnaBillingCategoryEnum;
-  /**
-   *
-   * @type {string}
-   * @memberof PaymentPaymentMethodKlarna
-   */
-  authPaymentMethod?: PaymentPaymentMethodKlarnaAuthPaymentMethodEnum;
+  token: string;
 }
-
-export const PaymentPaymentMethodKlarnaBillingCategoryEnum = {
-  PAY_LATER: "PAY_LATER",
-  PAY_NOW: "PAY_NOW",
-  SLICE_IT: "SLICE_IT",
-  SLICE_IT_BY_CARD: "SLICE_IT_BY_CARD",
-} as const;
-
-export type PaymentPaymentMethodKlarnaBillingCategoryEnum =
-  (typeof PaymentPaymentMethodKlarnaBillingCategoryEnum)[keyof typeof PaymentPaymentMethodKlarnaBillingCategoryEnum];
-export const PaymentPaymentMethodKlarnaAuthPaymentMethodEnum = {
-  INVOICE: "invoice",
-  FIXED_AMOUNT: "fixed_amount",
-  PIX: "pix",
-  BASE_ACCOUNT: "base_account",
-  DEFERRED_INTEREST: "deferred_interest",
-  DIRECT_DEBIT: "direct_debit",
-  DIRECT_BANK_TRANSFER: "direct_bank_transfer",
-  B2B_INVOICE: "b2b_invoice",
-  CARD: "card",
-  SLICE_IT_BY_CARD: "slice_it_by_card",
-} as const;
-
-export type PaymentPaymentMethodKlarnaAuthPaymentMethodEnum =
-  (typeof PaymentPaymentMethodKlarnaAuthPaymentMethodEnum)[keyof typeof PaymentPaymentMethodKlarnaAuthPaymentMethodEnum];
