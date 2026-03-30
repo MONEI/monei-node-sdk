@@ -10,7 +10,7 @@
     "publish": true
   },
   "hooks": {
-    "before:init": ["yarn test"]
+    "before:init": ["pnpm test"]
   },
   "plugins": {
     "@release-it/conventional-changelog": {
