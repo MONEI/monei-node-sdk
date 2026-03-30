@@ -6,6 +6,7 @@ import {
   BizumApi,
   PaymentMethodsApi,
   PaymentsApi,
+  POSAuthTokenApi,
   SubscriptionsApi,
   ApplePayCertificateApi,
 } from "./src";
@@ -95,6 +96,8 @@ export class Monei {
   applePayCertificate!: ApplePayCertificateApi;
   /** API for managing Bizum */
   bizum!: BizumApi;
+  /** API for creating POS auth tokens */
+  posAuthToken!: POSAuthTokenApi;
 
   /**
    * Creates a new MONEI SDK client instance
@@ -141,6 +144,7 @@ export class Monei {
     this.applePayDomain = new ApplePayDomainApi(config, BASE_PATH, this.client);
     this.applePayCertificate = new ApplePayCertificateApi(config, BASE_PATH, this.client);
     this.bizum = new BizumApi(config, BASE_PATH, this.client);
+    this.posAuthToken = new POSAuthTokenApi(config, BASE_PATH, this.client);
   }
 
   /**
