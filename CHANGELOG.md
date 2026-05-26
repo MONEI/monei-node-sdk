@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.2](https://github.com/MONEI/monei-node-sdk/compare/v2.0.1...v2.0.2) (2026-05-26)
+
+
+### Bug Fixes
+
+* regenerate from openapi v1.9.0 ([dd7c5f0](https://github.com/MONEI/monei-node-sdk/commit/dd7c5f08faa441fb1d382eed49502717a6b6e5a3))
+
 ## [2.0.1](https://github.com/MONEI/monei-node-sdk/compare/v2.0.0...v2.0.1) (2026-03-30)
 
 
