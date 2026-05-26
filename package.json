@@ -66,32 +66,21 @@
     "prepare": "vp config"
   },
   "dependencies": {
-    "axios": "^1.14.0"
+    "axios": "^1.16.1"
   },
   "devDependencies": {
-    "@commitlint/cli": "^20.5.0",
-    "@commitlint/config-conventional": "^20.5.0",
-    "@openapitools/openapi-generator-cli": "^2.31.0",
-    "@release-it/conventional-changelog": "10.0.6",
-    "@types/node": "^25.5.0",
-    "@vitest/coverage-v8": "^4.1.2",
+    "@commitlint/cli": "^21.0.1",
+    "@commitlint/config-conventional": "^21.0.1",
+    "@openapitools/openapi-generator-cli": "^2.34.0",
+    "@release-it/conventional-changelog": "11.0.0",
+    "@types/node": "^25.9.1",
+    "@vitest/coverage-v8": "^4.1.7",
     "axios-mock-adapter": "^2.1.0",
-    "release-it": "^19.2.4",
+    "release-it": "^20.0.1",
     "replace-in-file": "^8.4.0",
-    "typescript": "^6.0.2",
+    "typescript": "^6.0.3",
     "vite-plus": "latest",
     "vitest": "npm:@voidzero-dev/vite-plus-test@latest"
   },
-  "packageManager": "pnpm@10.33.0",
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "@nestjs/core",
-      "@openapitools/openapi-generator-cli",
-      "esbuild"
-    ],
-    "overrides": {
-      "vite": "npm:@voidzero-dev/vite-plus-core@latest",
-      "vitest": "npm:@voidzero-dev/vite-plus-test@latest"
-    }
-  }
+  "packageManager": "pnpm@11.3.0"
 }
