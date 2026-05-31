@@ -180,31 +180,42 @@ export class Monei {
   }
 
   /**
-   * Verify webhook signature to ensure the webhook was sent by MONEI
-   * @param body - Raw request body as string
-   * @param signature - Signature from the MONEI-Signature header
-   * @returns boolean indicating if the signature is valid
+   * Verify the `MONEI-Signature` header and return the parsed request body.
+   *
+   * The body is returned parsed as-is (not transformed). Its shape depends on
+   * the source, so no type is assumed: a payment `callbackUrl` sends the Payment
+   * object, while account webhooks send an event envelope `{ id, type, object,
+   * ... }` whose `object` varies by event (payment, subscription, etc.). Pass
+   * the expected type, e.g. `verifySignature<Payment>(body, signature)` for a
+   * payment callback.
+   *
+   * @param body - Raw request body as a string
+   * @param signature - Value of the `MONEI-Signature` header
+   * @returns The verified, parsed body (typed as `T`; `unknown` by default)
+   * @throws {ApiException} When the signature is missing, malformed, or invalid
    */
-  verifySignature(body: string, signature: string): boolean {
-    try {
-      const parts = signature.split(",").reduce<Record<string, string>>((result, part) => {
-        const [key, value] = part.split("=");
-        result[key] = value;
-        return result;
-      }, {});
+  verifySignature<T = unknown>(body: string, signature: string): T {
+    const parts = (signature || "").split(",").reduce<Record<string, string>>((result, part) => {
+      const [key, value] = part.split("=");
+      result[key] = value;
+      return result;
+    }, {});
 
-      if (!parts.t || !parts.v1) {
-        return false;
-      }
+    const hmac =
+      parts.t && parts.v1
+        ? crypto.createHmac("SHA256", this.apiKey).update(`${parts.t}.${body}`).digest("hex")
+        : null;
 
-      const hmac = crypto
-        .createHmac("SHA256", this.apiKey)
-        .update(`${parts.t}.${body}`)
-        .digest("hex");
-
-      return hmac === parts.v1;
-    } catch (error) {
-      return false;
+    if (!hmac || hmac !== parts.v1) {
+      throw new ApiException({
+        status: "ERROR",
+        statusCode: 401,
+        requestId: "",
+        message: "Signature verification failed",
+        requestTime: new Date().toISOString(),
+      });
     }
+
+    return JSON.parse(body) as T;
   }
 }

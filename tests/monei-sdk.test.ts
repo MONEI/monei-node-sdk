@@ -144,31 +144,33 @@ describe("Monei SDK", () => {
   });
 
   describe("Signature Verification", () => {
-    it("should verify a valid signature", () => {
+    it("should verify a valid signature and return the parsed body", () => {
       const instance = new Monei(API_KEY);
       const body = JSON.stringify({ id: "test_id", amount: 1000 });
       const signature = genSig(body, API_KEY);
 
       const result = instance.verifySignature(body, signature);
-      expect(result).toBe(true);
+      expect(result).toEqual({ id: "test_id", amount: 1000 });
     });
 
-    it("should reject an invalid signature", () => {
+    it("should throw on an invalid signature", () => {
       const instance = new Monei(API_KEY);
       const body = JSON.stringify({ id: "test_id", amount: 1000 });
-      const invalidSignature = "v1=invalid_signature";
+      const invalidSignature = "t=123,v1=invalid_signature";
 
-      const result = instance.verifySignature(body, invalidSignature);
-      expect(result).toBe(false);
+      expect(() => instance.verifySignature(body, invalidSignature)).toThrow(
+        "Signature verification failed",
+      );
     });
 
-    it("should handle malformed signature format", () => {
+    it("should throw on a malformed signature format", () => {
       const instance = new Monei(API_KEY);
       const body = JSON.stringify({ id: "test_id", amount: 1000 });
       const malformedSignature = "invalid_format";
 
-      const result = instance.verifySignature(body, malformedSignature);
-      expect(result).toBe(false);
+      expect(() => instance.verifySignature(body, malformedSignature)).toThrow(
+        "Signature verification failed",
+      );
     });
   });
 
