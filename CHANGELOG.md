@@ -2,39 +2,35 @@
 
 ## [2.0.2](https://github.com/MONEI/monei-node-sdk/compare/v2.0.1...v2.0.2) (2026-05-26)
 
-
 ### Bug Fixes
 
-* regenerate from openapi v1.9.0 ([dd7c5f0](https://github.com/MONEI/monei-node-sdk/commit/dd7c5f08faa441fb1d382eed49502717a6b6e5a3))
+- regenerate from openapi v1.9.0 ([dd7c5f0](https://github.com/MONEI/monei-node-sdk/commit/dd7c5f08faa441fb1d382eed49502717a6b6e5a3))
 
 ## [2.0.1](https://github.com/MONEI/monei-node-sdk/compare/v2.0.0...v2.0.1) (2026-03-30)
 
-
 ### Bug Fixes
 
-* **changelog:** match angular preset sections and list style for 2.0.0 ([d7f1159](https://github.com/MONEI/monei-node-sdk/commit/d7f11594b106bf9bf02617574557bd90a00d2538))
-
+- **changelog:** match angular preset sections and list style for 2.0.0 ([d7f1159](https://github.com/MONEI/monei-node-sdk/commit/d7f11594b106bf9bf02617574557bd90a00d2538))
 
 ### Features
 
-* expose POSAuthTokenApi on Monei client ([d2fe1a1](https://github.com/MONEI/monei-node-sdk/commit/d2fe1a1aebb35babf68c766ac5bfe8cf6826a614))
+- expose POSAuthTokenApi on Monei client ([d2fe1a1](https://github.com/MONEI/monei-node-sdk/commit/d2fe1a1aebb35babf68c766ac5bfe8cf6826a614))
 
 # [2.0.0](https://github.com/MONEI/monei-node-sdk/compare/v1.9.1...v2.0.0) (2026-03-30)
 
-
 ### Bug Fixes
 
-* update release-it hook from yarn to pnpm ([738954b](https://github.com/MONEI/monei-node-sdk/commit/738954bc3c0d4eb299ab96e48cda585479162aa7))
+- update release-it hook from yarn to pnpm ([738954b](https://github.com/MONEI/monei-node-sdk/commit/738954bc3c0d4eb299ab96e48cda585479162aa7))
 
 ### Build System
 
-* migrate toolchain to Vite+ (`vite-plus`): `vp pack` (tsdown) replaces microbundle; `vp test` for Vitest; `vp check` (Oxlint/Oxfmt) replaces ESLint/Prettier; `vp config` and `.vite-hooks` replace Husky/lint-staged
-* switch package manager from Yarn Berry to pnpm (lockfile, scripts, CI)
-* raise Node baseline to 24 (`.nvmrc` and CI)
+- migrate toolchain to Vite+ (`vite-plus`): `vp pack` (tsdown) replaces microbundle; `vp test` for Vitest; `vp check` (Oxlint/Oxfmt) replaces ESLint/Prettier; `vp config` and `.vite-hooks` replace Husky/lint-staged
+- switch package manager from Yarn Berry to pnpm (lockfile, scripts, CI)
+- raise Node baseline to 24 (`.nvmrc` and CI)
 
 ### BREAKING CHANGES
 
-* build output and `package.json` `exports` use explicit `.mjs`/`.cjs` and `.d.mts`/`.d.cts`; confirm TypeScript `moduleResolution` and bundlers resolve these entrypoints (Node 18+ recommended)
+- build output and `package.json` `exports` use explicit `.mjs`/`.cjs` and `.d.mts`/`.d.cts`; confirm TypeScript `moduleResolution` and bundlers resolve these entrypoints (Node 18+ recommended)
 
 ## <small>1.9.1 (2026-01-21)</small>
 
