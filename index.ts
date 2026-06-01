@@ -206,7 +206,12 @@ export class Monei {
         ? crypto.createHmac("SHA256", this.apiKey).update(`${parts.t}.${body}`).digest("hex")
         : null;
 
-    if (!hmac || hmac !== parts.v1) {
+    const valid =
+      hmac != null &&
+      hmac.length === parts.v1.length &&
+      crypto.timingSafeEqual(Buffer.from(hmac), Buffer.from(parts.v1));
+
+    if (!valid) {
       throw new ApiException({
         status: "ERROR",
         statusCode: 401,
