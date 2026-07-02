@@ -1,5 +1,12 @@
 # Changelog
 
+# [3.1.0](https://github.com/MONEI/monei-node-sdk/compare/v3.0.0...v3.1.0) (2026-07-02)
+
+
+### Features
+
+* add trialAmount and trialIntervalCount to subscriptions ([92471ee](https://github.com/MONEI/monei-node-sdk/commit/92471eef07a5eb333a69fb3f273a968f0e30c19b))
+
 # [](https://github.com/MONEI/monei-node-sdk/compare/v2.0.2...vnull) (2026-06-01)
 
 
