@@ -104,6 +104,18 @@ export interface CreateSubscriptionRequest {
    */
   trialPeriodDays?: number;
   /**
+   * Amount charged on each billing cycle during the trial period, as a positive integer in the smallest currency unit (e.g., 100 cents to charge 1.00 USD). Once the trial ends, the subscription\'s regular `amount` is charged. Use this to offer discounted introductory pricing. Can be combined with `trialIntervalCount` (charged each cycle for that many cycles) or with `trialPeriodDays`/`trialPeriodEnd` (charged once at activation, covering the subscription until the trial period ends).
+   * @type {number}
+   * @memberof CreateSubscriptionRequest
+   */
+  trialAmount?: number;
+  /**
+   * Number of billing cycles charged at `trialAmount` before the regular `amount` applies, using the subscription\'s `interval` (e.g., `interval` of `month` with a `trialIntervalCount` of 3 charges the `trialAmount` for the first 3 months). Requires `trialAmount` and cannot be combined with `trialPeriodDays` or `trialPeriodEnd`. In responses, the value decrements after each trial payment and is removed once the trial ends.
+   * @type {number}
+   * @memberof CreateSubscriptionRequest
+   */
+  trialIntervalCount?: number;
+  /**
    *
    * @type {SubscriptionRetrySchedule}
    * @memberof CreateSubscriptionRequest
