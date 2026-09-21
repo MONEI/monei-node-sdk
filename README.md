@@ -161,7 +161,7 @@ monei.payments
         line1: "123 Main St",
         city: "Barcelona",
         country: "ES",
-        postalCode: "08001",
+        zip: "08001",
       },
     },
     completeUrl: "https://example.com/success",
@@ -204,14 +204,13 @@ import { Monei } from "@monei-js/node-sdk";
 
 const monei = new Monei("YOUR_API_KEY");
 
-monei.refunds
-  .create({
-    paymentId: "pay_123456789",
+monei.payments
+  .refund("pay_123456789", {
     amount: 500, // Partial refund of 5.00
-    reason: "customer_request",
+    refundReason: "requested_by_customer",
   })
-  .then((refund) => {
-    console.log("Refund created with ID:", refund.id);
+  .then((payment) => {
+    console.log("Payment status after refund:", payment.status);
   })
   .catch((error) => {
     console.error("Error refunding payment:", error.message);
@@ -424,7 +423,7 @@ const monei = new Monei("pk_partner_test_...", {
 
 // Make API calls on behalf of the merchant
 monei.payments
-  .create({ orderId: "12345", amount: 110 })
+  .create({ orderId: "12345", amount: 110, currency: "EUR" })
   .then((result) => {
     console.log(result);
   })
@@ -449,7 +448,7 @@ monei.setAccountId("merchant_account_id");
 
 // Make API calls on behalf of the merchant
 monei.payments
-  .create({ orderId: "12345", amount: 110 })
+  .create({ orderId: "12345", amount: 110, currency: "EUR" })
   .then((result) => {
     console.log(result);
   })
