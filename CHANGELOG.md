@@ -1,5 +1,13 @@
 # Changelog
 
+# [3.2.0](https://github.com/MONEI/monei-node-sdk/compare/v3.1.0...v3.2.0) (2026-09-21)
+
+
+### Features
+
+* add subscription proration and the preview endpoint ([f9904ea](https://github.com/MONEI/monei-node-sdk/commit/f9904ea8510f3d45efbd2dc2486fe8f57cd056f2))
+* regenerate from OpenAPI v1.12.2 ([e1a5998](https://github.com/MONEI/monei-node-sdk/commit/e1a5998fdd46bfe569979250fd05f5755d6a6124))
+
 # [3.1.0](https://github.com/MONEI/monei-node-sdk/compare/v3.0.0...v3.1.0) (2026-07-02)
 
 ### Features
