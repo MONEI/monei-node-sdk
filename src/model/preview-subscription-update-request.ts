@@ -14,41 +14,36 @@
 
 // May contain unused imports in some cases
 // @ts-ignore
-import type { PaymentPaymentMethodBizum } from "./payment-payment-method-bizum";
-// May contain unused imports in some cases
-// @ts-ignore
-import type { PaymentPaymentMethodCard } from "./payment-payment-method-card";
+import type { SubscriptionInterval } from "./subscription-interval";
 
 /**
- * Details about the payment method at the time of the transaction.
+ * Send at least one of `amount`, `interval`, `intervalCount` or `nextPaymentAt`. A request that changes none of them is rejected, because there is no difference to price.  The figures come from the same calculation the update endpoint runs, and the same rules reject the same requests, so a preview that returns a settlement is one the update can apply.
  * @export
- * @interface SubscriptionPaymentMethod
+ * @interface PreviewSubscriptionUpdateRequest
  */
-export interface SubscriptionPaymentMethod {
+export interface PreviewSubscriptionUpdateRequest {
   /**
-   * Subscription method type.
-   * @type {string}
-   * @memberof SubscriptionPaymentMethod
+   * Amount intended to be collected by this payment. A positive integer representing how much to charge in the smallest currency unit (e.g., 100 cents to charge 1.00 USD).
+   * @type {number}
+   * @memberof PreviewSubscriptionUpdateRequest
    */
-  method?: SubscriptionPaymentMethodMethodEnum;
-  /**
-   *
-   * @type {PaymentPaymentMethodCard}
-   * @memberof SubscriptionPaymentMethod
-   */
-  card?: PaymentPaymentMethodCard;
+  amount?: number;
   /**
    *
-   * @type {PaymentPaymentMethodBizum}
-   * @memberof SubscriptionPaymentMethod
+   * @type {SubscriptionInterval}
+   * @memberof PreviewSubscriptionUpdateRequest
    */
-  bizum?: PaymentPaymentMethodBizum;
+  interval?: SubscriptionInterval;
+  /**
+   * Number of intervals between subscription payments.
+   * @type {number}
+   * @memberof PreviewSubscriptionUpdateRequest
+   */
+  intervalCount?: number;
+  /**
+   * The date when the next payment will be made. Measured in seconds since the Unix epoch.  Send it on an update to move the next charge without changing the price. The date must be in the future and no more than five years ahead, and the subscription must be active or past due with a live schedule. A trialing subscription moves with `trialPeriodEnd` instead, and a paused one has to be resumed first.  A pending `skipIntervalCount`, `pauseIntervalCount`, `pauseAtPeriodEnd` or `cancelAtPeriodEnd` blocks the change, because it would turn the charge at the new date into a skipped, paused or cancelled cycle instead of a payment. Clear it in the same request by sending `0`, `null` or `false` for that field.  Moving the date on its own settles no money. Combine it with `prorate` to charge or refund the time that moves.
+   * @type {number}
+   * @memberof PreviewSubscriptionUpdateRequest
+   */
+  nextPaymentAt?: number;
 }
-
-export const SubscriptionPaymentMethodMethodEnum = {
-  CARD: "card",
-  BIZUM: "bizum",
-} as const;
-
-export type SubscriptionPaymentMethodMethodEnum =
-  (typeof SubscriptionPaymentMethodMethodEnum)[keyof typeof SubscriptionPaymentMethodMethodEnum];

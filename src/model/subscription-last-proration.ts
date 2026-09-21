@@ -13,15 +13,33 @@
  */
 
 /**
- *
+ * What the most recent prorated change settled. Present only after a prorated change.
  * @export
- * @interface UpdateApplePayCertificateRequest
+ * @interface SubscriptionLastProration
  */
-export interface UpdateApplePayCertificateRequest {
+export interface SubscriptionLastProration {
   /**
-   * Set to true to enable or false to disable the certificate.
-   * @type {boolean}
-   * @memberof UpdateApplePayCertificateRequest
+   * Unused time credited at the previous price, in the smallest currency unit.
+   * @type {number}
+   * @memberof SubscriptionLastProration
    */
-  active: boolean;
+  credit?: number;
+  /**
+   * Time charged at the new price, in the smallest currency unit. An interval change charges the full new price rather than a fraction of it.
+   * @type {number}
+   * @memberof SubscriptionLastProration
+   */
+  charge?: number;
+  /**
+   * The settled difference, `charge` minus `credit`. A positive value was charged to the saved payment method. A negative value was refunded.
+   * @type {number}
+   * @memberof SubscriptionLastProration
+   */
+  net?: number;
+  /**
+   * The payment that funds the current period on top of its renewal, and the first source a later refund draws on. Set to the new payment when a prorated change charges. A change that refunds or moves no money keeps whichever payment an earlier prorated charge in this period created, since that money is still what funds the period. Absent when no prorated charge has funded the current period.
+   * @type {string}
+   * @memberof SubscriptionLastProration
+   */
+  paymentId?: string;
 }

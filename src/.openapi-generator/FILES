@@ -83,6 +83,7 @@ model/payment-trace-details.ts
 model/payment-transaction-type.ts
 model/payment.ts
 model/pos-auth-token-create200-response.ts
+model/preview-subscription-update-request.ts
 model/recurring-payment-request.ts
 model/refund-payment-request.ts
 model/register-apple-pay-domain-request.ts
@@ -94,12 +95,14 @@ model/send-subscription-status-request.ts
 model/service-unavailable-error.ts
 model/subscription-interval.ts
 model/subscription-last-payment.ts
+model/subscription-last-proration.ts
 model/subscription-payment-method-card.ts
 model/subscription-payment-method.ts
 model/subscription-payment-methods.ts
 model/subscription-retry-schedule-inner.ts
 model/subscription-retry-schedule.ts
 model/subscription-status.ts
+model/subscription-update-preview.ts
 model/subscription.ts
 model/unauthorized-error.ts
 model/unprocessable-entity-error.ts
