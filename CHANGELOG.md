@@ -2,26 +2,22 @@
 
 # [3.1.0](https://github.com/MONEI/monei-node-sdk/compare/v3.0.0...v3.1.0) (2026-07-02)
 
-
 ### Features
 
-* add trialAmount and trialIntervalCount to subscriptions ([92471ee](https://github.com/MONEI/monei-node-sdk/commit/92471eef07a5eb333a69fb3f273a968f0e30c19b))
+- add trialAmount and trialIntervalCount to subscriptions ([92471ee](https://github.com/MONEI/monei-node-sdk/commit/92471eef07a5eb333a69fb3f273a968f0e30c19b))
 
 # [](https://github.com/MONEI/monei-node-sdk/compare/v2.0.2...vnull) (2026-06-01)
 
-
-* feat!: verifySignature returns the parsed body and throws on invalid ([8fd4194](https://github.com/MONEI/monei-node-sdk/commit/8fd4194c3452c57213395b10dced9cd37ab699c1))
-
+- feat!: verifySignature returns the parsed body and throws on invalid ([8fd4194](https://github.com/MONEI/monei-node-sdk/commit/8fd4194c3452c57213395b10dced9cd37ab699c1))
 
 ### Bug Fixes
 
-* constant-time signature comparison ([4b43df5](https://github.com/MONEI/monei-node-sdk/commit/4b43df515865e28a78b1c6ac587de72ead5ff87d))
-
+- constant-time signature comparison ([4b43df5](https://github.com/MONEI/monei-node-sdk/commit/4b43df515865e28a78b1c6ac587de72ead5ff87d))
 
 ### BREAKING CHANGES
 
-* verifySignature now returns the parsed body (was boolean)
-and throws ApiException on invalid signatures instead of returning false.
+- verifySignature now returns the parsed body (was boolean)
+  and throws ApiException on invalid signatures instead of returning false.
 
 ## [2.0.2](https://github.com/MONEI/monei-node-sdk/compare/v2.0.1...v2.0.2) (2026-05-26)
 
