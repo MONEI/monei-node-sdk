@@ -87,6 +87,32 @@ describe("Subscriptions API", () => {
     });
   });
 
+  describe("Preview Subscription Update", () => {
+    // A preview must never reach the update endpoint: it quotes a proration without moving money.
+    it("should POST the change to the preview endpoint only", async () => {
+      const subscriptionId = "sub_123";
+      const change = { amount: 1200, interval: "year" as const, intervalCount: 1 };
+      const preview = {
+        credit: 500,
+        charge: 1200,
+        net: 700,
+        direction: "charge",
+        refundCapped: false,
+        effectiveAt: 1790000000,
+        currentPeriodEnd: 1792000000,
+      };
+
+      mockAxios.resetHistory();
+      mockAxios.onPost(`${BASE_PATH}/subscriptions/${subscriptionId}/preview`).reply(200, preview);
+
+      const response = await monei.subscriptions.preview(subscriptionId, change);
+
+      expect(response).toEqual(preview);
+      expect(mockAxios.history.put).toHaveLength(0);
+      expect(JSON.parse(mockAxios.history.post[0].data)).toEqual(change);
+    });
+  });
+
   describe("Cancel Subscription", () => {
     it("should cancel a subscription", async () => {
       const subscriptionId = "sub_123";

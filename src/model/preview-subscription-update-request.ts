@@ -14,39 +14,36 @@
 
 // May contain unused imports in some cases
 // @ts-ignore
-import type { PaymentMessageChannel } from "./payment-message-channel";
-// May contain unused imports in some cases
-// @ts-ignore
-import type { PaymentMessageLanguage } from "./payment-message-language";
+import type { SubscriptionInterval } from "./subscription-interval";
 
 /**
- *
+ * Send at least one of `amount`, `interval`, `intervalCount` or `nextPaymentAt`. A request that changes none of them is rejected, because there is no difference to price.  The figures come from the same calculation the update endpoint runs, and the same rules reject the same requests, so a preview that returns a settlement is one the update can apply.
  * @export
- * @interface SendPaymentReceiptRequest
+ * @interface PreviewSubscriptionUpdateRequest
  */
-export interface SendPaymentReceiptRequest {
+export interface PreviewSubscriptionUpdateRequest {
   /**
-   * The customer will receive payment receipt on this email address.
-   * @type {string}
-   * @memberof SendPaymentReceiptRequest
+   * Amount intended to be collected by this payment. A positive integer representing how much to charge in the smallest currency unit (e.g., 100 cents to charge 1.00 USD).
+   * @type {number}
+   * @memberof PreviewSubscriptionUpdateRequest
    */
-  customerEmail?: string;
-  /**
-   * Phone number in E.164 format. The customer will receive payment receipt link on this phone number.
-   * @type {string}
-   * @memberof SendPaymentReceiptRequest
-   */
-  customerPhone?: string;
+  amount?: number;
   /**
    *
-   * @type {PaymentMessageChannel}
-   * @memberof SendPaymentReceiptRequest
+   * @type {SubscriptionInterval}
+   * @memberof PreviewSubscriptionUpdateRequest
    */
-  channel?: PaymentMessageChannel;
+  interval?: SubscriptionInterval;
   /**
-   *
-   * @type {PaymentMessageLanguage}
-   * @memberof SendPaymentReceiptRequest
+   * Number of intervals between subscription payments.
+   * @type {number}
+   * @memberof PreviewSubscriptionUpdateRequest
    */
-  language?: PaymentMessageLanguage;
+  intervalCount?: number;
+  /**
+   * The date when the next payment will be made. Measured in seconds since the Unix epoch.  Send it on an update to move the next charge without changing the price. The date must be in the future and no more than five years ahead, and the subscription must be active or past due with a live schedule. A trialing subscription moves with `trialPeriodEnd` instead, and a paused one has to be resumed first.  A pending `skipIntervalCount`, `pauseIntervalCount`, `pauseAtPeriodEnd` or `cancelAtPeriodEnd` blocks the change, because it would turn the charge at the new date into a skipped, paused or cancelled cycle instead of a payment. Clear it in the same request by sending `0`, `null` or `false` for that field.  Moving the date on its own settles no money. Combine it with `prorate` to charge or refund the time that moves.
+   * @type {number}
+   * @memberof PreviewSubscriptionUpdateRequest
+   */
+  nextPaymentAt?: number;
 }
