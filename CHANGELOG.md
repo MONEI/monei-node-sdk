@@ -1,5 +1,7 @@
 # Changelog
 
+## [3.2.1](https://github.com/MONEI/monei-node-sdk/compare/v3.2.0...v3.2.1) (2026-09-29)
+
 # [3.2.0](https://github.com/MONEI/monei-node-sdk/compare/v3.1.0...v3.2.0) (2026-09-21)
 
 
