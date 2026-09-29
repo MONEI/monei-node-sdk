@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.2.2](https://github.com/MONEI/monei-node-sdk/compare/v3.2.1...v3.2.2) (2026-09-29)
+
+
+### Bug Fixes
+
+* add the INSTALLMENT_SELECT next action type ([#24](https://github.com/MONEI/monei-node-sdk/issues/24)) ([8ae0596](https://github.com/MONEI/monei-node-sdk/commit/8ae0596bbdcdf9e10e1feac11b75b05f17f86312))
+
 ## [3.2.1](https://github.com/MONEI/monei-node-sdk/compare/v3.2.0...v3.2.1) (2026-09-29)
 
 # [3.2.0](https://github.com/MONEI/monei-node-sdk/compare/v3.1.0...v3.2.0) (2026-09-21)
