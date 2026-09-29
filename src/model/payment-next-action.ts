@@ -19,7 +19,7 @@
  */
 export interface PaymentNextAction {
   /**
-   * - `CONFIRM` - Your customer needs to be redirected to a   [hosted payment page](https://docs.monei.com/integrations/use-prebuilt-payment-page/)   or confirm payment using   [payment token](https://docs.monei.com/integrations/build-custom-checkout/#3-confirm-the-payment-client-side).   The **redirectUrl** will point to the hosted payment page. - `FRICTIONLESS_CHALLENGE` - Your customer needs to be redirected to the frictionless    3d secure challenge page provided by the bank. The **redirectUrl**    will point to the frictionless 3d secure challenge page provided by the bank. - `CHALLENGE` - Your customer needs to be redirected to the   3d secure challenge page provided by the bank. The **redirectUrl**   will point to the 3d secure challenge page provided by the bank. - `COMPLETE` - The payment is completed. The **redirectUrl** will be   the **completeUrl** if it was provided when the payment was created. - `BIZUM_CHALLENGE` - Your customer will be redirected to the Bizum hosted payment page.
+   * - `CONFIRM` - Your customer needs to be redirected to a   [hosted payment page](https://docs.monei.com/integrations/use-prebuilt-payment-page/)   or confirm payment using   [payment token](https://docs.monei.com/integrations/build-custom-checkout/#3-confirm-the-payment-client-side).   The **redirectUrl** will point to the hosted payment page. - `FRICTIONLESS_CHALLENGE` - Your customer needs to be redirected to the frictionless    3d secure challenge page provided by the bank. The **redirectUrl**    will point to the frictionless 3d secure challenge page provided by the bank. - `CHALLENGE` - Your customer needs to be redirected to the   3d secure challenge page provided by the bank. The **redirectUrl**   will point to the 3d secure challenge page provided by the bank. - `COMPLETE` - The payment is completed. The **redirectUrl** will be   the **completeUrl** if it was provided when the payment was created. - `BIZUM_CHALLENGE` - Your customer will be redirected to the Bizum hosted payment page. - `INSTALLMENT_SELECT` - Your customer needs to choose how to pay (in full or in   installments with MONEI Flex) on the page at **redirectUrl**.
    * @type {string}
    * @memberof PaymentNextAction
    */
@@ -43,6 +43,7 @@ export const PaymentNextActionTypeEnum = {
   CHALLENGE: "CHALLENGE",
   FRICTIONLESS_CHALLENGE: "FRICTIONLESS_CHALLENGE",
   BIZUM_CHALLENGE: "BIZUM_CHALLENGE",
+  INSTALLMENT_SELECT: "INSTALLMENT_SELECT",
   COMPLETE: "COMPLETE",
 } as const;
 
