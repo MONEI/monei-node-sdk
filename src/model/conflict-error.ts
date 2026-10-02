@@ -12,22 +12,12 @@
  * Do not edit the class manually.
  */
 
+// May contain unused imports in some cases
+// @ts-ignore
+import type { ApiException } from "./api-exception";
+
 /**
- * Specific configurations for recurring payments. Will only be used when `sequence`.`type` is `recurring`.
+ * @type ConflictError
  * @export
- * @interface PaymentSequenceRecurring
  */
-export interface PaymentSequenceRecurring {
-  /**
-   * Date after which no further recurring payments will be performed. Must be formatted as `YYYYMMDD`.
-   * @type {string}
-   * @memberof PaymentSequenceRecurring
-   */
-  expiry?: string;
-  /**
-   * The minimum number of **days** between the different recurring payments.
-   * @type {number}
-   * @memberof PaymentSequenceRecurring
-   */
-  frequency?: number;
-}
+export type ConflictError = ApiException;

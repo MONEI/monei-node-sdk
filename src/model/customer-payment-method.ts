@@ -12,22 +12,50 @@
  * Do not edit the class manually.
  */
 
+// May contain unused imports in some cases
+// @ts-ignore
+import type { PaymentPaymentMethod } from "./payment-payment-method";
+
 /**
- * Specific configurations for recurring payments. Will only be used when `sequence`.`type` is `recurring`.
+ * A payment method the customer has saved. Card and account numbers are never returned — `paymentMethod` carries only the display details, such as the brand and the last four digits.
  * @export
- * @interface PaymentSequenceRecurring
+ * @interface CustomerPaymentMethod
  */
-export interface PaymentSequenceRecurring {
+export interface CustomerPaymentMethod {
   /**
-   * Date after which no further recurring payments will be performed. Must be formatted as `YYYYMMDD`.
+   * Identifier of the saved payment method. Pass it as `paymentToken` on a payment, as `defaultTokenId` when updating the customer, or to delete the payment method.
    * @type {string}
-   * @memberof PaymentSequenceRecurring
+   * @memberof CustomerPaymentMethod
    */
-  expiry?: string;
+  id: string;
   /**
-   * The minimum number of **days** between the different recurring payments.
-   * @type {number}
-   * @memberof PaymentSequenceRecurring
+   * How the payment method is stored. One of `STICKY` or `ENCRYPTED_STICKY`.
+   * @type {string}
+   * @memberof CustomerPaymentMethod
    */
-  frequency?: number;
+  type: string;
+  /**
+   *
+   * @type {PaymentPaymentMethod}
+   * @memberof CustomerPaymentMethod
+   */
+  paymentMethod?: PaymentPaymentMethod;
+  /**
+   * Time at which the payment method expires, in seconds since the Unix epoch. For a card this is one month after the card\'s own expiry. Absent when the payment method does not expire.
+   * @type {number}
+   * @memberof CustomerPaymentMethod
+   */
+  expireAt?: number;
+  /**
+   * Time at which the resource was created.
+   * @type {string}
+   * @memberof CustomerPaymentMethod
+   */
+  createdAt?: string;
+  /**
+   * Whether this payment method was saved for merchant-initiated charges, such as subscription renewals, rather than being one the buyer chooses at checkout.
+   * @type {boolean}
+   * @memberof CustomerPaymentMethod
+   */
+  sequence: boolean;
 }

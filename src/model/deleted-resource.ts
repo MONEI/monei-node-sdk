@@ -13,21 +13,15 @@
  */
 
 /**
- * Specific configurations for recurring payments. Will only be used when `sequence`.`type` is `recurring`.
+ *
  * @export
- * @interface PaymentSequenceRecurring
+ * @interface DeletedResource
  */
-export interface PaymentSequenceRecurring {
+export interface DeletedResource {
   /**
-   * Date after which no further recurring payments will be performed. Must be formatted as `YYYYMMDD`.
-   * @type {string}
-   * @memberof PaymentSequenceRecurring
+   * Always `true`. The request failed otherwise.
+   * @type {boolean}
+   * @memberof DeletedResource
    */
-  expiry?: string;
-  /**
-   * The minimum number of **days** between the different recurring payments.
-   * @type {number}
-   * @memberof PaymentSequenceRecurring
-   */
-  frequency?: number;
+  success: boolean;
 }

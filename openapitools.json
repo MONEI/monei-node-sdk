@@ -9,6 +9,9 @@
         "output": "./src",
         "inputSpec": "https://js.monei.com/api/v1/openapi.json",
         "removeOperationIdPrefix": true,
+        "reservedWordsMappings": {
+          "delete": "delete"
+        },
         "additionalProperties": {
           "supportsES6": true,
           "generateAliasAsModel": true,
@@ -23,6 +26,9 @@
         "output": "./src",
         "inputSpec": "./openapi.json",
         "removeOperationIdPrefix": true,
+        "reservedWordsMappings": {
+          "delete": "delete"
+        },
         "additionalProperties": {
           "supportsES6": true,
           "generateAliasAsModel": true,

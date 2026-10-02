@@ -4,6 +4,7 @@ import pkg from "./package.json";
 import {
   ApplePayDomainApi,
   BizumApi,
+  CustomersApi,
   PaymentMethodsApi,
   PaymentsApi,
   POSAuthTokenApi,
@@ -90,6 +91,8 @@ export class Monei {
   paymentMethods!: PaymentMethodsApi;
   /** API for managing subscriptions */
   subscriptions!: SubscriptionsApi;
+  /** API for managing customers and their saved payment methods */
+  customers!: CustomersApi;
   /** API for Apple Pay domain verification */
   applePayDomain!: ApplePayDomainApi;
   /** API for managing Apple Pay certificates */
@@ -141,6 +144,7 @@ export class Monei {
     this.payments = new PaymentsApi(config, BASE_PATH, this.client);
     this.paymentMethods = new PaymentMethodsApi(config, BASE_PATH, this.client);
     this.subscriptions = new SubscriptionsApi(config, BASE_PATH, this.client);
+    this.customers = new CustomersApi(config, BASE_PATH, this.client);
     this.applePayDomain = new ApplePayDomainApi(config, BASE_PATH, this.client);
     this.applePayCertificate = new ApplePayCertificateApi(config, BASE_PATH, this.client);
     this.bizum = new BizumApi(config, BASE_PATH, this.client);

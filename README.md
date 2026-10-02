@@ -26,6 +26,10 @@ For collecting customer and payment information in the browser, use [monei.js](h
     - [Creating a Payment](#creating-a-payment)
     - [Retrieving a Payment](#retrieving-a-payment)
     - [Refunding a Payment](#refunding-a-payment)
+  - [Customer Operations](#customer-operations)
+    - [Creating a Customer](#creating-a-customer)
+    - [Charging a Customer's Default Payment Method](#charging-a-customers-default-payment-method)
+    - [Managing Saved Payment Methods](#managing-saved-payment-methods)
   - [Integration Methods](#integration-methods)
     - [Using the Prebuilt Payment Page](#using-the-prebuilt-payment-page)
       - [Features](#features)
@@ -215,6 +219,70 @@ monei.payments
   .catch((error) => {
     console.error("Error refunding payment:", error.message);
   });
+```
+
+## Customer Operations
+
+### Creating a Customer
+
+Create a customer once, then pass its `id` as `customerId` on payments and subscriptions. A payment made with `generatePaymentToken` saves its payment method under that customer:
+
+```js
+import { Monei } from "@monei-js/node-sdk";
+
+const monei = new Monei("YOUR_API_KEY");
+
+monei.customers
+  .create({
+    email: "customer@example.com",
+    name: "John Doe",
+    phone: "+34600000000",
+  })
+  .then((customer) => {
+    console.log("Customer created with ID:", customer.id);
+  })
+  .catch((error) => {
+    console.error("Error creating customer:", error.message);
+  });
+```
+
+### Charging a Customer's Default Payment Method
+
+Set `useDefaultPaymentMethod` to charge the customer's `defaultTokenId` without looking the token up first:
+
+```js
+import { Monei } from "@monei-js/node-sdk";
+
+const monei = new Monei("YOUR_API_KEY");
+
+monei.payments
+  .create({
+    orderId: "12345",
+    amount: 1999,
+    currency: "EUR",
+    customerId: "cus_123456789",
+    useDefaultPaymentMethod: true,
+  })
+  .then((payment) => {
+    console.log("Payment status:", payment.status);
+  })
+  .catch((error) => {
+    console.error("Error charging customer:", error.message);
+  });
+```
+
+### Managing Saved Payment Methods
+
+List a customer's saved payment methods, delete one, or delete the customer with all of them:
+
+```js
+import { Monei } from "@monei-js/node-sdk";
+
+const monei = new Monei("YOUR_API_KEY");
+
+const paymentMethods = await monei.customers.listPaymentMethods("cus_123456789");
+await monei.customers.deletePaymentMethod("cus_123456789", paymentMethods[0].id);
+await monei.customers.delete("cus_123456789");
 ```
 
 ## Integration Methods
