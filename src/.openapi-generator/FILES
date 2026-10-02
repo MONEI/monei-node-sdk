@@ -2,6 +2,7 @@ api.ts
 api/apple-pay-certificate-api.ts
 api/apple-pay-domain-api.ts
 api/bizum-api.ts
+api/customers-api.ts
 api/payment-methods-api.ts
 api/payments-api.ts
 api/posauth-token-api.ts
@@ -24,9 +25,14 @@ model/capture-payment-request.ts
 model/confirm-payment-request-payment-method-card.ts
 model/confirm-payment-request-payment-method.ts
 model/confirm-payment-request.ts
+model/conflict-error.ts
+model/create-customer-request.ts
 model/create-payment-request.ts
 model/create-pos-auth-token-request.ts
 model/create-subscription-request.ts
+model/customer-payment-method.ts
+model/customer.ts
+model/deleted-resource.ts
 model/index.ts
 model/internal-server-error.ts
 model/not-found-error.ts
@@ -107,5 +113,6 @@ model/subscription.ts
 model/unauthorized-error.ts
 model/unprocessable-entity-error.ts
 model/update-apple-pay-certificate-request.ts
+model/update-customer-request.ts
 model/update-subscription-request.ts
 model/validate-bizum-phone-request.ts

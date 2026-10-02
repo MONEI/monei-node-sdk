@@ -12,22 +12,59 @@
  * Do not edit the class manually.
  */
 
+// May contain unused imports in some cases
+// @ts-ignore
+import type { PaymentBillingDetails } from "./payment-billing-details";
+// May contain unused imports in some cases
+// @ts-ignore
+import type { PaymentShippingDetails } from "./payment-shipping-details";
+
 /**
- * Specific configurations for recurring payments. Will only be used when `sequence`.`type` is `recurring`.
+ * Only the fields you send are changed. Omitted fields keep their current value.
  * @export
- * @interface PaymentSequenceRecurring
+ * @interface UpdateCustomerRequest
  */
-export interface PaymentSequenceRecurring {
+export interface UpdateCustomerRequest {
   /**
-   * Date after which no further recurring payments will be performed. Must be formatted as `YYYYMMDD`.
+   * The customer\'s email address.
    * @type {string}
-   * @memberof PaymentSequenceRecurring
+   * @memberof UpdateCustomerRequest
    */
-  expiry?: string;
+  email?: string;
   /**
-   * The minimum number of **days** between the different recurring payments.
-   * @type {number}
-   * @memberof PaymentSequenceRecurring
+   * The customer\'s full name or business name.
+   * @type {string}
+   * @memberof UpdateCustomerRequest
    */
-  frequency?: number;
+  name?: string;
+  /**
+   * The customer\'s phone number in E.164 format.
+   * @type {string}
+   * @memberof UpdateCustomerRequest
+   */
+  phone?: string;
+  /**
+   *
+   * @type {PaymentBillingDetails}
+   * @memberof UpdateCustomerRequest
+   */
+  billingDetails?: PaymentBillingDetails;
+  /**
+   *
+   * @type {PaymentShippingDetails}
+   * @memberof UpdateCustomerRequest
+   */
+  shippingDetails?: PaymentShippingDetails;
+  /**
+   * A set of key-value pairs that you can attach to a resource. This can be useful for storing additional information about the resource in a structured format.
+   * @type {object}
+   * @memberof UpdateCustomerRequest
+   */
+  metadata?: object;
+  /**
+   * The payment method charged when a payment sets `useDefaultPaymentMethod`.  MONEI fills this only while it is empty: the first reusable payment method the customer saves becomes the default, and a value you set here is kept. Deleting that payment method clears the field, so the next reusable one the customer saves becomes the new default. It must be the ID of a payment method this customer already owns, and one that can be reused for future payments.
+   * @type {string}
+   * @memberof UpdateCustomerRequest
+   */
+  defaultTokenId?: string;
 }

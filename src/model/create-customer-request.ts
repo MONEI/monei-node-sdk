@@ -12,22 +12,53 @@
  * Do not edit the class manually.
  */
 
+// May contain unused imports in some cases
+// @ts-ignore
+import type { PaymentBillingDetails } from "./payment-billing-details";
+// May contain unused imports in some cases
+// @ts-ignore
+import type { PaymentShippingDetails } from "./payment-shipping-details";
+
 /**
- * Specific configurations for recurring payments. Will only be used when `sequence`.`type` is `recurring`.
+ *
  * @export
- * @interface PaymentSequenceRecurring
+ * @interface CreateCustomerRequest
  */
-export interface PaymentSequenceRecurring {
+export interface CreateCustomerRequest {
   /**
-   * Date after which no further recurring payments will be performed. Must be formatted as `YYYYMMDD`.
+   * The customer\'s email address.
    * @type {string}
-   * @memberof PaymentSequenceRecurring
+   * @memberof CreateCustomerRequest
    */
-  expiry?: string;
+  email?: string;
   /**
-   * The minimum number of **days** between the different recurring payments.
-   * @type {number}
-   * @memberof PaymentSequenceRecurring
+   * The customer\'s full name or business name.
+   * @type {string}
+   * @memberof CreateCustomerRequest
    */
-  frequency?: number;
+  name?: string;
+  /**
+   * The customer\'s phone number in E.164 format.
+   * @type {string}
+   * @memberof CreateCustomerRequest
+   */
+  phone?: string;
+  /**
+   *
+   * @type {PaymentBillingDetails}
+   * @memberof CreateCustomerRequest
+   */
+  billingDetails?: PaymentBillingDetails;
+  /**
+   *
+   * @type {PaymentShippingDetails}
+   * @memberof CreateCustomerRequest
+   */
+  shippingDetails?: PaymentShippingDetails;
+  /**
+   * A set of key-value pairs that you can attach to a resource. This can be useful for storing additional information about the resource in a structured format.
+   * @type {object}
+   * @memberof CreateCustomerRequest
+   */
+  metadata?: object;
 }

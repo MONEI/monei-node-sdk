@@ -14,36 +14,75 @@
 
 // May contain unused imports in some cases
 // @ts-ignore
-import type { SubscriptionInterval } from "./subscription-interval";
+import type { PaymentBillingDetails } from "./payment-billing-details";
+// May contain unused imports in some cases
+// @ts-ignore
+import type { PaymentShippingDetails } from "./payment-shipping-details";
 
 /**
- * Send at least one of `amount`, `interval`, `intervalCount` or `nextPaymentAt`. A request that changes none of them is rejected, because there is no difference to price.  The figures come from the same calculation the update endpoint runs, and the same rules reject the same requests, so a preview that returns a settlement is one the update can apply.
+ *
  * @export
- * @interface PreviewSubscriptionUpdateRequest
+ * @interface Customer
  */
-export interface PreviewSubscriptionUpdateRequest {
+export interface Customer {
   /**
-   * Amount intended to be collected by this payment. A positive integer representing how much to charge in the smallest currency unit (e.g., 100 cents to charge 1.00 USD).
-   * @type {number}
-   * @memberof PreviewSubscriptionUpdateRequest
+   * Unique identifier for the customer.
+   * @type {string}
+   * @memberof Customer
    */
-  amount?: number;
+  id: string;
+  /**
+   * The customer\'s email address.
+   * @type {string}
+   * @memberof Customer
+   */
+  email?: string;
+  /**
+   * The customer\'s full name or business name.
+   * @type {string}
+   * @memberof Customer
+   */
+  name?: string;
+  /**
+   * The customer\'s phone number in E.164 format.
+   * @type {string}
+   * @memberof Customer
+   */
+  phone?: string;
   /**
    *
-   * @type {SubscriptionInterval}
-   * @memberof PreviewSubscriptionUpdateRequest
+   * @type {PaymentBillingDetails}
+   * @memberof Customer
    */
-  interval?: SubscriptionInterval;
+  billingDetails?: PaymentBillingDetails;
   /**
-   * Number of intervals between subscription payments.
-   * @type {number}
-   * @memberof PreviewSubscriptionUpdateRequest
+   *
+   * @type {PaymentShippingDetails}
+   * @memberof Customer
    */
-  intervalCount?: number;
+  shippingDetails?: PaymentShippingDetails;
   /**
-   * The date when the next payment will be made. Measured in seconds since the Unix epoch.  Send it on an update to move the next charge without changing the price. The date must be in the future and no more than five years ahead, and the subscription must be active or past due with a live schedule. A trialing subscription moves with `trialPeriodEnd` instead, and a paused one has to be resumed first.  A pending `skipIntervalCount`, `pauseIntervalCount`, `pauseAtPeriodEnd` or `cancelAtPeriodEnd` blocks the change, because it would turn the charge at the new date into a skipped, paused or cancelled cycle instead of a payment. Clear it in the same request by sending `0`, `null` or `false` for that field.  Moving the date on its own settles no money. Combine it with `prorate` to charge or refund the time that moves.
-   * @type {number}
-   * @memberof PreviewSubscriptionUpdateRequest
+   * A set of key-value pairs that you can attach to a resource. This can be useful for storing additional information about the resource in a structured format.
+   * @type {object}
+   * @memberof Customer
    */
-  nextPaymentAt?: number;
+  metadata?: object;
+  /**
+   * The payment method charged when a payment sets `useDefaultPaymentMethod`.  MONEI fills this only while it is empty: the first reusable payment method the customer saves becomes the default, and a value you set here is kept. Deleting that payment method clears the field, so the next reusable one the customer saves becomes the new default. It must be the ID of a payment method this customer already owns, and one that can be reused for future payments.
+   * @type {string}
+   * @memberof Customer
+   */
+  defaultTokenId?: string;
+  /**
+   * Time at which the resource was created.
+   * @type {string}
+   * @memberof Customer
+   */
+  createdAt?: string;
+  /**
+   * Time at which the resource was last updated.
+   * @type {string}
+   * @memberof Customer
+   */
+  updatedAt?: string;
 }
