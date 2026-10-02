@@ -1,5 +1,12 @@
 # Changelog
 
+# [3.3.0](https://github.com/MONEI/monei-node-sdk/compare/v3.2.2...v3.3.0) (2026-10-02)
+
+
+### Features
+
+* add the Customers API and customerId fields ([2ad5482](https://github.com/MONEI/monei-node-sdk/commit/2ad54823f9b62423b636fc5b5b4dfc4255871312))
+
 ## [3.2.2](https://github.com/MONEI/monei-node-sdk/compare/v3.2.1...v3.2.2) (2026-09-29)
 
 
