@@ -423,7 +423,7 @@ app.listen(3000, () => {
 
 ### Signing Secrets
 
-The `MONEI-Signature` header has the form `t=<timestamp>,v1=<hex>[,v2=<hex>...]`. The header can contain more elements than `t` and `v1`. Do not parse it with a strict pattern.
+The `MONEI-Signature` header has the form `t=<timestamp>[,v1=<hex>][,v2=<hex>...]`. Each element except `t` can be absent, and the header can contain more elements. Do not parse it with a strict pattern.
 
 - `v1` is signed with your API key. `monei.verifySignature(rawBody, signature)` checks `v1`.
 - `v2` is signed with a signing secret. Each new webhook endpoint has its own secret (`whsec_...`). An older endpoint gets a secret when you roll it for the first time. A callback of a payment or a subscription that you create with a scoped API key (`mk_...`) is signed with the signing secret of that key (`mksec_...`).
@@ -434,6 +434,8 @@ To check `v2`, give the secret as the third argument. When you give a secret, th
 // signingSecret is the whsec_ or mksec_ secret from your configuration
 const payload = monei.verifySignature(req.body.toString(), signature, signingSecret);
 ```
+
+When the secret is `undefined`, the SDK checks `v1` with your API key. An unset environment variable (`process.env.NAME`) is `undefined` too, so make sure that the secret is set. An empty string, or a value that is not a string (also `null`), fails the check.
 
 When you roll the secret of a webhook endpoint, MONEI signs each request with the new and the old secret for 24 hours. The header then has two `v2` values. The signature is valid when one of them matches the secret that you give, so you can change to the new secret during this period. If you roll the secret again in these 24 hours, the oldest secret stops at once. Roll again only after a leak.
 
