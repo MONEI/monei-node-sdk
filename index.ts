@@ -186,6 +186,9 @@ export class Monei {
   /**
    * Verify the `MONEI-Signature` header and return the parsed request body.
    *
+   * Without a secret, `v1` must match the API key. With a secret (`whsec_` or
+   * `mksec_`), one `v2` must match the secret. `v1` is not used then.
+   *
    * The body is returned parsed as-is (not transformed). Its shape depends on
    * the source, so no type is assumed: a payment `callbackUrl` sends the Payment
    * object, while account webhooks send an event envelope `{ id, type, object,
@@ -195,34 +198,61 @@ export class Monei {
    *
    * @param body - Raw request body as a string
    * @param signature - Value of the `MONEI-Signature` header
+   * @param secret - Signing secret for `v2`
    * @returns The verified, parsed body (typed as `T`; `unknown` by default)
    * @throws {ApiException} When the signature is missing, malformed, or invalid
    */
-  verifySignature<T = unknown>(body: string, signature: string): T {
-    const parts = (signature || "").split(",").reduce<Record<string, string>>((result, part) => {
-      const [key, value] = part.split("=");
-      result[key] = value;
-      return result;
-    }, {});
-
-    const hmac =
-      parts.t && parts.v1
-        ? crypto.createHmac("SHA256", this.apiKey).update(`${parts.t}.${body}`).digest("hex")
-        : null;
-
-    const valid =
-      hmac != null &&
-      hmac.length === parts.v1.length &&
-      crypto.timingSafeEqual(Buffer.from(hmac), Buffer.from(parts.v1));
-
-    if (!valid) {
-      throw new ApiException({
+  verifySignature<T = unknown>(body: string, signature: string, secret?: string): T {
+    const failure = () =>
+      new ApiException({
         status: "ERROR",
         statusCode: 401,
         requestId: "",
         message: "Signature verification failed",
         requestTime: new Date().toISOString(),
       });
+
+    // An empty key gives an HMAC that anyone can make, for example from an empty variable.
+    if (secret !== undefined && (typeof secret !== "string" || secret === "")) {
+      throw failure();
+    }
+    if (typeof signature !== "string") {
+      throw failure();
+    }
+
+    let t: string | undefined;
+    let v1: string | undefined;
+    const v2: string[] = [];
+    for (const element of signature.split(",")) {
+      const separator = element.indexOf("=");
+      if (separator === -1) {
+        throw failure();
+      }
+      const key = element.slice(0, separator);
+      const value = element.slice(separator + 1);
+      if (key === "t") t = value;
+      else if (key === "v1") v1 = value;
+      else if (key === "v2") v2.push(value);
+    }
+    if (!t) {
+      throw failure();
+    }
+
+    const expected = Buffer.from(
+      crypto
+        .createHmac("SHA256", secret ?? this.apiKey)
+        .update(`${t}.${body}`)
+        .digest("hex"),
+    );
+    const candidates = secret === undefined ? (v1 === undefined ? [] : [v1]) : v2;
+    // Compare byte lengths, not string lengths: timingSafeEqual throws a RangeError on a mismatch.
+    const valid = candidates.some((candidate) => {
+      const actual = Buffer.from(candidate);
+      return actual.length === expected.length && crypto.timingSafeEqual(actual, expected);
+    });
+
+    if (!valid) {
+      throw failure();
     }
 
     return JSON.parse(body) as T;

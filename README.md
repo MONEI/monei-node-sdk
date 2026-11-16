@@ -36,6 +36,7 @@ For collecting customer and payment information in the browser, use [monei.js](h
       - [Integration Flow](#integration-flow)
   - [Webhooks](#webhooks)
     - [Signature Verification](#signature-verification)
+    - [Signing Secrets](#signing-secrets)
     - [Handling Payment Callbacks](#handling-payment-callbacks)
       - [Important Notes About Webhooks](#important-notes-about-webhooks)
   - [MONEI Connect for Partners](#monei-connect-for-partners)
@@ -417,6 +418,48 @@ app.post("/webhook", (req, res) => {
 
 app.listen(3000, () => {
   console.log("Server listening on port 3000");
+});
+```
+
+### Signing Secrets
+
+The `MONEI-Signature` header has the form `t=<timestamp>[,v1=<hex>][,v2=<hex>...]`. Each element except `t` can be absent, and the header can contain more elements. Do not parse it with a strict pattern.
+
+- `v1` is signed with your API key. `monei.verifySignature(rawBody, signature)` checks `v1`.
+- `v2` is signed with a signing secret. Each new webhook endpoint has its own secret (`whsec_...`). An older endpoint gets a secret when you roll it for the first time. A callback of a payment or a subscription that you create with a scoped API key (`mk_...`) is signed with the signing secret of that key (`mksec_...`).
+
+To check `v2`, give the secret as the third argument. When you give a secret, the SDK does not use `v1`:
+
+```js
+// signingSecret is the whsec_ or mksec_ secret from your configuration
+const payload = monei.verifySignature(req.body.toString(), signature, signingSecret);
+```
+
+When the secret is `undefined`, the SDK checks `v1` with your API key. An unset environment variable (`process.env.NAME`) is `undefined` too, so make sure that the secret is set. An empty string, or a value that is not a string (also `null`), fails the check.
+
+When you roll the secret of a webhook endpoint, MONEI signs each request with the new and the old secret for 24 hours. The header then has two `v2` values. The signature is valid when one of them matches the secret that you give, so you can change to the new secret during this period. If you roll the secret again in these 24 hours, the oldest secret stops at once. Roll again only after a leak.
+
+When you create a webhook endpoint, MONEI sends a `webhook.test` request before you can see the secret of the endpoint. Your handler must answer `webhook.test` with a 2xx status, also when it cannot verify the signature yet. Do not process this request:
+
+```js
+app.post("/webhook", express.raw({ type: "application/json" }), (req, res) => {
+  const signature = req.headers["monei-signature"];
+  let payload;
+  try {
+    payload = monei.verifySignature(req.body.toString(), signature, signingSecret);
+  } catch (error) {
+    let event;
+    try {
+      event = JSON.parse(req.body.toString());
+    } catch {
+      // The body is not JSON
+    }
+    // Acknowledge the test request, but do not process it
+    res.status(event?.type === "webhook.test" ? 200 : 401).end();
+    return;
+  }
+  // Process the payload
+  res.status(200).json({ received: true });
 });
 ```
 
