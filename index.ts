@@ -8,7 +8,10 @@ import {
   PaymentMethodsApi,
   PaymentsApi,
   POSAuthTokenApi,
+  PricesApi,
+  ProductsApi,
   SubscriptionsApi,
+  TaxRatesApi,
   ApplePayCertificateApi,
 } from "./src";
 import { BASE_PATH } from "./src/base";
@@ -93,6 +96,12 @@ export class Monei {
   subscriptions!: SubscriptionsApi;
   /** API for managing customers and their saved payment methods */
   customers!: CustomersApi;
+  /** API for managing products */
+  products!: ProductsApi;
+  /** API for managing product prices */
+  prices!: PricesApi;
+  /** API for managing tax rates */
+  taxRates!: TaxRatesApi;
   /** API for Apple Pay domain verification */
   applePayDomain!: ApplePayDomainApi;
   /** API for managing Apple Pay certificates */
@@ -145,6 +154,9 @@ export class Monei {
     this.paymentMethods = new PaymentMethodsApi(config, BASE_PATH, this.client);
     this.subscriptions = new SubscriptionsApi(config, BASE_PATH, this.client);
     this.customers = new CustomersApi(config, BASE_PATH, this.client);
+    this.products = new ProductsApi(config, BASE_PATH, this.client);
+    this.prices = new PricesApi(config, BASE_PATH, this.client);
+    this.taxRates = new TaxRatesApi(config, BASE_PATH, this.client);
     this.applePayDomain = new ApplePayDomainApi(config, BASE_PATH, this.client);
     this.applePayCertificate = new ApplePayCertificateApi(config, BASE_PATH, this.client);
     this.bizum = new BizumApi(config, BASE_PATH, this.client);
