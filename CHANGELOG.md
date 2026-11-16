@@ -1,5 +1,17 @@
 # Changelog
 
+# [3.4.0](https://github.com/MONEI/monei-node-sdk/compare/v3.3.0...v3.4.0) (2026-11-16)
+
+
+### Bug Fixes
+
+* address code review findings ([d66ee6b](https://github.com/MONEI/monei-node-sdk/commit/d66ee6bc4122db8b2af8aa8fd40345918415746f))
+
+
+### Features
+
+* verify v2 webhook and callback signatures with a signing secret ([9ad6f59](https://github.com/MONEI/monei-node-sdk/commit/9ad6f59d7e072ea04f0fcb6288ba03ce8b58fdfe))
+
 # [3.3.0](https://github.com/MONEI/monei-node-sdk/compare/v3.2.2...v3.3.0) (2026-10-02)
 
 
