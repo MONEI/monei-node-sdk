@@ -30,6 +30,11 @@ For collecting customer and payment information in the browser, use [monei.js](h
     - [Creating a Customer](#creating-a-customer)
     - [Charging a Customer's Default Payment Method](#charging-a-customers-default-payment-method)
     - [Managing Saved Payment Methods](#managing-saved-payment-methods)
+  - [Product Catalog](#product-catalog)
+    - [Creating a Tax Rate](#creating-a-tax-rate)
+    - [Creating a Product and a Price](#creating-a-product-and-a-price)
+    - [Subscribing to a Price](#subscribing-to-a-price)
+    - [Listing Products and Prices](#listing-products-and-prices)
   - [Integration Methods](#integration-methods)
     - [Using the Prebuilt Payment Page](#using-the-prebuilt-payment-page)
       - [Features](#features)
@@ -284,6 +289,77 @@ const monei = new Monei("YOUR_API_KEY");
 const paymentMethods = await monei.customers.listPaymentMethods("cus_123456789");
 await monei.customers.deletePaymentMethod("cus_123456789", paymentMethods[0].id);
 await monei.customers.delete("cus_123456789");
+```
+
+## Product Catalog
+
+### Creating a Tax Rate
+
+```js
+import { Monei } from "@monei-js/node-sdk";
+
+const monei = new Monei("YOUR_API_KEY");
+
+const taxRate = await monei.taxRates.create({
+  displayName: "IVA",
+  percentage: 21,
+});
+```
+
+### Creating a Product and a Price
+
+A product can carry a `taxRateId`. A price belongs to one product. Add `recurring` to bill the price on an interval:
+
+```js
+import { Monei } from "@monei-js/node-sdk";
+
+const monei = new Monei("YOUR_API_KEY");
+
+const product = await monei.products.create({
+  name: "Gold plan",
+  description: "Unlimited access to every course",
+  taxRateId: "9a8b7c6d-5e4f-4a3b-9c2d-1e0f9a8b7c6d",
+});
+
+const price = await monei.prices.create({
+  productId: product.id,
+  unitAmount: 1990,
+  currency: "EUR",
+  recurring: {
+    interval: "month",
+    intervalCount: 1,
+    trialPeriodDays: 7,
+  },
+  nickname: "Monthly",
+});
+```
+
+### Subscribing to a Price
+
+Pass `priceId` instead of `amount`. The subscription copies the price's amount, currency, interval, interval count and trial days:
+
+```js
+import { Monei } from "@monei-js/node-sdk";
+
+const monei = new Monei("YOUR_API_KEY");
+
+const subscription = await monei.subscriptions.create({
+  priceId: "3c5a1f8e-2b7d-4e9a-9c41-7d2e6b0f5a13",
+  customer: { email: "customer@example.com" },
+});
+```
+
+### Listing Products and Prices
+
+List calls return `items` and a `nextCursor`. Pass the cursor to get the next page:
+
+```js
+import { Monei } from "@monei-js/node-sdk";
+
+const monei = new Monei("YOUR_API_KEY");
+
+const { items: products, nextCursor } = await monei.products.list(20);
+const { items: prices } = await monei.prices.list(products[0].id);
 ```
 
 ## Integration Methods
