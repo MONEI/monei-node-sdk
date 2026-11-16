@@ -1,5 +1,12 @@
 # Changelog
 
+# [3.5.0](https://github.com/MONEI/monei-node-sdk/compare/v3.4.0...v3.5.0) (2026-11-16)
+
+
+### Features
+
+* add the Products, Prices and Tax rates APIs ([e3f78eb](https://github.com/MONEI/monei-node-sdk/commit/e3f78eb53c9b5711f2e8e259b9f565a182ade7cb))
+
 # [3.4.0](https://github.com/MONEI/monei-node-sdk/compare/v3.3.0...v3.4.0) (2026-11-16)
 
 
