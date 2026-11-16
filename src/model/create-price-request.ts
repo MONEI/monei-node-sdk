@@ -59,7 +59,7 @@ export interface CreatePriceRequest {
    */
   taxBehavior?: string;
   /**
-   * Whether the price is active. An inactive price cannot start a subscription, and a subscription cannot switch to it. Prices are never deleted: set `active` to `false` to archive one. Subscriptions that already use it keep their copy of its values.
+   * Whether the price is active. An inactive price cannot start a subscription, and a subscription cannot switch to it. Prices are never deleted: set `active` to `false` to archive one. Subscriptions that already use it keep their copy of its values. A new price is active unless created with `active: false`.
    * @type {boolean}
    * @memberof CreatePriceRequest
    */

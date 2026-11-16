@@ -77,7 +77,7 @@ export interface UpdateProductRequest {
    */
   taxRateId?: string | null;
   /**
-   * Whether the product is active. Products are never deleted: set `active` to `false` to archive one. Archiving a product does not archive its prices, and its prices can still start subscriptions.
+   * Whether the product is active. Products are never deleted: set `active` to `false` to archive one. Archiving a product does not archive its prices, and its prices can still start subscriptions. A new product is active unless created with `active: false`.
    * @type {boolean}
    * @memberof UpdateProductRequest
    */

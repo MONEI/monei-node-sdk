@@ -37,7 +37,7 @@ export interface CreateTaxRateRequest {
    */
   taxType?: string;
   /**
-   * Whether the tax rate is active. Tax rates are never deleted: set `active` to `false` to archive one. An archived rate cannot be set on a product. While a product still has it, the product cannot get new prices and its prices cannot start or switch a subscription. Subscriptions that already use it keep their copy.
+   * Whether the tax rate is active. Tax rates are never deleted: set `active` to `false` to archive one. An archived rate cannot be set on a product. While a product still has it, the product cannot get new prices and its prices cannot start or switch a subscription. Subscriptions that already use it keep their copy. A new tax rate is active unless created with `active: false`.
    * @type {boolean}
    * @memberof CreateTaxRateRequest
    */
