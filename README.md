@@ -35,6 +35,9 @@ For collecting customer and payment information in the browser, use [monei.js](h
     - [Creating a Product and a Price](#creating-a-product-and-a-price)
     - [Subscribing to a Price](#subscribing-to-a-price)
     - [Listing Products and Prices](#listing-products-and-prices)
+  - [Checkout Sessions](#checkout-sessions)
+    - [Creating a Checkout Session](#creating-a-checkout-session)
+    - [Getting and Listing Checkout Sessions](#getting-and-listing-checkout-sessions)
   - [Integration Methods](#integration-methods)
     - [Using the Prebuilt Payment Page](#using-the-prebuilt-payment-page)
       - [Features](#features)
@@ -360,6 +363,41 @@ const monei = new Monei("YOUR_API_KEY");
 
 const { items: products, nextCursor } = await monei.products.list(20);
 const { items: prices } = await monei.prices.list(products[0].id);
+```
+
+## Checkout Sessions
+
+### Creating a Checkout Session
+
+A checkout session is a cart of prices that the buyer pays on one MONEI page. MONEI computes the amounts and the tax. Send the buyer to the returned `url`. With one `RECURRING` price in the cart, paying the session also creates a subscription:
+
+```js
+import { Monei } from "@monei-js/node-sdk";
+
+const monei = new Monei("YOUR_API_KEY");
+
+const session = await monei.checkoutSessions.create({
+  lineItems: [{ priceId: "3c5a1f8e-2b7d-4e9a-9c41-7d2e6b0f5a13", quantity: 1 }],
+  successUrl: "https://example.com/success",
+  cancelUrl: "https://example.com/cart",
+});
+
+// Redirect the buyer to session.url
+```
+
+### Getting and Listing Checkout Sessions
+
+A session is `OPEN` until the buyer pays it (`COMPLETE`) or it expires unpaid (`EXPIRED`). Subscribe a webhook to `checkout_session.completed` and `checkout_session.expired` to learn when a session ends:
+
+```js
+import { Monei } from "@monei-js/node-sdk";
+
+const monei = new Monei("YOUR_API_KEY");
+
+const session = await monei.checkoutSessions.get("4b1f7c2e-9d3a-4e6b-8f05-1a2c3d4e5f60");
+console.log(session.status, session.paymentId, session.subscriptionId);
+
+const { items: sessions, nextCursor } = await monei.checkoutSessions.list(20);
 ```
 
 ## Integration Methods

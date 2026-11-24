@@ -224,6 +224,12 @@ export interface Payment {
    */
   pointOfSaleId?: string;
   /**
+   * The [checkout session](https://docs.monei.com/apis/rest/checkout-sessions-get/) the payment pays. Absent on a payment created without one.
+   * @type {string}
+   * @memberof Payment
+   */
+  checkoutSessionId?: string;
+  /**
    * A set of key-value pairs that you can attach to a resource. This can be useful for storing additional information about the resource in a structured format.
    * @type {object}
    * @memberof Payment
