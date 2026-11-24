@@ -1,5 +1,12 @@
 # Changelog
 
+# [3.6.0](https://github.com/MONEI/monei-node-sdk/compare/v3.5.0...v3.6.0) (2026-11-24)
+
+
+### Features
+
+* add the Checkout Sessions API ([c2489da](https://github.com/MONEI/monei-node-sdk/commit/c2489daa025110512fb74fc0c9045b051735cf47))
+
 # [3.5.0](https://github.com/MONEI/monei-node-sdk/compare/v3.4.0...v3.5.0) (2026-11-16)
 
 
