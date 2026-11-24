@@ -4,6 +4,7 @@ import pkg from "./package.json";
 import {
   ApplePayDomainApi,
   BizumApi,
+  CheckoutSessionsApi,
   CustomersApi,
   PaymentMethodsApi,
   PaymentsApi,
@@ -102,6 +103,8 @@ export class Monei {
   prices!: PricesApi;
   /** API for managing tax rates */
   taxRates!: TaxRatesApi;
+  /** API for managing checkout sessions */
+  checkoutSessions!: CheckoutSessionsApi;
   /** API for Apple Pay domain verification */
   applePayDomain!: ApplePayDomainApi;
   /** API for managing Apple Pay certificates */
@@ -157,6 +160,7 @@ export class Monei {
     this.products = new ProductsApi(config, BASE_PATH, this.client);
     this.prices = new PricesApi(config, BASE_PATH, this.client);
     this.taxRates = new TaxRatesApi(config, BASE_PATH, this.client);
+    this.checkoutSessions = new CheckoutSessionsApi(config, BASE_PATH, this.client);
     this.applePayDomain = new ApplePayDomainApi(config, BASE_PATH, this.client);
     this.applePayCertificate = new ApplePayCertificateApi(config, BASE_PATH, this.client);
     this.bizum = new BizumApi(config, BASE_PATH, this.client);

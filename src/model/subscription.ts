@@ -116,6 +116,12 @@ export interface Subscription {
    */
   productId?: string;
   /**
+   * The [checkout session](https://docs.monei.com/apis/rest/checkout-sessions-get/) that created the subscription. While the session is open, only the session can activate, change or cancel the subscription: those requests are rejected with `422`.
+   * @type {string}
+   * @memberof Subscription
+   */
+  checkoutSessionId?: string;
+  /**
    *
    * @type {TaxDetails}
    * @memberof Subscription

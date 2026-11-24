@@ -2,6 +2,8 @@ api.ts
 api/apple-pay-certificate-api.ts
 api/apple-pay-domain-api.ts
 api/bizum-api.ts
+api/cardholder-verification-api.ts
+api/checkout-sessions-api.ts
 api/customers-api.ts
 api/payment-methods-api.ts
 api/payments-api.ts
@@ -10,6 +12,7 @@ api/prices-api.ts
 api/products-api.ts
 api/subscriptions-api.ts
 api/tax-rates-api.ts
+api/verification-of-payee-api.ts
 base.ts
 common.ts
 configuration.ts
@@ -25,10 +28,21 @@ model/bizum-validate-phone200-response.ts
 model/cancel-payment-request.ts
 model/cancel-subscription-request.ts
 model/capture-payment-request.ts
+model/cardholder-verification-card.ts
+model/cardholder-verification.ts
+model/checkout-session-billing-address-collection.ts
+model/checkout-session-business-purchase.ts
+model/checkout-session-line-item-request.ts
+model/checkout-session-line-item.ts
+model/checkout-session-list.ts
+model/checkout-session-mode.ts
+model/checkout-session-status.ts
+model/checkout-session.ts
 model/confirm-payment-request-payment-method-card.ts
 model/confirm-payment-request-payment-method.ts
 model/confirm-payment-request.ts
 model/conflict-error.ts
+model/create-checkout-session-request.ts
 model/create-customer-request.ts
 model/create-payment-request.ts
 model/create-pos-auth-token-request.ts
@@ -43,6 +57,7 @@ model/index.ts
 model/internal-server-error.ts
 model/not-found-error.ts
 model/pause-subscription-request.ts
+model/payee-verification.ts
 model/payment-billing-details.ts
 model/payment-cancellation-reason.ts
 model/payment-customer.ts
@@ -135,3 +150,5 @@ model/update-product-request.ts
 model/update-subscription-request.ts
 model/update-tax-rate-request.ts
 model/validate-bizum-phone-request.ts
+model/verify-cardholder-request.ts
+model/verify-payee-request.ts

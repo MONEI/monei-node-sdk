@@ -15,6 +15,8 @@
 export * from "./api/apple-pay-certificate-api";
 export * from "./api/apple-pay-domain-api";
 export * from "./api/bizum-api";
+export * from "./api/cardholder-verification-api";
+export * from "./api/checkout-sessions-api";
 export * from "./api/customers-api";
 export * from "./api/posauth-token-api";
 export * from "./api/payment-methods-api";
@@ -23,3 +25,4 @@ export * from "./api/prices-api";
 export * from "./api/products-api";
 export * from "./api/subscriptions-api";
 export * from "./api/tax-rates-api";
+export * from "./api/verification-of-payee-api";
