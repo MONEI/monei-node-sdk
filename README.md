@@ -47,6 +47,7 @@ For collecting customer and payment information in the browser, use [monei.js](h
     - [Signing Secrets](#signing-secrets)
     - [Handling Payment Callbacks](#handling-payment-callbacks)
       - [Important Notes About Webhooks](#important-notes-about-webhooks)
+  - [Connect with MONEI](#connect-with-monei)
   - [MONEI Connect for Partners](#monei-connect-for-partners)
     - [Account ID](#account-id)
       - [Setting Account ID in the constructor](#setting-account-id-in-the-constructor)
@@ -621,6 +622,28 @@ app.post("/checkout/callback", express.raw({ type: "application/json" }), (req, 
 3. Return a 2xx status code to acknowledge receipt of the webhook
 4. Process webhooks asynchronously for time-consuming operations
 5. Implement idempotency to handle duplicate webhook events
+
+## Connect with MONEI
+
+Use `Connect` on your server to let a merchant authorize a shop integration and receive scoped API keys and webhook signing secrets. Supported clients are `woocommerce`, `prestashop`, `magento`, `medusa`, and `sylius`.
+
+```js
+import { Connect } from "@monei-js/node-sdk";
+
+const client = "medusa";
+const redirectUri = Connect.canonicalRedirectUri("https://shop.example/monei/connect");
+const problem = Connect.callbackProblem(client, redirectUri);
+
+if (problem === null) {
+  const { url, state, verifier } = Connect.start(client, redirectUri);
+  // Store state, verifier, and redirectUri on the server for this merchant.
+  // Redirect the merchant to url.
+}
+```
+
+On callback, verify and consume the returned state against the stored state. Pass the callback code and the stored verifier and redirect URI to `await Connect.exchange(code, verifier, client, redirectUri)`. Each returned mode (`live` or `test`) contains `accountId`, `apiKey`, and `signingSecret`. Store those credentials securely. The response may contain only `errors`, with a refusal code per mode. A failed exchange throws `ConnectException` with an OAuth `code` and the HTTP `status` (zero when no complete response was received).
+
+`start` and `exchange` accept an optional broker base URL and default to `https://oauth.monei.com`.
 
 ## MONEI Connect for Partners
 
