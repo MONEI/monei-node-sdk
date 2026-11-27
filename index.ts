@@ -19,6 +19,7 @@ import { BASE_PATH } from "./src/base";
 import { Configuration } from "./src/configuration";
 
 export * from "./src";
+export { Connect, ConnectException, type ConnectClient, type ConnectResult } from "./connect";
 
 const DEFAULT_USER_AGENT = `MONEI/Node/${pkg.version} (NodeJS ${process.version})`;
 
