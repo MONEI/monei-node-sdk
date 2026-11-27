@@ -111,8 +111,11 @@ const tokenResult = (body: Record<string, unknown>): ConnectResult | null => {
     const { accountId, apiKey, signingSecret } = keys;
     if (
       typeof accountId !== "string" ||
+      accountId === "" ||
       typeof apiKey !== "string" ||
-      typeof signingSecret !== "string"
+      apiKey === "" ||
+      typeof signingSecret !== "string" ||
+      signingSecret === ""
     ) {
       return null;
     }
@@ -127,7 +130,7 @@ const tokenResult = (body: Record<string, unknown>): ConnectResult | null => {
     for (const mode of MODES) {
       const code = isRecord(errors) ? errors[mode] : undefined;
       if (code == null) continue;
-      if (typeof code !== "string" || code === "") return null;
+      if (result[mode] || typeof code !== "string" || code === "") return null;
       result.errors[mode] = code;
     }
   }
@@ -202,19 +205,36 @@ export class Connect {
     baseUrl = BASE_URL,
   ): Promise<ConnectResult> {
     let response: AxiosResponse<string>;
+    let deadline: ReturnType<typeof setTimeout> | undefined;
     try {
       const url = new URL(endpoint(baseUrl, "token"));
-      if (url.username || url.password) throw new ConnectException(TEMPORARILY_UNAVAILABLE);
+      const loopbackHttp = url.protocol === "http:" && LOOPBACK_HOSTS.includes(url.hostname);
+      if (url.username || url.password || (url.protocol !== "https:" && !loopbackHttp)) {
+        throw new ConnectException(TEMPORARILY_UNAVAILABLE);
+      }
       const form = new URLSearchParams({
         code,
         code_verifier: verifier,
         client_id: client,
         redirect_uri: redirectUri,
       });
-      response = await tokenClient.post<string>(url.href, form.toString());
+      const controller = typeof AbortController === "function" ? new AbortController() : undefined;
+      // Older Node versions use Axios cancellation to enforce the same body deadline.
+      const cancelSource = controller ? undefined : axios.CancelToken.source();
+      deadline = setTimeout(() => {
+        controller?.abort();
+        cancelSource?.cancel();
+      }, EXCHANGE_TIMEOUT);
+      response = await tokenClient.post<string>(url.href, form.toString(), {
+        signal: controller?.signal,
+        cancelToken: cancelSource?.token,
+        proxy: loopbackHttp ? false : undefined,
+      });
     } catch {
       // Axios errors can retain the request verifier and keys from a partial response.
       throw new ConnectException(TEMPORARILY_UNAVAILABLE);
+    } finally {
+      clearTimeout(deadline);
     }
 
     const { status, data } = response;
@@ -262,6 +282,7 @@ export class Connect {
 
     const { hostname, protocol, pathname, search, host } = url;
     if (protocol !== "https:") return "notHttps";
+    if (url.port === "0") return "port";
     if (hostname === "localhost" || hostname.endsWith(".localhost")) return "localhost";
     if (!hostname.includes(".")) return "noDot";
     if (hostname.length > 253 || !hostname.split(".").every((label) => HOST_LABEL.test(label))) {

@@ -82,6 +82,8 @@ describe("Connect.exchange", () => {
 
   afterEach(async () => {
     vi.restoreAllMocks();
+    vi.unstubAllGlobals();
+    vi.useRealTimers();
     await Promise.all(
       servers
         .splice(0)
@@ -133,6 +135,7 @@ describe("Connect.exchange", () => {
   });
 
   test("gives the default broker 35 seconds to mint the keys", async () => {
+    vi.useFakeTimers();
     const post = vi.spyOn(axios.Axios.prototype, "post").mockResolvedValueOnce({
       status: 200,
       data: '{"errors":{"live":"cap"}}',
@@ -140,7 +143,54 @@ describe("Connect.exchange", () => {
     await exchange();
     expect(post.mock.calls[0][0]).toBe("https://oauth.monei.com/integrations/token");
     expect(post.mock.contexts[0]).toMatchObject({ defaults: { timeout: 35_000 } });
+    expect(vi.getTimerCount()).toBe(0);
   });
+
+  test.each([
+    ["with AbortController", AbortController],
+    ["without AbortController", undefined],
+  ])(
+    "cancels a response body still arriving at the 35-second deadline %s",
+    async (_, abortController) => {
+      vi.stubGlobal("AbortController", abortController);
+      vi.useFakeTimers();
+      vi.spyOn(axios.Axios.prototype, "post").mockImplementation(
+        (_url, _body, config) =>
+          new Promise((_, reject) => {
+            config?.signal?.addEventListener?.("abort", () => reject(new Error("partial body")));
+            void config?.cancelToken?.promise.then(reject);
+          }),
+      );
+      const settled = vi.fn();
+      void exchange().then(() => settled(), settled);
+
+      await vi.advanceTimersByTimeAsync(34_999);
+      expect(settled).not.toHaveBeenCalled();
+      await vi.advanceTimersByTimeAsync(1);
+      expect(settled).toHaveBeenCalledExactlyOnceWith(
+        expect.objectContaining({
+          code: "temporarily_unavailable",
+          status: 0,
+          message: "MONEI connect failed: temporarily_unavailable",
+        }),
+      );
+    },
+  );
+
+  test.each(["http://shop.example", "ftp://127.0.0.1"])(
+    "keeps the token form out of insecure broker requests to %s",
+    async (baseUrl) => {
+      const post = vi.spyOn(axios.Axios.prototype, "post").mockResolvedValueOnce({
+        status: 200,
+        data: '{"errors":{"live":"cap"}}',
+      });
+      await expect(exchange(baseUrl)).rejects.toMatchObject({
+        code: "temporarily_unavailable",
+        status: 0,
+      });
+      expect(post).not.toHaveBeenCalled();
+    },
+  );
 
   test("keeps live and test credentials in their own modes and normalizes the PHP empty errors map", async () => {
     const baseUrl = await reply(200, JSON.stringify({ live: LIVE, test: TEST, errors: [] }));
@@ -150,6 +200,37 @@ describe("Connect.exchange", () => {
   test("returns per-mode refusals when a 200 contains only errors", async () => {
     const baseUrl = await reply(200, '{"errors":{"live":"cap","test":"cap"}}');
     await expect(exchange(baseUrl)).resolves.toEqual({ errors: { live: "cap", test: "cap" } });
+  });
+
+  test("keeps a successful mode when the other mode is refused", async () => {
+    const body = { live: LIVE, errors: { test: "cap" } };
+    const baseUrl = await reply(200, JSON.stringify(body));
+    await expect(exchange(baseUrl)).resolves.toEqual(body);
+  });
+
+  test.each(["accountId", "apiKey", "signingSecret"])(
+    "rejects credentials with an empty %s before callers can store them",
+    async (field) => {
+      const baseUrl = await reply(200, JSON.stringify({ live: { ...LIVE, [field]: "" } }));
+      await expect(exchange(baseUrl)).rejects.toMatchObject({
+        code: "temporarily_unavailable",
+        status: 200,
+      });
+    },
+  );
+
+  test.each([
+    ["live", LIVE],
+    ["test", TEST],
+  ])("rejects a reply that both issues and refuses %s credentials", async (mode, credentials) => {
+    const baseUrl = await reply(
+      200,
+      JSON.stringify({ [mode]: credentials, errors: { [mode]: "cap" } }),
+    );
+    await expect(exchange(baseUrl)).rejects.toMatchObject({
+      code: "temporarily_unavailable",
+      status: 200,
+    });
   });
 
   test.each([
@@ -207,7 +288,11 @@ describe("Connect.exchange", () => {
       res.write(truncated, () => res.socket?.end());
     });
     const result = exchange(baseUrl);
-    await expect(result).rejects.toMatchObject({ code: "temporarily_unavailable", status: 0 });
+    await expect(result).rejects.toMatchObject({
+      code: "temporarily_unavailable",
+      status: 0,
+      message: "MONEI connect failed: temporarily_unavailable",
+    });
     await expect(result).rejects.not.toHaveProperty("cause");
     await expect(result).rejects.not.toHaveProperty("response");
   });
@@ -274,6 +359,13 @@ describe("Connect.canonicalRedirectUri", () => {
 });
 
 describe("Connect.callbackProblem", () => {
+  test("refuses HTTPS port zero before checking the callback path", () => {
+    expect(Connect.callbackProblem("sylius", "https://shop.example:0/monei/connect")).toBe("port");
+    expect(Connect.callbackProblem("sylius", "https://shop.example:0/elsewhere")).toBe("port");
+    const redirectUri = Connect.canonicalRedirectUri("https://shop.example:443/monei/connect");
+    expect(Connect.callbackProblem("sylius", redirectUri)).toBeNull();
+  });
+
   test.each<[string, ConnectClient, string]>([
     ["woocommerce in a subdirectory", "woocommerce", `https://shop.example/blog${WOO_PATH}`],
     ["woocommerce three prefix segments", "woocommerce", `https://shop.example/a/b/c${WOO_PATH}`],

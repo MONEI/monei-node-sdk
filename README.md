@@ -636,14 +636,14 @@ const problem = Connect.callbackProblem(client, redirectUri);
 
 if (problem === null) {
   const { url, state, verifier } = Connect.start(client, redirectUri);
-  // Store state, verifier, and redirectUri on the server for this merchant.
+  // Store state, verifier, and redirectUri on the server for this authenticated session.
   // Redirect the merchant to url.
 }
 ```
 
-On callback, verify and consume the returned state against the stored state. Pass the callback code and the stored verifier and redirect URI to `await Connect.exchange(code, verifier, client, redirectUri)`. Each returned mode (`live` or `test`) contains `accountId`, `apiKey`, and `signingSecret`. Store those credentials securely. The response may contain only `errors`, with a refusal code per mode. A failed exchange throws `ConnectException` with an OAuth `code` and the HTTP `status` (zero when no complete response was received).
+On callback, require the same authenticated session that started authorization and verify the returned state against the stored state before consuming it. Pass the callback code and the stored verifier and redirect URI to `await Connect.exchange(code, verifier, client, redirectUri)`. Each returned mode (`live` or `test`) contains `accountId`, `apiKey`, and `signingSecret`. Store those credentials securely. The response may contain only `errors`, with a refusal code per mode. A failed exchange throws `ConnectException` with an OAuth `code` and the HTTP `status` (zero when no complete response was received).
 
-`start` and `exchange` accept an optional broker base URL and default to `https://oauth.monei.com`.
+`start` and `exchange` accept an optional broker base URL and default to `https://oauth.monei.com`. Use HTTPS for the token exchange. HTTP is supported on loopback hosts for local testing.
 
 ## MONEI Connect for Partners
 
