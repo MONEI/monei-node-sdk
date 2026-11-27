@@ -625,12 +625,12 @@ app.post("/checkout/callback", express.raw({ type: "application/json" }), (req, 
 
 ## Connect with MONEI
 
-Use `Connect` on your server to let a merchant authorize a shop integration and receive scoped API keys and webhook signing secrets. Supported clients are `woocommerce`, `prestashop`, `magento`, `medusa`, and `sylius`.
+Use `Connect` on your server to let a merchant authorize a shop integration and receive scoped API keys and webhook signing secrets. Supported clients are `woocommerce`, `prestashop`, `magento`, and `sylius`.
 
 ```js
 import { Connect } from "@monei-js/node-sdk";
 
-const client = "medusa";
+const client = "sylius";
 const redirectUri = Connect.canonicalRedirectUri("https://shop.example/monei/connect");
 const problem = Connect.callbackProblem(client, redirectUri);
 

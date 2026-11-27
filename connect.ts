@@ -34,12 +34,6 @@ const CLIENTS = {
     maxPrefix: 2,
     indexPhp: 1,
   },
-  medusa: {
-    name: "Medusa",
-    callbacks: [{ path: "/monei/connect", search: /^$/ }],
-    maxPrefix: 2,
-    indexPhp: 0,
-  },
   sylius: {
     name: "Sylius",
     callbacks: [{ path: "/monei/connect", search: /^$/ }],
@@ -47,6 +41,8 @@ const CLIENTS = {
     indexPhp: 0,
   },
 };
+
+export type ConnectClient = keyof typeof CLIENTS;
 
 const FORBIDDEN_URI_CHARACTERS = /[\p{Cc}\p{Cf}\p{Z}\s\\]/u;
 const CURSOR_CALLBACK = "cursor://anysphere.cursor-mcp/oauth/callback";
@@ -179,7 +175,7 @@ const isMoneiLike = (hostname: string) =>
 
 export class Connect {
   /** Create an authorization URL and the state and verifier to keep for the callback. */
-  static start(client: string, redirectUri: string, baseUrl = BASE_URL) {
+  static start(client: ConnectClient, redirectUri: string, baseUrl = BASE_URL) {
     const state = base64Url(randomBytes(32));
     const verifier = base64Url(randomBytes(48));
     const query = new URLSearchParams({
@@ -201,7 +197,7 @@ export class Connect {
   static async exchange(
     code: string,
     verifier: string,
-    client: string,
+    client: ConnectClient,
     redirectUri: string,
     baseUrl = BASE_URL,
   ): Promise<ConnectResult> {
@@ -247,11 +243,11 @@ export class Connect {
   }
 
   /** Check the canonical redirect URI against the broker's local rules. */
-  static callbackProblem(client: string, redirectUri: string): string | null {
+  static callbackProblem(client: ConnectClient, redirectUri: string): string | null {
     if (!Object.prototype.hasOwnProperty.call(CLIENTS, client)) {
       throw new TypeError(`Unknown client: ${client}`);
     }
-    const { name, callbacks, maxPrefix, indexPhp } = CLIENTS[client as keyof typeof CLIENTS];
+    const { name, callbacks, maxPrefix, indexPhp } = CLIENTS[client];
     if (redirectUri.length > 512) return "length";
     if (FORBIDDEN_URI_CHARACTERS.test(redirectUri)) return "character";
 

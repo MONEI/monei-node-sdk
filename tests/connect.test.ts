@@ -1,6 +1,6 @@
 import axios from "axios";
 import { createServer, type RequestListener, type Server } from "http";
-import { Connect, ConnectException } from "../index";
+import { Connect, ConnectException, type ConnectClient } from "../index";
 
 const WOO_PATH = "/wp-admin/admin-post.php?action=monei_connect";
 const WOO = `https://shop.example${WOO_PATH}`;
@@ -45,7 +45,7 @@ describe("Connect.start", () => {
 
   test("uses the supplied broker base without doubling its trailing slash", () => {
     const { url } = Connect.start(
-      "medusa",
+      "sylius",
       "https://shop.example/monei/connect",
       "https://oauth.example/",
     );
@@ -251,7 +251,7 @@ describe("Connect.canonicalRedirectUri", () => {
       `https://shop.example/tienda-%C3%B1${WOO_PATH}`,
     ],
     [
-      "a Medusa callback with a default port and mixed-case host",
+      "a Sylius callback with a default port and mixed-case host",
       "https://Shop.example:443/monei/connect",
       "https://shop.example/monei/connect",
     ],
@@ -274,7 +274,7 @@ describe("Connect.canonicalRedirectUri", () => {
 });
 
 describe("Connect.callbackProblem", () => {
-  test.each([
+  test.each<[string, ConnectClient, string]>([
     ["woocommerce in a subdirectory", "woocommerce", `https://shop.example/blog${WOO_PATH}`],
     ["woocommerce three prefix segments", "woocommerce", `https://shop.example/a/b/c${WOO_PATH}`],
     [
@@ -297,8 +297,6 @@ describe("Connect.callbackProblem", () => {
       "magento",
       "https://shop.example/a/index.php/default/monei/payment/connect/",
     ],
-    ["medusa callback on a subdomain", "medusa", "https://api.shop.example/monei/connect"],
-    ["medusa two prefix segments", "medusa", "https://shop.example/a/b/monei/connect"],
     ["sylius callback on a subdomain", "sylius", "https://api.shop.example/monei/connect"],
     ["sylius two prefix segments", "sylius", "https://shop.example/a/b/monei/connect"],
     [
@@ -315,26 +313,12 @@ describe("Connect.callbackProblem", () => {
     expect(Connect.callbackProblem(client, uri)).toBeNull();
   });
 
-  test.each([
+  test.each<[string, ConnectClient, string, string]>([
     [
       "three Magento prefix segments",
       "magento",
       "https://shop.example/a/b/c/monei/payment/connect/",
       "callbackDepth",
-    ],
-    [
-      "medusa three prefix segments",
-      "medusa",
-      "https://shop.example/a/b/c/monei/connect",
-      "callbackDepth",
-    ],
-    ["medusa query parameter", "medusa", "https://shop.example/monei/connect?x=1", "callbackPath"],
-    ["medusa trailing slash", "medusa", "https://shop.example/monei/connect/", "callbackPath"],
-    [
-      "medusa index.php prefix",
-      "medusa",
-      "https://shop.example/index.php/monei/connect",
-      "callbackIndexPhp",
     ],
     [
       "sylius three prefix segments",
@@ -502,12 +486,13 @@ describe("Connect.callbackProblem", () => {
       "callbackDepth",
     ],
   ])("keeps broker check precedence for %s", (_, uri, problem) => {
-    expect(Connect.callbackProblem("medusa", uri)).toBe(problem);
+    expect(Connect.callbackProblem("sylius", uri)).toBe(problem);
   });
 
   test.each(["shopify", "toString"])(
     "rejects the unknown client %s before applying callback rules",
     (client) => {
+      // @ts-expect-error Exercise the runtime guard for JavaScript callers.
       expect(() => Connect.callbackProblem(client, WOO)).toThrow(`Unknown client: ${client}`);
     },
   );
