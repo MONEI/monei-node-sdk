@@ -625,7 +625,7 @@ app.post("/checkout/callback", express.raw({ type: "application/json" }), (req, 
 
 ## Connect with MONEI
 
-Use `Connect` on your server to let a merchant authorize a shop integration and receive scoped API keys and webhook signing secrets. Supported clients are `woocommerce`, `prestashop`, `magento`, and `sylius`.
+Use `Connect` on your server to let a merchant authorize a shop integration and receive a scoped API key and its callback signing secret (`mksec_…`) for each mode. Supported clients are `woocommerce`, `prestashop`, `magento`, and `sylius`.
 
 ```js
 import { Connect } from "@monei-js/node-sdk";
@@ -641,7 +641,7 @@ if (problem === null) {
 }
 ```
 
-On callback, require the same authenticated session that started authorization and verify the returned state against the stored state before consuming it. Pass the callback code and the stored verifier and redirect URI to `await Connect.exchange(code, verifier, client, redirectUri)`. Each returned mode (`live` or `test`) contains `accountId`, `apiKey`, and `signingSecret`. Store those credentials securely. The response may contain only `errors`, with a refusal code per mode. A failed exchange throws `ConnectException` with an OAuth `code` and the HTTP `status` (zero when no complete response was received).
+On callback, require the same authenticated session that started authorization and verify the returned state against the stored state before consuming it. Pass the callback code and the stored verifier and redirect URI to `await Connect.exchange(code, verifier, client, redirectUri)`. Each returned mode (`live` or `test`) contains `accountId`, `apiKey`, and `signingSecret`. Store those credentials securely. The response may contain only `errors`, with a refusal code per mode. A failed exchange throws `ConnectException` with an OAuth `code` and the HTTP `status` (zero when no complete response was received). A malformed answer, for example an empty key, or keys and an `errors` code for the same mode, throws `temporarily_unavailable`.
 
 `start` and `exchange` accept an optional broker base URL and default to `https://oauth.monei.com`. Use HTTPS for the token exchange. HTTP is supported on loopback hosts for local testing.
 
