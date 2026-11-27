@@ -1,5 +1,12 @@
 # Changelog
 
+# [3.7.0](https://github.com/MONEI/monei-node-sdk/compare/v3.6.0...v3.7.0) (2026-11-27)
+
+
+### Features
+
+* Connect with MONEI helpers ([#29](https://github.com/MONEI/monei-node-sdk/issues/29)) ([e4173db](https://github.com/MONEI/monei-node-sdk/commit/e4173db0916fb2b4444a04ce5f13db5f8e39de13))
+
 # [3.6.0](https://github.com/MONEI/monei-node-sdk/compare/v3.5.0...v3.6.0) (2026-11-24)
 
 
